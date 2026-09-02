@@ -42,3 +42,4 @@ Read `docs/BRANCHING.md` before creating a branch. All changes require a pull re
 - Google Stitch prompts: `docs/design/STITCH_PROMPTS.md`
 - Generated Stitch project manifest: `docs/design/STITCH_PROJECT.md`
 - Client prototype walkthrough: `docs/design/CLIENT_PROTOTYPE_WALKTHROUGH.md`
+- Learning content package: `docs/content/README.md`
