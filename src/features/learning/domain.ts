@@ -20,6 +20,12 @@ export type QuizResult = {
   totalQuestions: number;
 };
 
+export type PersistedModuleProgress = {
+  bestScorePercent: number | null;
+  passedAt: string | null;
+  status: ModuleStatus;
+};
+
 export type LearningModule = {
   description: string;
   estimatedMinutes: number;

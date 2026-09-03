@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 
+import { getSafePostAuthPath } from "@/features/auth/authorization";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
-  const requestedPath = url.searchParams.get("next") ?? "/dashboard";
-  const nextPath = requestedPath.startsWith("/") ? requestedPath : "/dashboard";
+  const nextPath = getSafePostAuthPath(url.searchParams.get("next"));
 
   if (code) {
     const supabase = await createClient();
