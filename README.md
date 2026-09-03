@@ -52,3 +52,5 @@ Read `docs/BRANCHING.md` before creating a branch. All changes require a pull re
 - API-key handling: `docs/architecture/API_KEY_HANDLING.md`
 - Staging deployment: `docs/STAGING_DEPLOYMENT.md`
 - Module 1 test plan: `docs/testing/MODULE_1_TEST_PLAN.md`
+- Per-module test-plan template: `docs/testing/MODULE_TEST_PLAN_TEMPLATE.md`
+- Per-module test-report template: `docs/testing/MODULE_TEST_REPORT_TEMPLATE.md`

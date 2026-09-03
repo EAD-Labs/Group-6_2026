@@ -1,6 +1,7 @@
 import type {
   ModuleProgressInput,
   ModuleStatus,
+  PersistedModuleProgress,
   QuizResult,
 } from "./domain";
 
@@ -67,4 +68,23 @@ export function getNextAttemptNumber(previousAttemptCount: number) {
   }
 
   return previousAttemptCount + 1;
+}
+
+export function applyQuizResultToProgress(
+  currentProgress: PersistedModuleProgress,
+  quizResult: QuizResult,
+  submittedAt: string,
+): PersistedModuleProgress {
+  const bestScorePercent = Math.max(
+    currentProgress.bestScorePercent ?? 0,
+    quizResult.scorePercent,
+  );
+  const hasPassed = currentProgress.status === "passed" || quizResult.passed;
+
+  return {
+    bestScorePercent,
+    passedAt:
+      currentProgress.passedAt ?? (quizResult.passed ? submittedAt : null),
+    status: hasPassed ? "passed" : "in_progress",
+  };
 }

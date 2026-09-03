@@ -1,9 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
+import { requiresAuthentication } from "@/features/auth/authorization";
 import { getPublicSupabaseEnvironment } from "@/lib/env";
-
-const protectedPrefixes = ["/dashboard", "/learn", "/settings"];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -25,9 +24,7 @@ export async function updateSession(request: NextRequest) {
   });
 
   const { data } = await supabase.auth.getClaims();
-  const isProtectedRoute = protectedPrefixes.some((prefix) =>
-    request.nextUrl.pathname.startsWith(prefix),
-  );
+  const isProtectedRoute = requiresAuthentication(request.nextUrl.pathname);
 
   if (!data?.claims && isProtectedRoute) {
     const signInUrl = request.nextUrl.clone();
