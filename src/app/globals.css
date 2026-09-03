@@ -150,6 +150,92 @@ h1 {
   font-weight: 700;
 }
 
+.narrow-shell {
+  max-width: 720px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.module-card {
+  max-width: 680px;
+}
+
+.module-card .button {
+  margin-top: 1rem;
+}
+
+.form-card {
+  width: min(100%, 480px);
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+  text-align: left;
+}
+
+.form-card h1,
+.narrow-shell h1,
+.dashboard-header h1 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+}
+
+.form-stack {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.form-stack label {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+
+.form-stack input {
+  min-height: 48px;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #849087;
+  border-radius: 0.6rem;
+  color: var(--ink);
+  background: white;
+}
+
+.form-stack .button {
+  width: fit-content;
+}
+
+.form-note {
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.error-message {
+  padding: 0.75rem;
+  border-left: 4px solid #a52727;
+  color: #771b1b;
+  background: #fff0f0;
+}
+
+.privacy-notice {
+  margin: 2rem 0 1rem;
+  padding: 1rem;
+  border-left: 4px solid var(--accent);
+  background: #eaf4ee;
+}
+
+.privacy-notice p {
+  margin: 0.5rem 0 0;
+  line-height: 1.5;
+}
+
 .centered-state {
   display: grid;
   min-height: 100vh;
@@ -164,6 +250,15 @@ h1 {
   }
 
   .button {
+    width: 100%;
+  }
+
+  .dashboard-header {
+    display: block;
+  }
+
+  .dashboard-header .button,
+  .form-stack .button {
     width: 100%;
   }
 }
