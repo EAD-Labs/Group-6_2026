@@ -6,9 +6,28 @@ on:
     branches: [main]
 
 jobs:
-  repository-check:
+  application-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check required files
-        run: test -f README.md && test -f .env.example && test -f docs/BRANCHING.md
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Type-check
+        run: pnpm typecheck
+      - name: Test
+        run: pnpm test
+      - name: Build
+        env:
+          NEXT_PUBLIC_APP_ENV: test
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_test_placeholder
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+        run: pnpm build
