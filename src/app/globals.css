@@ -236,6 +236,22 @@ h1 {
   line-height: 1.5;
 }
 
+.lesson-list {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lesson-list .card {
+  min-height: auto;
+}
+
+.lesson-list h2 {
+  margin-top: 1rem;
+}
+
 .centered-state {
   display: grid;
   min-height: 100vh;
