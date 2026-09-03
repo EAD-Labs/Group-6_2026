@@ -4,22 +4,24 @@ PromptShala is a practical AI-literacy platform for beginner primary-school teac
 
 ## Project status
 
-The repository contains the approved HLD baseline and delivery governance. Product implementation follows the recovery schedule in `docs/HLD/PromptShala_HLD_v1.2_Updated.pdf`.
+The repository contains the approved HLD baseline, delivery governance, participant learning content, and the initial Module 1 application foundation.
 
-## Planned stack
+## Confirmed stack
 
-- Next.js and TypeScript for the web application
-- Supabase for authentication and application data
+- Next.js 16, React 19 and TypeScript for the web application
+- Supabase Auth and PostgreSQL with Row Level Security
 - GitHub for source control and pull requests
+- Vercel Preview with a separate Supabase staging project
 - Jira project `KAN` for PromptShala delivery tracking
 
 ## Local setup
 
-1. Install Node.js 20 or later.
+1. Install Node.js 24.19.0 and pnpm 11.19.0.
 2. Copy `.env.example` to `.env.local`.
-3. Add local Supabase values. Never commit secrets.
-4. Install dependencies with `npm install` once the application package is added.
-5. Start the development server with `npm run dev`.
+3. Add local Supabase URL and publishable key values. Never commit secrets.
+4. Install dependencies with `pnpm install --frozen-lockfile`.
+5. Start the development server with `pnpm dev`.
+6. Run validation with `pnpm check` and a production build with `pnpm build`.
 
 ## Team
 
@@ -43,3 +45,10 @@ Read `docs/BRANCHING.md` before creating a branch. All changes require a pull re
 - Generated Stitch project manifest: `docs/design/STITCH_PROJECT.md`
 - Client prototype walkthrough: `docs/design/CLIENT_PROTOTYPE_WALKTHROUGH.md`
 - Learning content package: `docs/content/README.md`
+- Stack decision: `docs/architecture/STACK_DECISION.md`
+- Authentication and roles: `docs/architecture/AUTHENTICATION_AND_ROLES.md`
+- Module 1 data model: `docs/architecture/MODULE_1_DATA_MODEL.md`
+- Progress and unlocking rules: `docs/architecture/PROGRESS_QUIZ_AND_UNLOCKING.md`
+- API-key handling: `docs/architecture/API_KEY_HANDLING.md`
+- Staging deployment: `docs/STAGING_DEPLOYMENT.md`
+- Module 1 test plan: `docs/testing/MODULE_1_TEST_PLAN.md`
