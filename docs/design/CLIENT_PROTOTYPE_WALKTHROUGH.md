@@ -1,5 +1,7 @@
 # PromptShala Client Prototype Walkthrough
 
+> **Superseded for the 10 September 2026 assessment.** This document records the earlier design-only walkthrough. Use `docs/presentations/CLIENT_REVIEW_2026-09-10_RUNBOOK.md` for the working product, current CRAFT evaluator and honest staging boundaries.
+
 ## Meeting objective
 
 Obtain client approval or consolidated corrections for the participant experience before Module 1 implementation. The walkthrough demonstrates design and intended interactions; it is not a claim that authentication, persistence, quiz scoring or AI services are already implemented.
@@ -246,7 +248,7 @@ End the walkthrough and ask for one consolidated response to each item.
 | UX-04 | Confirm retry rule | Unlimited guided retries; highest valid score retained | Confirmed / revised |
 | UX-05 | Confirm four module titles | AI Foundations, Prompt Engineering, Reusable AI Assistants, Using Your Own Materials | Confirmed / revised |
 | UX-06 | Confirm learning-content direction | Short interactive lessons with captions/transcripts and teacher scenarios | Confirmed / revised |
-| UX-07 | Confirm LearnLM/CRAFT direction | Initial configurable framework for prompt-practice feedback | Confirmed / revised |
+| UX-07 | Validate CRAFT terminology | Context, Role, Action, Format and Target | Confirmed / revised |
 | UX-08 | Confirm privacy wording | No identifiable student data; teacher reviews all AI output | Confirmed / revised |
 | UX-09 | Approve desktop/mobile direction | Responsive web experience from 360 px upward | Approved / changes |
 | UX-10 | Confirm first implementation scope | Module 1 access, onboarding, dashboard, lessons, quiz, progress and unlock | Confirmed / revised |
@@ -279,11 +281,11 @@ Use this exact closing question:
 
 ### Where is prompt engineering?
 
-> This walkthrough validates the foundation and learning shell. Prompt practice is the next delivery module and uses the LearnLM/CRAFT direction after client confirmation.
+> This earlier walkthrough validates the foundation and learning shell. The current implementation uses the selected CRAFT structure; see the 10 September runbook for the live evaluator.
 
 ### Does the system store API keys?
 
-> API-key setup is not part of this onboarding flow. If teacher-provided keys become necessary later, handling and non-storage must be separately approved and clearly explained.
+> Participants do not enter an API key. The controlled evaluator credential remains server-side, and PromptShala stores no raw prompt text.
 
 ### How is student privacy protected?
 
@@ -309,7 +311,7 @@ Feedback types:
 
 Say:
 
-> Thank you. We will send the minutes with today’s decisions, required changes, owners and dates. Approved screens will move into Module 1 implementation. Any unresolved rule—especially the pass threshold, retry policy or LearnLM/CRAFT framework—will remain visible in Jira and will not be treated as final until confirmed.
+> Thank you. We will record today’s decisions, required changes, owners and dates. Any unresolved rule—especially pilot content, scoring or CRAFT terminology—will remain visible in Jira and will not be treated as accepted until confirmed.
 
 ## Post-meeting actions
 
