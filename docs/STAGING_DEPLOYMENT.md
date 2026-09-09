@@ -22,9 +22,10 @@ Never reuse a Supabase project or secret across these environments.
 4. Create and protect a `staging` branch in GitHub.
 5. Assign the `staging` branch a stable Vercel Preview URL or alias.
 6. Add staging values for `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `NEXT_PUBLIC_APP_ENV=staging` to the Vercel Preview environment.
-7. Keep `SUPABASE_SERVICE_ROLE_KEY` absent from the web deployment unless a reviewed server-only requirement is introduced.
-8. Apply migrations to staging using an authorised maintainer account.
-9. Provision only the approved ten pilot users and one or two administrators.
+7. Add `GEMINI_API_KEY` and `GEMINI_CRAFT_MODEL` as server-only values. Never expose either value with a `NEXT_PUBLIC_` prefix.
+8. Keep `SUPABASE_SERVICE_ROLE_KEY` absent from the web deployment unless a reviewed server-only workflow requires it.
+9. Apply migrations to staging using an authorised maintainer account.
+10. Provision only the approved ten pilot users and one or two administrators.
 
 ## Deployment flow
 
@@ -50,7 +51,9 @@ Never reuse a Supabase project or secret across these environments.
 - Three of five answers fails; four of five passes.
 - A failed attempt can be retried and remains in attempt history.
 - Passing unlocks the next module without reducing the best score.
-- API-key copy states that the key is session-only; removing it clears `sessionStorage`.
+- The evaluator key stays on the server and never appears in the browser, screenshots or response payloads.
+- The CRAFT endpoint returns five 0–3 scores, a total out of 15 and a safe deterministic fallback.
+- Authenticated attempts store a one-way prompt fingerprint, scores, evaluator source and safety flags without raw prompt text.
 - Keyboard navigation, visible focus, zoom, and screen-reader feedback are checked.
 
 ## Rollback
@@ -63,4 +66,3 @@ Never reuse a Supabase project or secret across these environments.
 ## Release evidence
 
 Attach the GitHub Actions run, Vercel Preview URL, migration list, smoke-test result, accessibility result, known limitations, and client decision to the relevant Jira issue.
-
