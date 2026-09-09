@@ -14,6 +14,9 @@ const authenticatedRoutePrefixes = [
   "/admin",
   "/dashboard",
   "/learn",
+  "/onboarding",
+  "/profile",
+  "/progress",
   "/settings",
 ];
 
