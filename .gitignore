@@ -10,3 +10,7 @@ coverage/
 *.log
 *.tsbuildinfo
 .supabase/
+.codex-finalizer/
+.codex-pptx/
+output/
+tmp/

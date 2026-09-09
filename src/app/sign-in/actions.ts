@@ -1,8 +1,24 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { hasPublicSupabaseEnvironment } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
+import { presentationDemoCookie } from "@/lib/supabase/proxy";
+
+export async function startPresentationDemo() {
+  const cookieStore = await cookies();
+  cookieStore.set(presentationDemoCookie, "active", {
+    httpOnly: true,
+    maxAge: 60 * 60 * 8,
+    path: "/",
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
+
+  redirect("/onboarding/safe-use?fresh=1");
+}
 
 export async function signIn(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim();
@@ -10,6 +26,10 @@ export async function signIn(formData: FormData) {
 
   if (!email || !password) {
     redirect("/sign-in?error=missing");
+  }
+
+  if (!hasPublicSupabaseEnvironment()) {
+    redirect("/sign-in?error=configuration");
   }
 
   const supabase = await createClient();
@@ -23,7 +43,13 @@ export async function signIn(formData: FormData) {
 }
 
 export async function signOut() {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
+  const cookieStore = await cookies();
+  cookieStore.delete(presentationDemoCookie);
+
+  if (hasPublicSupabaseEnvironment()) {
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+  }
+
   redirect("/sign-in");
 }

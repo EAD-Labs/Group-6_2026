@@ -18,7 +18,7 @@
 
 ### Module 2 — Classroom Prompt Writing
 
-**Description:** Build a clear prompt, receive feedback across six dimensions, and improve it for a real classroom task.
+**Description:** Build a clear prompt, receive feedback across the five CRAFT dimensions, and improve it for a real classroom task.
 
 **Estimated time:** 30 minutes
 
@@ -84,7 +84,7 @@
 
 **Heading:** A clear prompt is a clear teaching brief
 
-**Body:** Add only information that helps the task: the role, learner, classroom context, learning goal, output requirements, and safety/review boundaries. More words are not automatically better; useful details are better.
+**Body:** Use CRAFT to add only information that helps: Context, Role, Action, Format and Target. Keep privacy and teacher review as non-negotiable safeguards. More words are not automatically better; useful details are better.
 
 **Comparison:** Use the weak and classroom-ready fractions prompts in `PROMPT_LESSON_AND_RUBRIC.md`.
 
@@ -142,13 +142,13 @@
 
 ## Prompt feedback placeholder
 
-**Overall message:** Your prompt has a clear task and format. Add more detail about the learner and how you will verify the result.
+**Overall message:** Your prompt has a clear Context and Action. Add Role, Format and Target, then keep the teacher verification step.
 
-**Strongest dimension:** Task and learning goal
+**Strongest dimension:** Action
 
-**Priority improvement 1:** Learner and level — name the class and one current misconception.
+**Priority improvement 1:** Target — name the class and one current misconception.
 
-**Priority improvement 2:** Safety and teacher review — exclude personal data and state what you will verify.
+**Priority improvement 2:** Format — define the length, structure and checks for understanding.
 
 **Action:** `Revise my prompt`
 
@@ -172,4 +172,3 @@
 - External links, licences, captions, and embeds are verified.
 - Privacy and teacher-review reminders appear before every free-text task.
 - Prototype copy is reviewed on mobile and desktop at 200% zoom.
-
