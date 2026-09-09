@@ -56,7 +56,7 @@ Turn a vague request into a clear, classroom-ready prompt and improve it using s
 ### Lesson sequence
 
 1. Compare a vague prompt with a classroom-ready prompt
-2. Learn the six PromptShala rubric dimensions
+2. Learn CRAFT: Context, Role, Action, Format and Target
 3. Build a prompt one field at a time
 4. Submit a prompt for rubric feedback
 5. Revise the prompt using the feedback
@@ -67,8 +67,8 @@ Turn a vague request into a clear, classroom-ready prompt and improve it using s
 
 By the end of the module, the participant can:
 
-- write a prompt that identifies the AI role, learner, context, task, desired result, and output constraints;
-- achieve at least 12 out of 18 on the PromptShala prompt rubric, with no missing safety/review requirement;
+- write a prompt that makes Context, Role, Action, Format and Target visible;
+- improve the CRAFT structure coverage between a first and revised attempt while retaining safe-use and teacher-review boundaries;
 - revise a first attempt and explain at least two improvements;
 - produce one usable prompt for a selected classroom scenario; and
 - score at least 70% on the module quiz.
@@ -166,4 +166,3 @@ For the initial ten-user pilot, collect only the minimum learning analytics requ
 - one optional usefulness rating and one optional comment.
 
 Do not collect prompt content containing identifiable student information. Display a reminder before every free-text activity.
-

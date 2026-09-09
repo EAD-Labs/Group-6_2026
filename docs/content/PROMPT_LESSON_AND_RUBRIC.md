@@ -2,9 +2,9 @@
 
 ## Decision status
 
-This document defines the **proposed PromptShala working rubric** for the prototype. It follows the client’s requested LEARN-LM/CRAFT-style direction and extends Google’s official Gem instruction areas—Persona, Task, Context, and Format—with learner, pedagogy, safety, and teacher-review needs.
+This document defines the **confirmed PromptShala CRAFT direction** for the prototype: Context, Role, Action, Format and Target. The Student Team locked this implementation baseline on 8 September 2026. The next client review validates the wording and teacher scenarios rather than choosing between frameworks.
 
-The team must obtain client confirmation before labelling any acronym or framework as final. PromptShala must not claim that this rubric is an official Google, LearnLM, or UNESCO framework.
+CRAFT is presented as PromptShala’s selected teaching structure. PromptShala must not claim that its rubric is an official Google, LearnLM or UNESCO framework. Privacy, factual verification and teacher review remain mandatory cross-cutting safeguards rather than a sixth CRAFT letter.
 
 ## Lesson summary
 
@@ -23,9 +23,9 @@ The team must obtain client confirmation before labelling any acronym or framewo
 The participant will:
 
 - identify why a vague prompt produces an unpredictable result;
-- use all six PromptShala rubric dimensions;
+- use all five CRAFT dimensions;
 - write and revise one classroom prompt;
-- achieve at least 12 out of 18, with no zero in Safety and Teacher Review; and
+- improve the visible CRAFT coverage between the first and revised attempt; and
 - explain two changes made after feedback.
 
 ## Lesson flow
@@ -46,31 +46,29 @@ Ask the participant:
 2. What information was added?
 3. What must the teacher still review?
 
-### Step 2 — Teach the six dimensions
+### Step 2 — Teach the five CRAFT dimensions
 
-1. **Persona or role** — Who should the AI act as?
-2. **Learner and level** — Who will use the result, and what do they already know?
-3. **Context and source** — What topic, curriculum, source material, misconception, or classroom condition matters?
-4. **Task and learning goal** — What should the AI produce, and what should learners understand or do?
-5. **Format and quality criteria** — What structure, length, language, tone, examples, or answer key is required?
-6. **Safety and teacher review** — What private data must be excluded, what boundaries apply, and what will the teacher verify?
+1. **Context** — What topic, curriculum point, source, misconception or classroom condition matters?
+2. **Role** — Who should the AI act as?
+3. **Action** — What should the AI create, explain, draft or transform?
+4. **Format** — What structure, length, language, tone, examples or answer key is required?
+5. **Target** — Who will use the result, and what do they already know or need?
 
 ### Step 3 — Build the prompt
 
-The interface provides six labelled fields. Each field includes a plain-language hint and an optional example. The final prompt preview updates as the participant types.
+The interface begins with one natural-language prompt area and five visible checks. A later guided-builder mode may expose one field per dimension. The teacher can always revise her own text rather than having it silently replaced.
 
 | Field | Prompt shown to participant |
 |---|---|
-| Persona or role | “Who should the AI act as?” |
-| Learner and level | “Which class, age, prior knowledge, or learning need should it consider?” |
-| Context and source | “What topic, curriculum point, misconception, or approved source matters?” |
-| Task and learning goal | “What should it create, and what should learners achieve?” |
-| Format and quality criteria | “How should the result be structured, written, and limited?” |
-| Safety and teacher review | “What must it avoid, and what will you verify before use?” |
+| Context | “What is happening in your classroom?” |
+| Role | “Who should the AI act as?” |
+| Action | “What should it create or explain?” |
+| Format | “How should the answer be organised?” |
+| Target | “Who is the result for?” |
 
 ### Step 4 — Submit for feedback
 
-Show one feedback card per dimension:
+Show one feedback card per CRAFT dimension:
 
 - **What we noticed** — evidence found or missing;
 - **Why it matters** — teacher-focused explanation;
@@ -81,7 +79,7 @@ Do not show only a total score. The participant must understand how to improve e
 
 ### Step 5 — Revise and compare
 
-Display the first and revised versions side by side on desktop and one after the other on mobile. Highlight only participant-made additions. Ask:
+Display first and revised coverage together on desktop and one after the other on mobile. Keep both attempts visible and ask:
 
 > Name two changes that made your prompt more useful.
 
@@ -89,30 +87,28 @@ Display the first and revised versions side by side on desktop and one after the
 
 Completion requires:
 
-- all required fields attempted;
-- a revised prompt submitted;
-- at least 12 out of 18 overall;
-- Safety and Teacher Review scored at least 1; and
+- a first prompt and revised prompt submitted;
+- all five CRAFT dimensions made visible in at least one attempt;
+- the safe-use acknowledgement retained; and
 - the two-change reflection completed.
 
 If the threshold is not met, keep the participant’s work, focus the first missing dimension, and allow an immediate retry.
 
-## PromptShala rubric
+## Planned CRAFT rubric
 
-Each dimension is scored from 0 to 3. Maximum score: 18.
+The current preview uses a transparent present/missing check and reports **structure coverage**, not quality certification. The separately tested Module 2 increment may introduce the following 0–3 rubric after client validation. Maximum score: 15.
 
 | Dimension | 0 — Missing | 1 — Emerging | 2 — Usable | 3 — Strong |
 |---|---|---|---|---|
-| Persona or role | No role is stated. | A broad role such as “teacher” is named. | A relevant role and subject responsibility are stated. | The role also includes an appropriate approach, expertise, or boundary. |
-| Learner and level | No learner is identified. | A broad learner group is named. | Class/age and current level or need are stated. | Prior knowledge, misconception, language, accessibility, or differentiation need is also stated. |
-| Context and source | No topic or context is given. | A topic is named. | Topic plus curriculum, classroom context, or source is given. | Relevant constraints, source boundaries, misconceptions, and classroom conditions are clear. |
-| Task and learning goal | The request is unclear. | A general task is stated. | The required artifact and learning goal are clear. | Success criteria or desired learner behaviour is also measurable. |
-| Format and quality criteria | No output guidance is provided. | One format or length preference is given. | Structure, tone/language, and useful limits are specified. | The prompt includes examples, answer-key needs, differentiation, or an explicit quality checklist. |
-| Safety and teacher review | No safety or review instruction is present. | A general “check it” instruction is present. | Private data is excluded and teacher verification is required. | Verification names accuracy, source alignment, age suitability, inclusion, and copyright or privacy as relevant. |
+| Context | No topic or classroom need is given. | A topic is named. | Topic plus curriculum, classroom context or source is given. | Constraints, source boundaries, misconceptions and classroom conditions are clear. |
+| Role | No role is stated. | A broad role such as “teacher” is named. | A relevant role and subject responsibility are stated. | The role also includes an appropriate approach, expertise or boundary. |
+| Action | The requested work is unclear. | A general task is stated. | The required classroom artifact or explanation is clear. | The action includes a measurable learning goal or success criterion. |
+| Format | No output guidance is provided. | One format or length preference is given. | Structure, tone/language and useful limits are specified. | Examples, answer-key needs, differentiation or a quality checklist are explicit. |
+| Target | No learner or audience is identified. | A broad learner group is named. | Class/age and current level or need are stated. | Prior knowledge, misconception, language, accessibility or differentiation need is also stated. |
 
 ## Feedback examples
 
-### Missing learner information
+### Missing target information
 
 - **What we noticed:** The prompt says “students” but does not identify a class or current understanding.
 - **Why it matters:** The same explanation may be too simple for Class 9 and too difficult for Class 4.
@@ -126,7 +122,7 @@ Each dimension is scored from 0 to 3. Maximum score: 18.
 - **Try adding:** A word limit, example type, and check-for-understanding questions.
 - **Example phrase:** “under 180 words, with one analogy and two quick questions”.
 
-### Missing safety and review
+### Missing safety and review boundary
 
 - **What we noticed:** The prompt does not say how private information or factual accuracy will be handled.
 - **Why it matters:** AI output may contain errors, unsuitable language, or exposed personal data.
@@ -144,13 +140,12 @@ The prototype may detect simple evidence without claiming full semantic understa
 - structure, length, language, tone, table, list, answer key, or example requirements;
 - privacy, fictional-data, verify, review, citation, accuracy, or age-suitability terms.
 
-These checks support practice; they are not a definitive quality judgment. The UI must say “rubric feedback” rather than “AI-certified prompt”.
+These checks support practice; they are not a definitive quality judgment. The preview labels the result as “structure coverage” and explicitly says that it makes no AI call.
 
-## Client confirmation questions
+## Client validation questions
 
-1. Do the six selected dimensions match the intended LEARN-LM/CRAFT-style direction?
-2. Should PromptShala use a client-approved acronym, or present the dimensions without an acronym?
-3. Is 12 out of 18 with a mandatory safety score acceptable for practice completion?
-4. Should the first pilot use deterministic checks, an LLM with participant-provided API key, or both?
-5. Which school board, grade range, subjects, and language variants should the first scenarios prioritise?
-
+1. Are Context, Role, Action, Format and Target understandable to beginner teachers?
+2. Are the five prototype scenarios appropriate for the 10-user pilot?
+3. Should planned Module 2 completion require all five dimensions or a minimum rubric threshold?
+4. Should the first pilot retain deterministic checks as a fallback when an AI call fails?
+5. Which school board, grade range, subjects and language variants should the first scenarios prioritise?

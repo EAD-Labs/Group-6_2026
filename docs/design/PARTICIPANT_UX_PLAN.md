@@ -167,5 +167,5 @@ The clickable prototype must include these links:
 - Confirm the final quiz pass threshold; HLD currently proposes 70%.
 - Confirm whether retries are unlimited and whether highest score is retained; HLD proposes both.
 - Confirm final four learning-module titles and approved sample content.
-- Confirm LearnLM/CRAFT rubric wording before detailed prompt-practice screens are finalized.
+- Validate the selected CRAFT labels—Context, Role, Action, Format and Target—with beginner teachers before final Module 2 scoring is locked.
 - Confirm whether certificate/progress screens are included in the first design review or a later module.
