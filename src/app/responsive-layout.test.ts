@@ -11,22 +11,25 @@ describe("responsive layout contract", () => {
     expect(stylesheet).toMatch(/html\s*{[\s\S]*?min-width:\s*320px/);
   });
 
-  it("uses a three-column desktop feature grid", () => {
+  it("uses a two-column desktop learning grid", () => {
     expect(stylesheet).toMatch(
-      /\.feature-grid\s*{[\s\S]*?grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/,
+      /\.module-grid\s*{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/,
     );
   });
 
-  it("collapses the feature grid at the mobile breakpoint", () => {
+  it("collapses learning and feedback grids at the mobile breakpoint", () => {
     expect(stylesheet).toMatch(
-      /@media\s*\(max-width:\s*720px\)[\s\S]*?\.feature-grid\s*{[\s\S]*?grid-template-columns:\s*1fr/,
+      /@media\s*\(max-width:\s*720px\)[\s\S]*?\.dashboard-grid,[\s\S]*?\.review-grid[\s\S]*?grid-template-columns:\s*1fr/,
     );
   });
 
-  it("provides mobile-width primary actions and touch-sized controls", () => {
+  it("provides touch-sized controls and labelled mobile navigation", () => {
     expect(stylesheet).toMatch(/\.button\s*{[\s\S]*?min-height:\s*48px/);
     expect(stylesheet).toMatch(
-      /@media\s*\(max-width:\s*720px\)[\s\S]*?\.button\s*{[\s\S]*?width:\s*100%/,
+      /\.bottom-navigation\s*{[\s\S]*?display:\s*none/,
+    );
+    expect(stylesheet).toMatch(
+      /@media\s*\(max-width:\s*720px\)[\s\S]*?\.bottom-navigation\s*{[\s\S]*?display:\s*grid/,
     );
   });
 
