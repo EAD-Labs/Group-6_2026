@@ -9,6 +9,11 @@ export type LessonSection = {
 export type LessonDetail = Lesson & {
   durationMinutes: number;
   eyebrow: string;
+  resources: {
+    label: string;
+    type: "guide" | "video";
+    url: string;
+  }[];
   sections: LessonSection[];
   summary: string;
   takeaways: string[];
@@ -35,7 +40,7 @@ export const learningModules: LearningModule[] = [
   {
     description:
       "Understand what generative AI can do and use a safe teacher-review process.",
-    estimatedMinutes: 25,
+    estimatedMinutes: 180,
     id: "00000000-0000-4000-8000-000000000001",
     position: 1,
     slug: "module-1",
@@ -44,7 +49,7 @@ export const learningModules: LearningModule[] = [
   {
     description:
       "Turn classroom needs into clear prompts using the CRAFT framework.",
-    estimatedMinutes: 35,
+    estimatedMinutes: 240,
     id: "00000000-0000-4000-8000-000000000002",
     position: 2,
     slug: "module-2",
@@ -74,11 +79,23 @@ export const moduleOne = learningModules[0];
 
 export const moduleOneLessons: LessonDetail[] = [
   {
-    durationMinutes: 7,
+    durationMinutes: 25,
     eyebrow: "Lesson 1 · Build the right mental model",
     id: "00000000-0000-4000-8000-000000000101",
     moduleId: moduleOne.id,
     position: 1,
+    resources: [
+      {
+        label: "How AI works — Code.org",
+        type: "video",
+        url: "https://www.youtube.com/watch?v=Ok-xpKjKp2g",
+      },
+      {
+        label: "Generative AI for Educators — Google",
+        type: "guide",
+        url: "https://grow.google/ai-for-educators/",
+      },
+    ],
     sections: [
       {
         body:
@@ -113,11 +130,18 @@ export const moduleOneLessons: LessonDetail[] = [
     ],
   },
   {
-    durationMinutes: 8,
+    durationMinutes: 25,
     eyebrow: "Lesson 2 · Start from a real teacher task",
     id: "00000000-0000-4000-8000-000000000102",
     moduleId: moduleOne.id,
     position: 2,
+    resources: [
+      {
+        label: "How chatbots and language models work — Code.org",
+        type: "video",
+        url: "https://www.youtube.com/watch?v=X-AWdfSFCHQ",
+      },
+    ],
     sections: [
       {
         body:
@@ -152,11 +176,23 @@ export const moduleOneLessons: LessonDetail[] = [
     ],
   },
   {
-    durationMinutes: 8,
+    durationMinutes: 30,
     eyebrow: "Lesson 3 · Apply the REVIEW check",
     id: "00000000-0000-4000-8000-000000000103",
     moduleId: moduleOne.id,
     position: 3,
+    resources: [
+      {
+        label: "UNESCO guidance for generative AI in education",
+        type: "guide",
+        url: "https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research?hub=67098",
+      },
+      {
+        label: "Exploring the ethics of AI — Code.org",
+        type: "video",
+        url: "https://www.youtube.com/watch?v=3oqxjPXbynE",
+      },
+    ],
     sections: [
       {
         body:
@@ -188,6 +224,149 @@ export const moduleOneLessons: LessonDetail[] = [
       "Before using an AI-created resource, pause for a teacher review.",
       "First, protect privacy: use fictional or general classroom descriptions. Second, verify important facts and curriculum alignment. Third, adapt the reading level, tone, inclusion and accessibility.",
       "Attractive formatting does not make an output safe or accurate. The final classroom decision always belongs to the teacher.",
+    ],
+  },
+  {
+    durationMinutes: 30,
+    eyebrow: "Lesson 4 · Separate claims from evidence",
+    id: "00000000-0000-4000-8000-000000000104",
+    moduleId: moduleOne.id,
+    position: 4,
+    resources: [
+      {
+        label: "How chatbots and language models work — Code.org",
+        type: "video",
+        url: "https://www.youtube.com/watch?v=X-AWdfSFCHQ",
+      },
+    ],
+    sections: [
+      {
+        body:
+          "A polished sentence can contain an invented reference, a wrong total or an overgeneralisation. Mark each important statement as supported, contradicted or not established by the available source.",
+        heading: "Fluency is not evidence",
+        highlight: "Claim → evidence → teacher decision",
+      },
+      {
+        body:
+          "Checking with the same model is not independent verification. Open the cited source, compare the exact passage, or use a calculator or trusted reference for facts and numbers.",
+        heading: "Verify outside the response",
+      },
+      {
+        body:
+          "When evidence is missing, say that the claim is not established. That is more accurate than guessing that it is definitely false.",
+        heading: "Name uncertainty precisely",
+      },
+    ],
+    slug: "verify-ai-claims",
+    summary:
+      "Audit AI output by connecting each important claim to independent evidence.",
+    takeaways: [
+      "A citation must exist and support the claim.",
+      "Use an independent source or tool to verify.",
+      "Distinguish unsupported from proven false.",
+    ],
+    title: "Hallucinations and verification",
+    transcript: [
+      "AI can produce language that sounds certain even when the underlying claim is unsupported.",
+      "Build a simple audit table with four columns: claim, available evidence, verdict and correction.",
+      "For classroom material, verify the facts that affect learning and remove or qualify anything the source does not establish.",
+    ],
+  },
+  {
+    durationMinutes: 30,
+    eyebrow: "Lesson 5 · Match the tool to the job",
+    id: "00000000-0000-4000-8000-000000000105",
+    moduleId: moduleOne.id,
+    position: 5,
+    resources: [
+      {
+        label: "NotebookLM teaching example",
+        type: "video",
+        url: "https://www.youtube.com/watch?v=0wfJeL-IalY",
+      },
+      {
+        label: "Add and manage NotebookLM sources — Google Help",
+        type: "guide",
+        url: "https://support.google.com/gemininotebook/answer/16215270?co=GENIE.Platform%3DDesktop&hl=en-6",
+      },
+    ],
+    sections: [
+      {
+        body:
+          "Use general chat for drafting and alternatives, a source notebook for questions about selected documents, and a calculator or spreadsheet for exact arithmetic.",
+        heading: "Choose by task and evidence",
+        highlight: "Start from the task, then choose the tool",
+      },
+      {
+        body:
+          "A reusable assistant can hold stable instructions for a repeated job. An API lets software request a service; teachers do not need to program one to use PromptShala.",
+        heading: "Know the levels of assistance",
+      },
+      {
+        body:
+          "Uploading a file does not guarantee that every detail was interpreted correctly. Record the source boundary and how you will verify the output.",
+        heading: "Keep a verification plan",
+      },
+    ],
+    slug: "choose-the-right-tool",
+    summary:
+      "Choose chat, source-grounded tools, reusable assistants or reliable calculators according to the task.",
+    takeaways: [
+      "Tool choice follows the teaching purpose.",
+      "Source-grounded still requires checking.",
+      "Use deterministic tools for exact calculations.",
+    ],
+    title: "Choose the right AI assistance",
+    transcript: [
+      "One tool does not suit every classroom task.",
+      "Drafting three activity ideas is different from calculating a total or answering questions from two approved documents.",
+      "State the intended source, choose the least risky suitable tool and record how the teacher will check the result.",
+    ],
+  },
+  {
+    durationMinutes: 40,
+    eyebrow: "Lesson 6 · Put responsible use into practice",
+    id: "00000000-0000-4000-8000-000000000106",
+    moduleId: moduleOne.id,
+    position: 6,
+    resources: [
+      {
+        label: "UNESCO AI competency framework for teachers",
+        type: "guide",
+        url: "https://www.unesco.org/en/articles/ai-competency-framework-teachers?hub=83294",
+      },
+    ],
+    sections: [
+      {
+        body:
+          "Choose a topic you know well and design a ten-minute introductory activity using fictional class context and an approved source or your own verified notes.",
+        heading: "Set a bounded classroom brief",
+        highlight: "The evidence must show teacher judgment",
+      },
+      {
+        body:
+          "Save the first output, mark claims that need checking, verify them, adapt language and materials, and identify at least one AI suggestion you rejected.",
+        heading: "Show the review trail",
+      },
+      {
+        body:
+          "Complete a decision card: task, learner benefit, information supplied, tool, checks, changes, approver and the situations where AI would be unsuitable.",
+        heading: "Make responsibility visible",
+      },
+    ],
+    slug: "responsible-use-challenge",
+    summary:
+      "Create and document a small classroom activity that makes both AI help and teacher judgment visible.",
+    takeaways: [
+      "Keep the task small and source-aware.",
+      "Record checks, edits and rejected suggestions.",
+      "The teacher approves final classroom use.",
+    ],
+    title: "Responsible-use challenge",
+    transcript: [
+      "This challenge combines task choice, privacy, verification and professional judgment.",
+      "Your final activity should be usable, but the review trail matters just as much as the polished result.",
+      "Another educator should be able to see what the AI contributed, what you checked and why you changed or rejected parts of the draft.",
     ],
   },
 ];
@@ -290,5 +469,9 @@ export function getModuleOneProgress(completedLessonCount: number, passed: boole
     return 100;
   }
 
-  return Math.round((Math.min(completedLessonCount, 3) / 4) * 100);
+  return Math.round(
+    (Math.min(completedLessonCount, moduleOneLessons.length) /
+      (moduleOneLessons.length + 1)) *
+      100,
+  );
 }

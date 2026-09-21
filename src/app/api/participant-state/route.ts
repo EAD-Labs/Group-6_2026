@@ -14,6 +14,9 @@ const lessonIdBySlug = {
   "meet-generative-ai": "00000000-0000-4000-8000-000000000101",
   "useful-teacher-tasks": "00000000-0000-4000-8000-000000000102",
   "review-before-use": "00000000-0000-4000-8000-000000000103",
+  "verify-ai-claims": "00000000-0000-4000-8000-000000000104",
+  "choose-the-right-tool": "00000000-0000-4000-8000-000000000105",
+  "responsible-use-challenge": "00000000-0000-4000-8000-000000000106",
 } as const;
 const slugByLessonId: Record<string, string> = Object.fromEntries(
   Object.entries(lessonIdBySlug).map(([slug, id]) => [id, slug]),
