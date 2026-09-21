@@ -169,13 +169,14 @@ export function buildGeminiCraftRequest(
 
   const evaluatorPrompt = [
     "You evaluate prompts written by beginner school teachers.",
-    "Scenario: " + scenario.title + ". " + scenario.summary,
+    "Teacher's intended task: " + scenario.task + ".",
+    "Task context: " + scenario.summary,
     "Score each CRAFT dimension independently from 0 to 3.",
     ...Object.entries(rubricGuide).map(
       ([score, meaning]) => score + ": " + meaning + ".",
     ),
     "CRAFT means Context, Role, Action, Format and Target.",
-    "Judge the clarity and classroom usefulness of the teacher prompt, not an answer that has not been generated.",
+    "Judge whether the prompt clearly instructs an AI to perform the teacher's intended task. Do not evaluate an answer that has not been generated.",
     "Evidence must point closely to the teacher words. Feedback and suggestions must be brief, supportive and specific.",
     "Flag possible personal student data, unsafe high-stakes decisions, unsupported factual authority, or copyright and source risks.",
     "Do not reward unnecessary length. Do not invent absent details.",

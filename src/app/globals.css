@@ -675,6 +675,7 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 .craft-workspace { display: grid; margin-bottom: 1rem; grid-template-columns: 285px minmax(0, 1fr); gap: 1rem; align-items: start; }
 .craft-scenario-panel, .craft-editor-card { padding: 1.2rem; border: 1px solid var(--line); border-radius: 0.75rem; background: var(--surface); box-shadow: var(--shadow-sm); }
 .craft-scenario-panel h2, .craft-editor-card h2, .craft-feedback h2, .attempt-comparison h2 { margin: 0.2rem 0 1rem; font-family: var(--serif); font-size: 1.35rem; }
+.scenario-helper { margin: -0.45rem 0 0.9rem; color: var(--muted); font-size: 0.68rem; line-height: 1.5; }
 .scenario-list { display: grid; gap: 0.5rem; }
 .scenario-list button { display: grid; min-height: 68px; padding: 0.65rem; border: 1px solid var(--line); border-radius: 0.5rem; grid-template-columns: 2rem 1fr; align-items: center; gap: 0.65rem; color: var(--ink-soft); background: var(--surface-soft); text-align: left; }
 .scenario-list button:hover, .scenario-list button.active { border-color: var(--forest); background: var(--teal-pale); }
@@ -693,6 +694,9 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 .scenario-brief strong { font-family: var(--serif); font-size: 0.9rem; }
 .scenario-brief p { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.68rem; }
 .craft-textarea-label { display: grid; gap: 0.45rem; font-size: 0.74rem; font-weight: 800; }
+.craft-textarea-label input { width: 100%; min-height: 48px; padding: 0.75rem 0.9rem; border: 1px solid var(--line-strong); border-radius: 0.55rem; color: var(--ink); background: #fffefb; font: 500 0.82rem/1.4 var(--sans); }
+.craft-textarea-label input:focus { border-color: var(--forest); outline: 3px solid rgba(11, 90, 74, 0.14); }
+.craft-task-label { margin-bottom: 1rem; }
 .craft-textarea-label textarea { width: 100%; min-height: 220px; resize: vertical; padding: 1rem; border: 1px solid var(--line-strong); border-radius: 0.55rem; color: var(--ink); background: #fffefb; font: 500 0.85rem/1.6 var(--sans); }
 .craft-textarea-label textarea:focus { border-color: var(--forest); outline: 3px solid rgba(11, 90, 74, 0.14); }
 .craft-textarea-label > span { color: var(--muted); font-size: 0.62rem; font-weight: 500; text-align: right; }

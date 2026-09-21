@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { craftScenarios, evaluateCraftPrompt } from "./craft";
+import { createCraftScenario, craftScenarios, evaluateCraftPrompt } from "./craft";
 
 describe("CRAFT prompt evaluation", () => {
   const conceptScenario = craftScenarios[0];
@@ -31,5 +31,17 @@ describe("CRAFT prompt evaluation", () => {
     );
 
     expect(result.dimensions.find((dimension) => dimension.id === "context")?.met).toBe(false);
+  });
+
+  it("builds a custom scenario from the teacher's task", () => {
+    const scenario = createCraftScenario("Make a question bank for revision");
+    const result = evaluateCraftPrompt(
+      "Act as a teacher and create a 10-question revision question bank for Class 7 learners.",
+      scenario,
+    );
+
+    expect(scenario.id).toBe("custom");
+    expect(scenario.contextKeywords).toContain("question");
+    expect(result.dimensions.find((dimension) => dimension.id === "context")?.met).toBe(true);
   });
 });
