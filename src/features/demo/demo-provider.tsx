@@ -37,6 +37,7 @@ type GoalsInput = {
 
 type DemoContextValue = {
   hydrated: boolean;
+  isPresentationDemo: boolean;
   resetDemo: () => void;
   state: DemoState;
   updateState: (updater: (currentState: DemoState) => DemoState) => void;
@@ -61,6 +62,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     () => true,
     () => false,
   );
+  const [isPresentationDemo, setIsPresentationDemo] = useState(false);
   const persistenceMode = useRef<
     "checking" | "demo" | "supabase" | "unavailable" | "unauthenticated"
   >("checking");
@@ -87,6 +89,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         }
 
         persistenceMode.current = payload.mode ?? "unavailable";
+        setIsPresentationDemo(payload.mode === "demo");
         if (payload.mode === "supabase" && payload.state) {
           setState(payload.state);
         }
@@ -182,6 +185,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     () => ({
       completeLesson,
       hydrated,
+      isPresentationDemo,
       recordQuizAttempt,
       resetDemo,
       saveGoals,
@@ -193,6 +197,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     [
       completeLesson,
       hydrated,
+      isPresentationDemo,
       recordQuizAttempt,
       resetDemo,
       saveGoals,

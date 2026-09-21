@@ -23,7 +23,7 @@ function getGreeting() {
 }
 
 export default function DashboardPage() {
-  const { state } = useDemo();
+  const { isPresentationDemo, state } = useDemo();
   const moduleOnePassed = hasPassedModuleOne(state.quizAttempts);
   const bestScore = getBestQuizScore(state.quizAttempts);
   const completedCount = state.completedLessonSlugs.length;
@@ -70,11 +70,11 @@ export default function DashboardPage() {
 
         <div className="dashboard-grid">
           <section className="dashboard-main-column" aria-labelledby="modules-title">
-            <div className="section-heading"><div><span className="eyebrow">Four-module pathway</span><h2 id="modules-title">Course modules</h2></div><span className="section-meta">{moduleOnePassed ? "1 of 4 complete" : "Module 1 active"}</span></div>
+            <div className="section-heading"><div><span className="eyebrow">Four-module pathway</span><h2 id="modules-title">Course modules</h2></div><span className="section-meta">{isPresentationDemo ? "All modules unlocked for demo" : moduleOnePassed ? "1 of 4 complete" : "Module 1 active"}</span></div>
             <div className="module-grid">
               {learningModules.map((module) => {
                 const isFirst = module.position === 1;
-                const available = isFirst || (module.position === 2 && moduleOnePassed);
+                const available = isPresentationDemo || isFirst || (module.position === 2 && moduleOnePassed);
                 const passed = isFirst && moduleOnePassed;
                 return (
                   <article className={`course-card ${available ? "available" : "locked"}`} id={`module-${module.position}`} key={module.id}>
@@ -82,7 +82,7 @@ export default function DashboardPage() {
                     <span className="course-number">Module {module.position}</span>
                     <h3>{module.title}</h3>
                     <p>{module.description}</p>
-                    {isFirst ? <><div className="linear-progress" aria-label={`${progress}% complete`}><span style={{ width: `${progress}%` }} /></div><div className="course-card-footer"><span>{progress}% complete</span><Link aria-label={`Open ${module.title}`} href="/learn/module-1"><Icon name="chevron-right" /></Link></div></> : available ? <Link className="button button-secondary button-small course-preview-link" href="/learn/module-2">Open CRAFT preview <Icon name="arrow-right" /></Link> : <div className="locked-requirement">Complete Module {module.position - 1} to unlock</div>}
+                    {isFirst ? <><div className="linear-progress" aria-label={`${progress}% complete`}><span style={{ width: `${progress}%` }} /></div><div className="course-card-footer"><span>{progress}% complete</span><Link aria-label={`Open ${module.title}`} href="/learn/module-1"><Icon name="chevron-right" /></Link></div></> : module.position === 2 && available ? <Link className="button button-secondary button-small course-preview-link" href="/learn/module-2">Open prompt lab <Icon name="arrow-right" /></Link> : available ? <div className="demo-unlocked-note"><Icon name="sparkles" />Unlocked for the guided demo</div> : <div className="locked-requirement">Complete Module {module.position - 1} to unlock</div>}
                   </article>
                 );
               })}
