@@ -6,7 +6,7 @@ import {
   createRuleBasedCraftEvaluation,
   type CraftAiEvaluation,
 } from "@/features/learning/craft-ai";
-import { craftScenarios } from "@/features/learning/craft";
+import { createCraftScenario, craftScenarios } from "@/features/learning/craft";
 import { evaluateCraftPromptWithGemini } from "@/lib/ai/gemini-craft";
 import {
   hasGeminiEnvironment,
@@ -33,6 +33,7 @@ function isRateLimited(clientId: string) {
 
 async function persistEvaluation(
   scenarioId: string,
+  task: string,
   prompt: string,
   evaluation: CraftAiEvaluation,
 ) {
@@ -51,6 +52,7 @@ async function persistEvaluation(
     await supabase.from("craft_prompt_attempts").insert({
       participant_id: data.user.id,
       scenario_id: scenarioId,
+      task_fingerprint: createHash("sha256").update(task).digest("hex"),
       prompt_fingerprint: createHash("sha256").update(prompt).digest("hex"),
       dimension_scores: Object.fromEntries(
         evaluation.dimensions.map((dimension) => [
@@ -80,18 +82,29 @@ export async function POST(request: Request) {
 
   const payload = (await request.json().catch(() => null)) as {
     prompt?: unknown;
-    scenarioId?: unknown;
+    suggestionId?: unknown;
+    task?: unknown;
   } | null;
   const prompt = typeof payload?.prompt === "string" ? payload.prompt.trim() : "";
-  const scenarioId =
-    typeof payload?.scenarioId === "string" ? payload.scenarioId : "";
-  const scenario = craftScenarios.find((item) => item.id === scenarioId);
+  const task = typeof payload?.task === "string" ? payload.task.trim() : "";
+  const suggestionId =
+    typeof payload?.suggestionId === "string" ? payload.suggestionId : undefined;
+  const knownSuggestion = suggestionId
+    ? craftScenarios.some((item) => item.id === suggestionId)
+    : true;
+  const scenario = createCraftScenario(task, suggestionId);
 
-  if (!scenario || prompt.length < 3 || prompt.length > 2_500) {
+  if (
+    !knownSuggestion ||
+    task.length < 3 ||
+    task.length > 300 ||
+    prompt.length < 3 ||
+    prompt.length > 2_500
+  ) {
     return NextResponse.json(
       {
         error:
-          "Choose a valid scenario and enter a prompt between 3 and 2,500 characters.",
+          "Describe a task in 3 to 300 characters and enter a prompt between 3 and 2,500 characters.",
       },
       { status: 400 },
     );
@@ -116,7 +129,7 @@ export async function POST(request: Request) {
       "No server evaluator is configured, so PromptShala used its transparent CRAFT fallback.";
   }
 
-  await persistEvaluation(scenario.id, prompt, evaluation);
+  await persistEvaluation(scenario.id, task, prompt, evaluation);
 
   return NextResponse.json({ evaluation, fallbackReason });
 }

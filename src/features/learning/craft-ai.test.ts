@@ -31,6 +31,7 @@ describe("CRAFT AI evaluation contract", () => {
     expect(request.generation_config.temperature).toBe(0.1);
     expect(request.generation_config.max_output_tokens).toBeLessThanOrEqual(1000);
     expect(request.generation_config.thinking_level).toBe("minimal");
+    expect(request.input).toContain("Teacher's intended task: " + scenario.task);
   });
 
   it("normalizes model scores and calculates the total itself", () => {

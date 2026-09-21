@@ -7,6 +7,7 @@ import {
   type CraftAiEvaluation,
 } from "@/features/learning/craft-ai";
 import {
+  createCraftScenario,
   craftDimensions,
   craftScenarios,
 } from "@/features/learning/craft";
@@ -18,10 +19,13 @@ type Attempt = CraftAiEvaluation & {
 };
 
 export function CraftPractice() {
-  const [scenarioId, setScenarioId] = useState(craftScenarios[0].id);
+  const [suggestionId, setSuggestionId] = useState<string | undefined>(
+    craftScenarios[0].id,
+  );
+  const [task, setTask] = useState(craftScenarios[0].task);
   const scenario = useMemo(
-    () => craftScenarios.find((item) => item.id === scenarioId) ?? craftScenarios[0],
-    [scenarioId],
+    () => createCraftScenario(task, suggestionId),
+    [suggestionId, task],
   );
   const [draft, setDraft] = useState(craftScenarios[0].startingPrompt);
   const [result, setResult] = useState<CraftAiEvaluation | null>(null);
@@ -29,10 +33,11 @@ export function CraftPractice() {
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [fallbackReason, setFallbackReason] = useState("");
 
-  function selectScenario(nextScenarioId: string) {
+  function selectSuggestion(nextScenarioId: string) {
     const nextScenario =
       craftScenarios.find((item) => item.id === nextScenarioId) ?? craftScenarios[0];
-    setScenarioId(nextScenario.id);
+    setSuggestionId(nextScenario.id);
+    setTask(nextScenario.task);
     setDraft(nextScenario.startingPrompt);
     setResult(null);
     setAttempts([]);
@@ -47,7 +52,7 @@ export function CraftPractice() {
       const response = await fetch("/api/craft/evaluate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: draft, scenarioId: scenario.id }),
+        body: JSON.stringify({ prompt: draft, suggestionId, task }),
       });
       const payload = (await response.json()) as {
         error?: string;
@@ -110,15 +115,16 @@ export function CraftPractice() {
 
       <div className="craft-workspace">
         <section className="craft-scenario-panel" aria-labelledby="scenario-title">
-          <span className="eyebrow">Teacher scenario</span>
-          <h2 id="scenario-title">Choose a classroom need</h2>
+          <span className="eyebrow">Optional starting points</span>
+          <h2 id="scenario-title">Try a task suggestion</h2>
+          <p className="scenario-helper">These examples fill the task and prompt fields. Edit either field or write a completely different task.</p>
           <div className="scenario-list" role="list">
             {craftScenarios.map((item) => (
               <button
-                aria-pressed={scenario.id === item.id}
-                className={scenario.id === item.id ? "active" : ""}
+                aria-pressed={suggestionId === item.id}
+                className={suggestionId === item.id ? "active" : ""}
                 key={item.id}
-                onClick={() => selectScenario(item.id)}
+                onClick={() => selectSuggestion(item.id)}
                 type="button"
               >
                 <span><Icon name={scenario.id === item.id ? "check" : "target"} /></span>
@@ -140,12 +146,36 @@ export function CraftPractice() {
             </div>
             <span>Sent only when you choose Score</span>
           </div>
-          <div className="scenario-brief">
+          <div className="scenario-brief custom-task-brief">
             <span><Icon name="target" /></span>
-            <div><strong>{scenario.title}</strong><p>{scenario.summary}</p></div>
+            <div><strong>Two inputs, one focused review</strong><p>The evaluator uses your intended task to judge whether your prompt will produce the result you actually need.</p></div>
           </div>
+          <label className="craft-textarea-label craft-task-label" htmlFor="craft-task">
+            What should this prompt help you do?
+            <input
+              id="craft-task"
+              maxLength={300}
+              onChange={(event) => {
+                const nextTask = event.target.value;
+                setTask(nextTask);
+                if (
+                  !craftScenarios.some(
+                    (item) =>
+                      item.id === suggestionId && item.task === nextTask,
+                  )
+                ) {
+                  setSuggestionId(undefined);
+                }
+                setResult(null);
+              }}
+              placeholder="For example: Make a question bank for a revision lesson"
+              type="text"
+              value={task}
+            />
+            <span>{task.length}/300 characters · Use a suggestion or describe your own task</span>
+          </label>
           <label className="craft-textarea-label" htmlFor="craft-prompt">
-            Your prompt
+            Prompt to analyse
             <textarea
               id="craft-prompt"
               onChange={(event) => {
@@ -160,7 +190,7 @@ export function CraftPractice() {
           <div className="craft-editor-actions">
             <button
               className="button button-primary"
-              disabled={!draft.trim() || isEvaluating}
+              disabled={!task.trim() || !draft.trim() || isEvaluating}
               onClick={evaluateDraft}
               type="button"
             >
@@ -169,7 +199,7 @@ export function CraftPractice() {
                 : "Score my CRAFT prompt"}{" "}
               <Icon name="arrow-right" />
             </button>
-            <button className="button button-secondary" onClick={useStrongExample} type="button">
+            <button className="button button-secondary" disabled={!scenario.strongPrompt} onClick={useStrongExample} type="button">
               Load strong example
             </button>
           </div>

@@ -13,6 +13,7 @@ export type CraftScenario = {
   startingPrompt: string;
   strongPrompt: string;
   summary: string;
+  task: string;
   title: string;
 };
 
@@ -69,6 +70,7 @@ export const craftScenarios: CraftScenario[] = [
     strongPrompt:
       "Act as a patient science teaching assistant. Explain photosynthesis for Class 7 learners who know plants need water but think plants get all food from soil. Correct the misconception using sunlight, carbon dioxide, water, glucose and oxygen. Use one simple analogy, stay under 180 words and finish with two check-for-understanding questions. I will verify the science against our textbook before use.",
     summary: "Clarify a misconception without overwhelming the learner.",
+    task: "Explain a difficult concept",
     title: "Explain a concept",
   },
   {
@@ -78,6 +80,7 @@ export const craftScenarios: CraftScenario[] = [
     strongPrompt:
       "Act as a Class 6 mathematics assessment designer. Create a low-stakes quiz for learners who can multiply but often reverse numerator and denominator. Include four multiple-choice questions and one short explanation question, followed by a separate answer key with one-sentence explanations. Keep the language simple and avoid collecting learner names. I will review every answer before use.",
     summary: "Create a formative check with useful explanations.",
+    task: "Make a question bank or quiz",
     title: "Create a quiz",
   },
   {
@@ -87,6 +90,7 @@ export const craftScenarios: CraftScenario[] = [
     strongPrompt:
       "Act as an experienced Class 8 mathematics lesson-planning colleague. Draft a 40-minute introduction to one-step linear equations for a mixed-readiness class. The goal is for learners to solve one-step equations and explain why both sides remain balanced. Use a table with time, teacher action, learner action and formative check. Include one scaffold, one extension and an exit ticket. I will verify the mathematics and curriculum fit.",
     summary: "Turn a learning goal into a usable classroom sequence.",
+    task: "Plan a classroom lesson",
     title: "Plan a lesson",
   },
   {
@@ -96,6 +100,7 @@ export const craftScenarios: CraftScenario[] = [
     strongPrompt:
       "Act as a respectful school teacher drafting a general parent or caregiver message. Explain neutrally that several homework tasks are incomplete and invite a short conversation about possible barriers and support. Use only the placeholders [Learner], [Subject] and [Date]. Keep the message under 120 words, warm and professional, with no blame, diagnosis or invented personal details. I will add real information outside the AI tool and review the message before sending.",
     summary: "Draft neutral communication without exposing personal data.",
+    task: "Draft a parent or caregiver message",
     title: "Parent communication",
   },
   {
@@ -105,9 +110,53 @@ export const craftScenarios: CraftScenario[] = [
     strongPrompt:
       "Act as a Class 5 environmental studies resource designer. Using only my teacher-approved water-cycle notes, create a six-slide outline and a one-page worksheet for learners with varied reading levels. The goal is to sequence evaporation, condensation, precipitation and collection. Give each slide a title, no more than three bullets and suggested alt text. Add five worksheet items and a separate answer key. Flag missing source information and use no copyrighted images. I will verify every statement before use.",
     summary: "Transform teacher-owned notes into accessible resources.",
+    task: "Create a worksheet or slide outline",
     title: "Worksheet and slides",
   },
 ];
+
+const taskStopWords = new Set([
+  "a",
+  "an",
+  "and",
+  "for",
+  "help",
+  "make",
+  "my",
+  "of",
+  "or",
+  "the",
+  "to",
+  "use",
+  "with",
+]);
+
+function taskKeywords(task: string) {
+  return task
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((word) => word.length > 2 && !taskStopWords.has(word))
+    .slice(0, 12);
+}
+
+export function createCraftScenario(task: string, suggestionId?: string) {
+  const cleanTask = task.trim();
+  const suggestion = craftScenarios.find((item) => item.id === suggestionId);
+
+  if (suggestion && suggestion.task.toLowerCase() === cleanTask.toLowerCase()) {
+    return suggestion;
+  }
+
+  return {
+    contextKeywords: taskKeywords(cleanTask),
+    id: "custom",
+    startingPrompt: "",
+    strongPrompt: "",
+    summary: "A teaching task described in your own words.",
+    task: cleanTask,
+    title: cleanTask || "Your teaching task",
+  } satisfies CraftScenario;
+}
 
 const dimensionPatterns: Record<Exclude<CraftDimensionId, "context">, RegExp> = {
   action:
