@@ -1,6 +1,6 @@
 # Supabase Provisioning Evidence
 
-**Verified:** 9 September 2026  
+**Verified:** 21 September 2026  
 **Project reference:** `atqbligrqsderauzfrqi`  
 **Region:** Southeast Asia
 
@@ -9,16 +9,20 @@
 1. `202609030001_module_1_foundation.sql`
 2. `202609080001_participant_profile_and_pathway.sql`
 3. `202609090001_authenticated_progress_and_craft.sql`
+4. `202609210001_custom_tasks_and_researched_curriculum.sql`
 
 ## Verification result
 
 | Check | Result |
 |---|---|
 | Seeded learning modules | 4 |
-| Seeded Module 1 lessons | 3 |
+| Seeded Module 1 lessons | 6 |
+| Seeded Module 2 lessons | 7 |
 | Seeded Module 1 quizzes | 1 |
 | Public tables with RLS enabled | 12 |
 | `craft_prompt_attempts` available | Yes |
+| Task and prompt stored as one-way fingerprints | Yes |
+| Custom task or optional suggestion source recorded | Yes |
 | Anonymous content-table read | Denied |
 | Unauthenticated participant-state API | `401 unauthenticated` |
 
