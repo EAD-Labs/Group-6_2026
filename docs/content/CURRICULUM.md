@@ -65,21 +65,32 @@ By the end of the module, the participant can:
 
 Turn a vague request into a clear, classroom-ready prompt and improve it using structured feedback.
 
-### Lesson sequence
+### Lesson sequence (240 minutes)
 
-1. Compare a vague prompt with a classroom-ready prompt
-2. Learn CRAFT: Context, Role, Action, Format and Target
-3. Build a prompt one field at a time
-4. Submit a prompt for rubric feedback
-5. Revise the prompt using the feedback
-6. Practise with teacher-specific scenarios
-7. Five-question knowledge check
+1. **Repair a vague prompt (25 min):** replace vague adjectives with a learner action, success evidence, prior knowledge, materials and timing.
+2. **Give context, constraints and examples (30 min):** compare outputs with and without a teacher-written example and identify assumptions or over-constraint.
+3. **Lesson planning that begins with learning (35 min):** align the objective, activity, evidence, timing and a low-resource alternative.
+4. **Questions, rubrics and actionable feedback (35 min):** independently check generated questions and turn generic praise into a concrete next action.
+5. **Differentiate without lowering the goal (35 min):** adapt representation, language support and response options while preserving conceptual demand.
+6. **Prompt laboratory (35 min):** run a baseline and two controlled revisions, score the outputs and repeat the strongest version to observe inconsistency.
+7. **Build a teaching prompt library (45 min):** create three field-based, tested templates with a completed example, known failure and verification checklist.
+
+### Prompt structure and media
+
+PromptShala defines CRAFT as **Context, Role, Action, Format and Target**. The lessons also make learners, source boundaries and checks explicit. CRAFT is the course's chosen memory aid rather than a universal standard. Google's PARTS structure is offered only as an optional comparison.
+
+- [LearnLM Partner Prompt Guide](https://services.google.com/fh/files/misc/learnlm_prompt_guide.pdf)
+- [Developing Educational Materials with Gemini](https://www.youtube.com/watch?v=ZvcLzoHybhY)
+- [EEF guidance on effective feedback](https://educationendowmentfoundation.org.uk/education-evidence/guidance-reports/feedback)
+- [CAST Universal Design for Learning Guidelines 3.0](https://udlguidelines.cast.org/)
 
 ### Measurable learning outcomes
 
 By the end of the module, the participant can:
 
 - write a prompt that makes Context, Role, Action, Format and Target visible;
+- preserve a learning objective while adding access supports and alternative response modes;
+- check generated questions, distractors, answer criteria and feedback independently;
 - improve the CRAFT structure coverage between a first and revised attempt while retaining safe-use and teacher-review boundaries;
 - revise a first attempt and explain at least two improvements;
 - produce one usable prompt for a selected classroom scenario; and

@@ -16,7 +16,7 @@ export default function CraftPracticePage() {
   return (
     <HydrationGate>
       <AppShell active="learn">
-        <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/learn/module-2">Module 2 preview</Link><Icon name="chevron-right" /><span>CRAFT practice lab</span></nav>
+        <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/learn/module-2">Module 2</Link><Icon name="chevron-right" /><span>CRAFT practice lab</span></nav>
         {!unlocked ? (
           <section className="empty-state-card locked-module-card">
             <span className="empty-state-icon"><Icon name="lock" /></span>
@@ -26,8 +26,8 @@ export default function CraftPracticePage() {
         ) : (
           <>
             <header className="page-heading craft-page-heading">
-              <div><span className="eyebrow">Module 2 · Interactive preview</span><h1>CRAFT practice lab</h1><p>Turn a brief classroom request into a prompt that is easier to review and reuse.</p></div>
-              <span className="preview-badge"><Icon name="sparkles" /> Ahead-of-schedule preview</span>
+              <div><span className="eyebrow">Module 2 · Prompt laboratory</span><h1>CRAFT practice lab</h1><p>State the teaching task, test the prompt and use specific feedback to improve the result.</p></div>
+              <span className="preview-badge"><Icon name="sparkles" /> Guided AI feedback</span>
             </header>
             <CraftPractice />
           </>
