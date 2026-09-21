@@ -33,6 +33,7 @@ function isRateLimited(clientId: string) {
 
 async function persistEvaluation(
   scenarioId: string,
+  suggestionId: string | undefined,
   task: string,
   prompt: string,
   evaluation: CraftAiEvaluation,
@@ -52,6 +53,8 @@ async function persistEvaluation(
     await supabase.from("craft_prompt_attempts").insert({
       participant_id: data.user.id,
       scenario_id: scenarioId,
+      suggestion_id: suggestionId ?? null,
+      task_source: suggestionId ? "suggestion" : "custom",
       task_fingerprint: createHash("sha256").update(task).digest("hex"),
       prompt_fingerprint: createHash("sha256").update(prompt).digest("hex"),
       dimension_scores: Object.fromEntries(
@@ -129,7 +132,7 @@ export async function POST(request: Request) {
       "No server evaluator is configured, so PromptShala used its transparent CRAFT fallback.";
   }
 
-  await persistEvaluation(scenario.id, task, prompt, evaluation);
+  await persistEvaluation(scenario.id, suggestionId, task, prompt, evaluation);
 
   return NextResponse.json({ evaluation, fallbackReason });
 }
