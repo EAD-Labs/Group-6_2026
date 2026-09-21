@@ -22,13 +22,23 @@ The four modules follow the product flow defined in the HLD: learn a small conce
 
 Understand what generative AI can and cannot do, identify appropriate classroom uses, and follow a safe teacher-review process.
 
-### Lesson sequence
+### Lesson sequence (180 minutes)
 
-1. Introductory activity: “AI, automation, or search?”
-2. What generative AI does at a high level
-3. Useful teacher tasks and common limitations
-4. Privacy, bias, hallucinations, and human review
-5. Five-question knowledge check
+1. **Where AI fits in a teacher's day (25 min):** map drafting, retrieval, calculation and decisions about people to an appropriate level of assistance.
+2. **How generation works, without the mathematics (25 min):** use tokens, prompts and context to explain why generated language is flexible but not guaranteed factual.
+3. **Privacy, fairness and professional judgment (30 min):** redact identifiable information, repair hidden assumptions and keep consequential decisions with people.
+4. **Hallucinations, uncertainty and verification (30 min):** audit claims against evidence and distinguish unsupported statements from proven falsehoods.
+5. **Choose the right tool and level of assistance (30 min):** select chat, source notebooks, reusable assistants, calculators or spreadsheets according to task and evidence needs.
+6. **Responsible-use challenge (40 min):** create a ten-minute learning activity and document sources, checks, edits, rejected suggestions and final teacher approval.
+7. **Knowledge check (10 min):** five applied questions with explanations and guided retries.
+
+### Core media and readings
+
+- [How AI Works — Code.org](https://www.youtube.com/watch?v=Ok-xpKjKp2g)
+- [How Chatbots and Large Language Models Work — Code.org](https://www.youtube.com/watch?v=X-AWdfSFCHQ)
+- [Exploring the Ethics of AI — Code.org](https://www.youtube.com/watch?v=3oqxjPXbynE)
+- [UNESCO AI competency framework for teachers](https://www.unesco.org/en/articles/ai-competency-framework-teachers?hub=83294)
+- [UNESCO guidance for generative AI in education and research](https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research?hub=67098)
 
 ### Measurable learning outcomes
 
@@ -36,6 +46,8 @@ By the end of the module, the participant can:
 
 - classify at least four of five examples as generative AI, search, or rule-based automation;
 - identify at least three limitations of generative AI;
+- connect important claims to independent evidence and state uncertainty accurately;
+- choose an appropriate tool and verification method for four common teacher tasks;
 - select safe handling for classroom information in at least four of five scenarios;
 - describe the teacher’s responsibility to check facts, age suitability, tone, and inclusivity before use; and
 - score at least 70% on the module quiz.

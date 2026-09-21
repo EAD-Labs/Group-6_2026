@@ -9,7 +9,7 @@ import { Icon } from "@/components/ui/icon";
 import { ProgressRing } from "@/components/ui/progress-ring";
 import { useDemo } from "@/features/demo/demo-provider";
 import { getBestQuizScore } from "@/features/demo/demo-state";
-import { moduleOneQuizQuestions } from "@/features/learning/catalog";
+import { moduleOneLessons, moduleOneQuizQuestions } from "@/features/learning/catalog";
 import { evaluateQuiz, type QuizEvaluation } from "@/features/learning/quiz";
 
 type QuizStage = "intro" | "questions" | "result";
@@ -23,7 +23,7 @@ export function QuizExperience() {
   const question = moduleOneQuizQuestions[questionIndex];
   const currentSelection = answers[question?.id] ?? [];
   const bestScore = Math.max(getBestQuizScore(state.quizAttempts), evaluation?.scorePercent ?? 0);
-  const quizUnlocked = state.completedLessonSlugs.length === 3;
+  const quizUnlocked = state.completedLessonSlugs.length === moduleOneLessons.length;
 
   const missedQuestions = useMemo(
     () =>
@@ -77,7 +77,7 @@ export function QuizExperience() {
     return (
       <HydrationGate>
         <AppShell active="learn">
-          <section className="locked-page-state"><span><Icon name="lock" /></span><div><span className="eyebrow">Knowledge check locked</span><h1>Finish the three short lessons first.</h1><p>The quiz unlocks after each required activity is complete. Your current lesson progress is saved.</p><Link className="button button-primary" href="/learn/module-1">Return to Module 1 <Icon name="arrow-right" /></Link></div></section>
+          <section className="locked-page-state"><span><Icon name="lock" /></span><div><span className="eyebrow">Knowledge check locked</span><h1>Finish all six lessons first.</h1><p>The quiz unlocks after each required activity is complete. Your current lesson progress is saved.</p><Link className="button button-primary" href="/learn/module-1">Return to Module 1 <Icon name="arrow-right" /></Link></div></section>
         </AppShell>
       </HydrationGate>
     );

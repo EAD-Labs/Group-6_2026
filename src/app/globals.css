@@ -348,6 +348,14 @@ input::placeholder { color: #8b9691; }
 .lesson-sections h3 { margin-bottom: 0.35rem; font-family: var(--serif); font-size: 1rem; }
 .lesson-sections p { margin-bottom: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.55; }
 .lesson-highlight { display: inline-flex; margin-top: 0.7rem; padding: 0.35rem 0.55rem; border-radius: 0.3rem; color: #65420f; background: var(--amber-soft); font-size: 0.68rem; }
+.lesson-resources { margin-top: 1.25rem; padding: 1.35rem; border: 1px solid var(--line); border-radius: 0.7rem; background: var(--surface); box-shadow: var(--shadow-sm); }
+.lesson-resources ul { display: grid; margin: 0; padding: 0; gap: 0.65rem; list-style: none; }
+.lesson-resources li { display: grid; align-items: center; padding: 0.8rem; border: 1px solid var(--line); border-radius: 0.55rem; grid-template-columns: auto 1fr auto; gap: 0.75rem; background: var(--paper); }
+.lesson-resources li > span { display: grid; width: 2rem; height: 2rem; border-radius: 50%; color: var(--forest); background: var(--teal-pale); place-items: center; }
+.lesson-resources li > span svg, .lesson-resources li > svg { width: 0.9rem; height: 0.9rem; }
+.lesson-resources li > svg { color: var(--muted); }
+.lesson-resources small { display: block; margin-bottom: 0.15rem; color: var(--muted); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.lesson-resources a { color: var(--ink); font-size: 0.78rem; font-weight: 700; }
 .concept-check { border-top: 4px solid var(--amber); }
 .concept-check-heading { display: flex; align-items: center; gap: 0.8rem; }
 .concept-check-heading h2 { margin-bottom: 0.3rem; }

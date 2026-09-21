@@ -20,6 +20,9 @@ const allowedLessonSlugs = [
   "meet-generative-ai",
   "useful-teacher-tasks",
   "review-before-use",
+  "verify-ai-claims",
+  "choose-the-right-tool",
+  "responsible-use-challenge",
 ];
 
 function cleanString(value: unknown, fallback: string, maxLength: number) {
