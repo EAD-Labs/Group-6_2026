@@ -259,6 +259,8 @@ input::placeholder { color: #8b9691; }
 .course-card-footer a { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 50%; color: white; background: var(--forest); }
 .course-card-footer svg { width: 1rem; height: 1rem; }
 .locked-requirement { display: flex; min-height: 44px; padding: 0.65rem; border: 1px solid var(--line); border-radius: 0.45rem; align-items: center; color: var(--muted); background: #eceeeb; font-size: 0.68rem; line-height: 1.4; }
+.demo-unlocked-note { display: flex; min-height: 44px; margin-top: auto; padding: 0.65rem; border: 1px solid #c8ddd6; border-radius: 0.45rem; align-items: center; gap: 0.45rem; color: var(--forest-dark); background: var(--teal-pale); font-size: 0.68rem; font-weight: 750; }
+.demo-unlocked-note svg { width: 0.9rem; height: 0.9rem; }
 .dashboard-aside { display: grid; gap: 1rem; }
 .insight-card, .activity-card, .privacy-card, .empty-state-card { border: 1px solid var(--line); border-radius: 0.7rem; background: var(--surface); box-shadow: var(--shadow-sm); }
 .insight-card, .activity-card { padding: 1.15rem; }

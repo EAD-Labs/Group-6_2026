@@ -10,8 +10,8 @@ import { useDemo } from "@/features/demo/demo-provider";
 import { hasPassedModuleOne } from "@/features/demo/demo-state";
 
 export default function CraftPracticePage() {
-  const { state } = useDemo();
-  const unlocked = hasPassedModuleOne(state.quizAttempts);
+  const { isPresentationDemo, state } = useDemo();
+  const unlocked = isPresentationDemo || hasPassedModuleOne(state.quizAttempts);
 
   return (
     <HydrationGate>

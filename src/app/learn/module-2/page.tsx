@@ -12,8 +12,8 @@ import { learningModules } from "@/features/learning/catalog";
 import { moduleTwoLessons, moduleTwoMinutes } from "@/features/learning/module-two-content";
 
 export default function ModuleTwoPage() {
-  const { state } = useDemo();
-  const unlocked = hasPassedModuleOne(state.quizAttempts);
+  const { isPresentationDemo, state } = useDemo();
+  const unlocked = isPresentationDemo || hasPassedModuleOne(state.quizAttempts);
   const moduleTwo = learningModules[1];
 
   return (
