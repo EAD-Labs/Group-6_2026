@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Brand } from "@/components/ui/brand";
@@ -43,10 +42,56 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="hero-illustration">
-            <span className="doodle doodle-one" aria-hidden="true"><Icon name="sparkles" /></span>
-            <span className="doodle doodle-two" aria-hidden="true"><Icon name="target" /></span>
-            <Image alt="Four educators learning and planning together with laptops and classroom materials" height={896} priority sizes="(max-width: 720px) 94vw, 960px" src="/images/educators-learning-ai.png" width={1792} />
+          <div className="stitch-product-preview" aria-label="Preview of the PromptShala learning experience">
+            <div className="stitch-progress-rail">
+              <span className="stitch-progress-score">50%</span>
+              <div>
+                <strong>Learning pathway</strong>
+                <small>Module 2 · Writing better prompts</small>
+              </div>
+              <div className="stitch-progress-track"><span /></div>
+              <small>2 of 4 modules</small>
+            </div>
+
+            <div className="stitch-product-grid">
+              <article className="stitch-lesson-card">
+                <header><span>Lesson 1 · Text lesson</span><small>6 min read</small></header>
+                <div className="stitch-lesson-content">
+                  <span className="eyebrow">AI Foundations</span>
+                  <h2>Meet generative AI</h2>
+                  <p>Generative AI creates a new draft from your instruction. It can be useful, fluent and still incomplete or incorrect.</p>
+                  <div className="stitch-lesson-callout">
+                    <Icon name="shield" />
+                    <p><strong>Teacher review stays essential.</strong> Treat every result as a starting point for professional judgment.</p>
+                  </div>
+                </div>
+                <footer><span><Icon name="check" /> Key idea understood</span><span>Continue reading <Icon name="arrow-right" /></span></footer>
+              </article>
+
+              <div className="stitch-preview-stack">
+                <article className="stitch-video-card">
+                  <header><span><i /> Expert demonstration</span><small>04:18</small></header>
+                  <h3>Turn a classroom need into a clear prompt</h3>
+                  <div className="stitch-video-player">
+                    <span className="stitch-preview-play"><Icon name="play" /></span>
+                    <div><small>01:24</small><span><i /></span></div>
+                    <b>CC</b>
+                  </div>
+                </article>
+
+                <article className="stitch-craft-card">
+                  <header><span><i /> CRAFT Prompt Sandbox</span><small>Practice safely</small></header>
+                  <dl>
+                    <div><dt>Context</dt><dd>Class 7 science</dd></div>
+                    <div><dt>Role</dt><dd>Question designer</dd></div>
+                    <div><dt>Action</dt><dd>Create a question bank</dd></div>
+                    <div><dt>Format</dt><dd>Table with answers</dd></div>
+                    <div><dt>Target</dt><dd>Photosynthesis</dd></div>
+                  </dl>
+                  <div className="stitch-craft-score"><span><Icon name="check" /> Clear task</span><span><Icon name="check" /> Review step</span></div>
+                </article>
+              </div>
+            </div>
           </div>
 
           <div className="hero-belief">
