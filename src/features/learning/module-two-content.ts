@@ -1,3 +1,5 @@
+import type { QuizQuestion } from "./catalog";
+
 export type ModuleTwoLesson = {
   durationMinutes: number;
   evidence: string;
@@ -138,3 +140,11 @@ export const moduleTwoMinutes = moduleTwoLessons.reduce(
   (total, lesson) => total + lesson.durationMinutes,
   0,
 );
+
+export const moduleTwoQuizQuestions: QuizQuestion[] = [
+  { id: "m2-q1", lessonSlug: "repair-vague-prompt", kind: "single", concept: "Prompt repair", prompt: "Which revision best improves “Teach fractions” for a Class 5 lesson?", options: [{ id: "a", label: "Make it engaging and perfect" }, { id: "b", label: "Plan a 20-minute paper-strip activity for Class 5, with an exit question" }, { id: "c", label: "Write everything about fractions" }], correctOptionIds: ["b"], explanation: "The stronger prompt gives the learner level, time, materials, task and evidence of learning." },
+  { id: "m2-q2", lessonSlug: "context-constraints-examples", kind: "multiple", concept: "CRAFT", prompt: "Which details make a classroom prompt testable? Select all that apply.", options: [{ id: "a", label: "The learning objective and learner level" }, { id: "b", label: "The requested output format" }, { id: "c", label: "A promise that AI will always be correct" }], correctOptionIds: ["a", "b"], explanation: "Context, target and format make the task concrete. AI output still needs verification." },
+  { id: "m2-q3", lessonSlug: "questions-rubrics-feedback", kind: "single", concept: "Assessment", prompt: "An AI-generated answer key looks convincing. What should the teacher do before using it?", options: [{ id: "a", label: "Solve and check each question independently" }, { id: "b", label: "Publish it because the key is formatted" }, { id: "c", label: "Ask the same AI if it is sure" }], correctOptionIds: ["a"], explanation: "Independent checking catches plausible but wrong answers and misaligned questions." },
+  { id: "m2-q4", lessonSlug: "differentiate-without-lowering", kind: "single", concept: "Differentiation", prompt: "Which change supports access while keeping the same learning goal?", options: [{ id: "a", label: "Remove all reasoning from the task" }, { id: "b", label: "Offer a visual scaffold and alternative response mode" }, { id: "c", label: "Give the answer first" }], correctOptionIds: ["b"], explanation: "Scaffolds can change representation or response while preserving conceptual demand." },
+  { id: "m2-q5", lessonSlug: "prompt-laboratory", kind: "single", concept: "Controlled testing", prompt: "Why change one important prompt element at a time during testing?", options: [{ id: "a", label: "To know which change likely affected the output" }, { id: "b", label: "To guarantee factual accuracy" }, { id: "c", label: "To avoid reviewing the result" }], correctOptionIds: ["a"], explanation: "Controlled revisions make comparisons useful; output quality still requires teacher review." },
+];
