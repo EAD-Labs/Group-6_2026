@@ -7,13 +7,14 @@ import { HydrationGate } from "@/components/ui/hydration-gate";
 import { Icon } from "@/components/ui/icon";
 import { ProgressRing } from "@/components/ui/progress-ring";
 import { useDemo } from "@/features/demo/demo-provider";
-import { hasPassedModuleOne } from "@/features/demo/demo-state";
+import { getPathwayStatus } from "@/features/learning/pathway";
 import { getModuleOneProgress, moduleOne, moduleOneLessons } from "@/features/learning/catalog";
 
 export default function ModuleOnePage() {
   const { state } = useDemo();
-  const passed = hasPassedModuleOne(state.quizAttempts);
-  const completedCount = state.completedLessonSlugs.length;
+  const status = getPathwayStatus(state);
+  const passed = status.onePassed;
+  const completedCount = status.oneLessons;
   const progress = getModuleOneProgress(completedCount, passed);
   const nextLesson = moduleOneLessons.find((lesson) => !state.completedLessonSlugs.includes(lesson.slug));
 

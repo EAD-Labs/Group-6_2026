@@ -13,12 +13,14 @@ import {
 } from "@/features/learning/craft";
 
 import { Icon } from "./ui/icon";
+import { useDemo } from "@/features/demo/demo-provider";
 
 type Attempt = CraftAiEvaluation & {
   number: number;
 };
 
 export function CraftPractice() {
+  const { updateState } = useDemo();
   const [suggestionId, setSuggestionId] = useState<string | undefined>(
     craftScenarios[0].id,
   );
@@ -71,6 +73,7 @@ export function CraftPractice() {
         ...currentAttempts,
         { ...evaluation, number: currentAttempts.length + 1 },
       ]);
+      updateState((current) => ({ ...current, craftPracticeCount: current.craftPracticeCount + 1 }));
     } catch {
       const fallback = createRuleBasedCraftEvaluation(draft, scenario);
       setResult(fallback);
@@ -81,6 +84,7 @@ export function CraftPractice() {
         ...currentAttempts,
         { ...fallback, number: currentAttempts.length + 1 },
       ]);
+      updateState((current) => ({ ...current, craftPracticeCount: current.craftPracticeCount + 1 }));
     } finally {
       setIsEvaluating(false);
     }
