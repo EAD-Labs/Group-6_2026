@@ -3,19 +3,20 @@
 import Link from "next/link";
 
 import { AppShell } from "@/components/app-shell";
-import { LearningResources } from "@/components/learning-resources";
 import { HydrationGate } from "@/components/ui/hydration-gate";
 import { Icon } from "@/components/ui/icon";
 import { useDemo } from "@/features/demo/demo-provider";
-import { hasPassedModuleOne } from "@/features/demo/demo-state";
 import { craftDimensions, craftScenarios } from "@/features/learning/craft";
 import { learningModules } from "@/features/learning/catalog";
 import { moduleTwoLessons, moduleTwoMinutes } from "@/features/learning/module-two-content";
+import { getPathwayStatus } from "@/features/learning/pathway";
 
 export default function ModuleTwoPage() {
   const { isPresentationDemo, state } = useDemo();
-  const unlocked = isPresentationDemo || hasPassedModuleOne(state.quizAttempts);
+  const unlocked = isPresentationDemo || getPathwayStatus(state).onePassed;
   const moduleTwo = learningModules[1];
+  const status = getPathwayStatus(state);
+  const allLessons = status.twoLessons === moduleTwoLessons.length;
 
   return (
     <HydrationGate>
@@ -44,7 +45,9 @@ export default function ModuleTwoPage() {
 
             <section className="learning-outcomes" aria-labelledby="craft-outcomes-title"><div className="outcomes-icon"><Icon name="target" /></div><div><h2 id="craft-outcomes-title">By the end of this module, you can</h2><ul><li><Icon name="check" />Specify role, learners, task, context or source, output format and checks.</li><li><Icon name="check" />Align lesson plans, questions and feedback with a learning objective.</li><li><Icon name="check" />Test prompt versions against accuracy, alignment, practicality and clarity.</li><li><Icon name="check" />Build three reusable prompt templates with known limits and verification steps.</li></ul></div></section>
 
-            <section className="activity-section" aria-labelledby="module-two-lessons-title"><div className="section-heading"><div><span className="eyebrow">Research-backed pathway</span><h2 id="module-two-lessons-title">Seven lessons from first draft to reusable library</h2></div><span className="section-meta">Practice and evidence in every lesson</span></div><ol className="module-two-syllabus">{moduleTwoLessons.map((lesson, index) => <li key={lesson.id}><div className="module-two-lesson-heading"><span>{String(index + 1).padStart(2, "0")}</span><div><small>{lesson.durationMinutes} minutes</small><h3>{lesson.title}</h3></div></div><p>{lesson.summary}</p><dl><div><dt>Practice</dt><dd>{lesson.practice}</dd></div><div><dt>Evidence</dt><dd>{lesson.evidence}</dd></div></dl><LearningResources resources={lesson.resources} /></li>)}</ol></section>
+            <section className="activity-section" aria-labelledby="module-two-lessons-title"><div className="section-heading"><div><span className="eyebrow">Research-backed pathway</span><h2 id="module-two-lessons-title">Seven lessons from first draft to reusable library</h2></div><span className="section-meta">{status.twoLessons}/{moduleTwoLessons.length} completed</span></div><ol className="module-two-syllabus">{moduleTwoLessons.map((lesson, index) => { const done = state.moduleTwoCompletedLessonIds.includes(lesson.id); const available = isPresentationDemo || done || index === 0 || state.moduleTwoCompletedLessonIds.includes(moduleTwoLessons[index - 1].id); return <li key={lesson.id}><div className="module-two-lesson-heading"><span>{done ? <Icon name="check" /> : String(index + 1).padStart(2, "0")}</span><div><small>{done ? "Completed" : `${lesson.durationMinutes} minutes`}</small><h3>{lesson.title}</h3></div></div><p>{lesson.summary}</p><p><strong>Practice:</strong> {lesson.practice}</p><p><strong>Evidence:</strong> {lesson.evidence}</p>{available ? <Link className="button button-secondary button-small" href={`/learn/module-2/lessons/${lesson.id}`}>{done ? "Review lesson" : "Start lesson"}<Icon name="arrow-right" /></Link> : <span className="locked-label"><Icon name="lock" />Complete prior lesson</span>}</li>; })}</ol></section>
+
+            <section className="staffroom-callout"><div><span className="eyebrow">Module 2 assessment</span><h2>Knowledge check and next step</h2><p>Complete all seven lessons, save three tested prompt templates and evaluate at least two CRAFT prompt versions. Then answer five applied questions. Four correct answers pass and unlock Module 3. Your CRAFT evaluations: {state.craftPracticeCount}/2.</p></div>{allLessons && state.craftPracticeCount >= 2 ? <Link className="button button-primary" href="/learn/module-2/quiz">{status.twoPassed ? "Review quiz" : "Take quiz"}<Icon name="arrow-right" /></Link> : <span className="locked-label"><Icon name="lock" />Finish lessons and practice</span>}</section>
 
             <section className="activity-section" aria-labelledby="scenario-preview-title"><div className="section-heading"><div><span className="eyebrow">Optional starting points</span><h2 id="scenario-preview-title">Five classroom task suggestions</h2></div><span className="section-meta">Use these or enter any teaching task</span></div><div className="scenario-preview-grid">{craftScenarios.map((scenario, index) => <article key={scenario.id}><span>{String(index + 1).padStart(2, "0")}</span><h3>{scenario.task}</h3><p>{scenario.summary}</p></article>)}</div></section>
 
