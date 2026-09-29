@@ -1286,3 +1286,40 @@ body { font-size: 16px; }
 .video-play-button svg { width: 2rem; height: 2rem; }
 .video-play-button:hover > span { background: #bd1d1d; transform: scale(1.08); }
 .video-play-button:focus-visible { outline: 3px solid white; outline-offset: -6px; }
+
+/* Match the compact lesson scale across the site. */
+body, .app-content { font-size: 0.9rem; }
+.page-heading h1, .module-hero h1, .lesson-heading h1,
+.quiz-intro h1, .quiz-result h1, .locked-page-state h1,
+.onboarding-card h1, .auth-story h1, .locked-module-card h1,
+.result-hero h1, .hero-copy h1, .editorial-intro h1 {
+  font-size: clamp(1.75rem, 2.35vw, 2.35rem);
+  line-height: 1.12;
+}
+.page-heading p, .module-hero > div > p, .lesson-heading p,
+.quiz-intro-copy > p, .result-copy > p, .locked-page-state p,
+.auth-story > p, .hero-copy > p, .editorial-intro > p,
+.continue-card-main > p, .lead { font-size: 0.9rem; line-height: 1.55; }
+.section-heading h2, .section-heading.compact h2,
+.auth-card-heading h2, .progress-summary-main h2,
+.staffroom-library h2, .staffroom-editor h2,
+.staffroom-callout h2 { font-size: 1.2rem; line-height: 1.25; }
+.continue-card h2, .quiz-question-card h1 { font-size: clamp(1.45rem, 2vw, 1.8rem); line-height: 1.2; }
+.course-card h3, .staffroom-template-grid h3, .unlock-card h2 { font-size: 1.08rem; }
+.concept-check > p, .auth-story blockquote { font-size: 0.9rem; }
+.score-card > strong, .stat-strip strong, .craft-score strong { font-size: 1.55rem; }
+
+.editorial-rail strong { font-size: 1.1rem; }
+.editorial-workbook-note p { font-size: 0.98rem; }
+.editorial-section-head h2, .editorial-method h2,
+.editorial-last h2 { font-size: clamp(1.4rem, 2vw, 1.75rem); line-height: 1.2; }
+.editorial-principle > p { font-size: clamp(1.2rem, 1.8vw, 1.5rem); }
+.editorial-module-number { font-size: 1.25rem; }
+.editorial-module-list h3 { font-size: 1.08rem; }
+.pathway-section > h2,
+.landing-section-heading h2, .experience-copy h2,
+.outcomes-section h2, .landing-cta h2 { font-size: clamp(1.4rem, 2vw, 1.75rem); line-height: 1.2; }
+
+@media (max-width: 520px) {
+  .editorial-intro h1, .hero-copy h1 { font-size: 1.75rem; }
+}
