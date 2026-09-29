@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { signOut } from "@/app/sign-in/actions";
 import { useDemo } from "@/features/demo/demo-provider";
 
+import { CourseNavigation } from "./course-navigation";
 import { Brand } from "./ui/brand";
 import { Icon, type IconName } from "./ui/icon";
 
@@ -32,6 +33,11 @@ export function AppShell({
 }) {
   const { state } = useDemo();
   const [online, setOnline] = useState(true);
+  const [primaryOpen, setPrimaryOpen] = useState(false);
+  const [courseOpen, setCourseOpen] = useState(false);
+  const primaryCloseRef = useRef<HTMLButtonElement>(null);
+  const primaryTriggerRef = useRef<HTMLButtonElement>(null);
+  const isLearning = active === "learn";
 
   useEffect(() => {
     const updateConnection = () => setOnline(window.navigator.onLine);
@@ -44,9 +50,26 @@ export function AppShell({
     };
   }, []);
 
+  useEffect(() => {
+    if (!primaryOpen) return;
+    primaryCloseRef.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setPrimaryOpen(false);
+        primaryTriggerRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [primaryOpen]);
+
   return (
-    <div className="app-frame">
-      <aside className="side-navigation" aria-label="Primary navigation">
+    <div className={isLearning ? "app-frame course-frame" : "app-frame"}>
+      {isLearning ? <CourseNavigation mobileOpen={courseOpen} onClose={() => setCourseOpen(false)} /> : null}
+      {isLearning && courseOpen ? <button className="course-navigation-backdrop" type="button" aria-label="Close course contents" onClick={() => setCourseOpen(false)} /> : null}
+      {isLearning && primaryOpen ? <button className="primary-navigation-backdrop" type="button" aria-label="Close main menu" onClick={() => setPrimaryOpen(false)} /> : null}
+      {(!isLearning || primaryOpen) ? <aside className={isLearning ? "side-navigation course-primary-drawer" : "side-navigation"} aria-label="Primary navigation">
+        {isLearning ? <button className="course-primary-close" type="button" onClick={() => { setPrimaryOpen(false); primaryTriggerRef.current?.focus(); }} ref={primaryCloseRef}><Icon name="x" /> Close menu</button> : null}
         <Brand compact />
         <nav>
           {navigationItems.map((item) => (
@@ -72,7 +95,7 @@ export function AppShell({
             </button>
           </form>
         </div>
-      </aside>
+      </aside> : null}
 
       <div className="app-stage">
         {!online ? (
@@ -84,12 +107,12 @@ export function AppShell({
           </div>
         ) : null}
         <header className="top-navigation">
-          <div>
+          {isLearning ? <div className="course-top-actions"><button className="course-top-button" type="button" aria-label="Open main menu" aria-expanded={primaryOpen} onClick={() => setPrimaryOpen(true)} ref={primaryTriggerRef}><Icon name="menu" /><span>Menu</span></button><button className="course-top-button course-contents-button" type="button" aria-controls="course-navigation" aria-expanded={courseOpen} onClick={() => setCourseOpen(true)}><Icon name="book" /><span>Contents</span></button><span className="course-top-caption">Learning pathway</span></div> : <div>
             <span className="mobile-brand">PromptShala</span>
             <span className="demo-chip desktop-demo-chip">
               <span aria-hidden="true" /> Presentation demo
             </span>
-          </div>
+          </div>}
           <Link className="avatar-button" href="/profile" aria-label="Open profile">
             <span aria-hidden="true">{state.displayName.slice(0, 1).toUpperCase()}</span>
           </Link>
