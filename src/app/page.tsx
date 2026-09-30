@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Icon } from "@/components/ui/icon";
@@ -13,7 +14,7 @@ export default function HomePage() {
   return <div className="editorial-home">
     <header className="editorial-header">
       <div className="editorial-header-inner">
-        <Link className="editorial-wordmark" href="/" aria-label="PromptShala home"><span className="editorial-mark" aria-hidden="true" />PromptShala</Link>
+        <Link className="editorial-wordmark" href="/" aria-label="PromptShala home"><Image alt="" className="editorial-logo" height={724} priority src="/brand/promptshala-logo.png" width={2172} /></Link>
         <span className="editorial-header-note">A practice book for educators</span>
         <nav aria-label="Main navigation"><a href="#pathway">The course</a><a href="#experience">How it works</a><Link href="/sign-in">Sign in</Link></nav>
         <Link className="editorial-header-cta" href="/sign-in">Start learning <Icon name="arrow-right" /></Link>
@@ -53,6 +54,6 @@ export default function HomePage() {
       <section className="editorial-last" aria-labelledby="last-title"><div><span className="editorial-small-label">Begin here</span><h2 id="last-title">Bring a lesson you are already planning.</h2><p>Start with Foundations, then turn one real teaching need into a prompt you can test and improve.</p></div><Link className="editorial-primary" href="/sign-in">Start learning <Icon name="arrow-right" /></Link></section>
     </main>
 
-    <footer className="editorial-footer"><Link className="editorial-wordmark" href="/"><span className="editorial-mark" aria-hidden="true" />PromptShala</Link><span>Practice-first AI literacy for educators</span><span>ET-617 · Group 6</span></footer>
+    <footer className="editorial-footer"><Link className="editorial-wordmark" href="/" aria-label="PromptShala home"><Image alt="" className="editorial-logo" height={724} src="/brand/promptshala-logo.png" width={2172} /></Link><span>Practice-first AI literacy for educators</span><span>ET-617 · Group 6</span></footer>
   </div>;
 }
