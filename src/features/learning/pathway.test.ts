@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { initialDemoState, type AssistantSpec, type QuizAttempt } from "@/features/demo/demo-state";
 import { moduleOneLessons } from "./catalog";
 import { moduleTwoLessons } from "./module-two-content";
+import { moduleFourLessons } from "./module-four-content";
+import { readyPortfolio } from "@/test/fixtures/source-portfolio";
 import { moduleThreeLessons } from "./module-three-content";
 import { assistantHasEvidence, getPathwayStatus } from "./pathway";
 import { staffroomChallenges } from "./staffroom-challenges";
@@ -39,7 +41,7 @@ const promptLibrary = promptLibraryCategories.map(({ id }) => ({
   transferNote: "Tried Class 8 condensation and changed the materials slot.",
 }));
 
-describe("three-module progression", () => {
+describe("four-module progression", () => {
   it("requires all Module 1 lessons before passing even with a high quiz score", () => {
     expect(getPathwayStatus({ ...initialDemoState, quizAttempts: [pass] }).onePassed).toBe(false);
   });
@@ -77,4 +79,26 @@ describe("three-module progression", () => {
     ) })).toBe(false);
     expect(getPathwayStatus({ ...base, assistants: [{ ...assistant, revision: "" }] }).threePassed).toBe(false);
   });
+  it("records Module 4 independently, but requires its lessons, portfolio and quiz", () => {
+    const four = { ...initialDemoState, moduleFourCompletedLessonIds: moduleFourLessons.map((lesson) => lesson.id),
+      moduleFourQuizAttempts: [pass], sourcePortfolio: readyPortfolio() };
+    expect(getPathwayStatus(four)).toMatchObject({ onePassed: false, fourPassed: true, courseComplete: false });
+    expect(getPathwayStatus({ ...four, sourcePortfolio: initialDemoState.sourcePortfolio }).fourPassed).toBe(false);
+    expect(getPathwayStatus({ ...four, moduleFourQuizAttempts: [] }).fourPassed).toBe(false);
+    expect(getPathwayStatus({ ...four, moduleFourCompletedLessonIds: [] }).fourPassed).toBe(false);
+  });
+
+  it("reaches 100 percent only when all four module requirements are complete", () => {
+    const complete = { ...initialDemoState,
+      completedLessonSlugs: moduleOneLessons.map((lesson) => lesson.slug), quizAttempts: [pass],
+      moduleTwoCompletedLessonIds: moduleTwoLessons.map((lesson) => lesson.id), moduleTwoQuizAttempts: [pass],
+      craftPracticeCount: 2, promptLibrary, moduleThreeCompletedLessonIds: moduleThreeLessons.map((lesson) => lesson.id),
+      moduleThreeQuizAttempts: [pass], assistants: [assistant],
+      moduleFourCompletedLessonIds: moduleFourLessons.map((lesson) => lesson.id), moduleFourQuizAttempts: [pass],
+      sourcePortfolio: readyPortfolio(),
+    };
+    expect(getPathwayStatus(complete)).toMatchObject({ courseComplete: true, coursePercent: 100, completedModules: 4 });
+    expect(getPathwayStatus({ ...complete, moduleFourQuizAttempts: [] }).coursePercent).toBeLessThan(100);
+  });
+
 });

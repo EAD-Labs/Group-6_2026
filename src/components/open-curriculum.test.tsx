@@ -4,6 +4,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import CraftPracticePage from "@/app/learn/module-2/practice/page";
 import ModuleTwoPage from "@/app/learn/module-2/page";
+import ModuleFourPage from "@/app/learn/module-4/page";
+import { SourceStudio } from "./source-studio";
 import ModuleThreePage from "@/app/learn/module-3/page";
 import { useDemo } from "@/features/demo/demo-provider";
 import { initialDemoState } from "@/features/demo/demo-state";
@@ -36,13 +38,22 @@ describe("participant access without prerequisites", () => {
     expect(screen.queryByText("Complete Module 1 first")).toBeNull();
   });
 
-  it.each([2, 3] as const)("opens a later Module %s chapter directly", (module) => {
-    render(<ModuleLessonExperience module={module} slug={module === 2 ? "prompt-laboratory" : "repair-and-remix"} />);
+  it("opens the Module 4 overview and source studio with zero progress", () => {
+    const overview = render(<ModuleFourPage />);
+    expect(overview.container.querySelector('a[href="/learn/module-4/lessons/source-to-classroom-capstone"]')).not.toBeNull();
+    overview.unmount();
+    render(<SourceStudio />);
+    expect(screen.getByRole("heading", { level: 1, name: "Source Studio" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Check claim 1" })).toBeEnabled();
+  });
+
+  it.each([2, 3, 4] as const)("opens a later Module %s chapter directly", (module) => {
+    render(<ModuleLessonExperience module={module} slug={module === 2 ? "prompt-laboratory" : module === 3 ? "repair-and-remix" : "source-to-classroom-capstone"} />);
     expect(screen.getByRole("heading", { level: 1 })).not.toHaveTextContent(/locked/i);
     expect(screen.getByRole("heading", { name: "Record what you tried and learned" })).toBeInTheDocument();
   });
 
-  it.each([1, 2, 3] as const)("opens Module %s quiz without prior lessons or evidence", (module) => {
+  it.each([1, 2, 3, 4] as const)("opens Module %s quiz without prior lessons or evidence", (module) => {
     render(module === 1 ? <QuizExperience /> : <PathwayQuiz module={module} />);
     expect(screen.getByRole("button", { name: /Start/ })).toBeEnabled();
     expect(screen.queryByText(/Finish the lessons first|Finish all six lessons first/)).toBeNull();

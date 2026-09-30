@@ -4,7 +4,7 @@
 
 PromptShala is a short, practice-first AI literacy pathway for beginner school teachers and other educators. It does not attempt to teach machine-learning mathematics or software development. It helps a teacher use generative AI safely for real classroom preparation while retaining professional judgment.
 
-The four modules follow the product flow defined in the HLD: learn a small concept, complete an interaction, practise a classroom task, receive visible feedback, pass a short quiz, and unlock the next module.
+The four modules follow the learning flow defined in the HLD: learn a small concept, complete an interaction, practise a classroom task, receive visible feedback and pass a short quiz. The user's updated access requirement makes all modules available from the start; assessed completion remains separate from access.
 
 ## Curriculum principles
 
@@ -147,14 +147,33 @@ By the end of the module, the participant can:
 
 Use a source-grounded notebook workflow to transform non-sensitive, teacher-owned learning material into a classroom draft and verify it against the source.
 
-### Lesson sequence
+### Lesson sequence (260 minutes)
 
-1. What source-grounded tools such as NotebookLM do
-2. Choose safe, non-sensitive source material
-3. Request a quiz, study guide, worksheet, slide outline, or audio overview
-4. Trace important claims back to the source
-5. Apply the teacher review checklist
-6. Five-question knowledge check and course reflection
+1. **Begin with evidence, not a polished answer (25 min):** distinguish an explicit fact, inference and unsupported claim; inspect the source boundary.
+2. **Build a source pack you can safely use (30 min):** check rights, relevance, privacy and readability; record the source register and permission basis.
+3. **Set up a notebook with a clear purpose (30 min):** follow an approved notebook workflow, inspect selected sources and test an answerable question and an evidence gap.
+4. **Write requests that expose the evidence (30 min):** carry CRAFT into a source task with passage references, gap/conflict rules and teacher review.
+5. **The Citation Detective: inspect three claims (40 min):** compare each claim with labelled passages; classify support, absence, contradiction or conflict and explain the verdict.
+6. **Turn a source into something teachable (40 min):** adapt a worksheet, quiz, study guide, slide outline or audio script while preserving meaning and learner access.
+7. **Give the draft a teacher's final review (25 min):** inspect accuracy, alignment, access, privacy, rights and limits; make a safe handoff.
+8. **Your source-to-classroom portfolio (40 min):** connect the four course habits through a reviewed artifact, explained revision, source audit and course reflection.
+9. **Knowledge check:** five applied questions; four correct answers pass with explanations and unlimited retries.
+
+### Source Studio practice
+
+The practical workbench uses three original fictional source packs: **The disappearing puddle**, **Two pots, one careful conclusion** and **A bridge in the story**. Each has three deliberately mixed claims and passage-level feedback. The seed case includes conflicting accounts; the story distinguishes text detail from inference.
+
+Teachers record an objective, audience, source register, permission and privacy confirmation; complete three explained audits; edit an artifact and describe its revision; inspect six review checks; and write a next-use reflection. Changes to the draft or its evidence reset the review checks. The exported Markdown package includes original passages, a portable prompt, draft, audit, repair record, checklist and limits.
+
+Prepared examples are clearly labelled. Source Studio does not generate live AI outputs, upload files or connect to a Google account. An approved external notebook exercise is optional and must be identified accurately in the participant's evidence. The practice export does not issue a certificate.
+
+### Optional notebook guidance
+
+NotebookLM is now presented in Google's help as Gemini Notebook. The course uses portable source-selection and citation-review principles so changing interface labels do not determine completion.
+
+- [Google: adding and inspecting notebook sources](https://support.google.com/gemininotebook/answer/16215270?hl=en)
+- [Google: chat, selected sources and citation review](https://support.google.com/gemininotebook/answer/16179559?hl=en)
+- [Google: school account access and limitations](https://support.google.com/gemininotebook/answer/16269187?hl=en)
 
 ### Measurable learning outcomes
 
@@ -169,19 +188,22 @@ By the end of the module, the participant can:
 
 ### Evidence captured
 
-- source-type selection without uploading the source to PromptShala;
-- chosen artifact type;
-- verification checklist;
-- final reflection and quiz score.
+- source objective, audience, register label, permission basis and privacy confirmation;
+- three correct claim verdicts with relevant passages and reasoned explanations;
+- chosen artifact type, edited draft and revision explanation;
+- six review checks and a specific course reflection;
+- per-lesson evidence and quiz attempts.
 
-## Completion and unlocking rules
+## Access and assessed completion rules
 
 - A lesson is complete after all required interactions are submitted.
 - A module quiz passes at 70% or above. Five-question quizzes require four correct answers; the ten-question Module 3 quiz requires seven.
 - A failed quiz shows answer-specific explanations and returns the participant to relevant lesson sections.
 - Retrying is unlimited for the pilot.
-- Passing unlocks the next module and records the completion date.
-- Course completion requires all four modules and the final review checklist.
+- All four modules, lessons, labs and quizzes are accessible without completing earlier modules.
+- Assessed module completion requires every lesson, the passed quiz and its required practice evidence: CRAFT attempts and prompt library for Module 2; tested/repaired assistant evidence for Module 3; reviewed source portfolio for Module 4.
+- Course completion requires all four modules and their required practice evidence. A passed quiz alone is insufficient.
+- Course progress is a learning record; certificate eligibility and issuing require the separate certification implementation.
 
 ## Pilot measurement for 10 users
 
