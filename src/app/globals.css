@@ -1389,3 +1389,104 @@ body, .app-content { font-size: 0.9rem; }
   .editorial-module-list .editorial-module-card { min-height: 0; gap: 0.75rem; }
   .editorial-module-action { margin-top: 0.5rem; }
 }
+
+/* Labs and module overviews use the same reading scale as lesson pages. */
+.course-frame .learning-reading-scale { font-size: 0.75rem; }
+.course-frame .learning-reading-scale h1 {
+  font-size: clamp(1.25rem, 1.6vw, 1.65rem);
+  line-height: 1.2;
+}
+.course-frame .learning-reading-scale h2 { font-size: 1rem; line-height: 1.3; }
+.course-frame .learning-reading-scale h3 { font-size: 0.85rem; line-height: 1.3; }
+.course-frame .learning-reading-scale :is(p, li) { font-size: 0.75rem; line-height: 1.65; }
+.course-frame .learning-reading-scale :is(.page-heading, .module-hero) p { line-height: 1.6; }
+.course-frame .learning-reading-scale :is(button, .button, .text-link, label, input, textarea, select, summary) {
+  font-size: 0.75rem;
+}
+.course-frame .learning-reading-scale :is(input, textarea) { line-height: 1.65; }
+.course-frame .learning-reading-scale :is(label, .scenario-list, .scenario-brief, .craft-dimensions, .craft-feedback-list, .staffroom-library) strong {
+  font-size: 0.75rem;
+}
+.course-frame .learning-reading-scale :is(small, .breadcrumbs, .metadata-row, .section-meta, .preview-badge, .status-pill, .module-badge, .rule-based-chip, .activity-copy > span, .craft-editor-heading > span, .craft-textarea-label > span, .craft-feedback-meta, .module-progress-card > span) {
+  font-size: 0.68rem;
+}
+.course-frame .learning-reading-scale .eyebrow { font-size: 0.62rem; }
+.course-frame .learning-reading-scale .module-progress-card > strong { font-size: 0.85rem; }
+
+/* Source Studio: an evidence desk with a quiet cobalt and paper palette. */
+.source-module-hero { align-items: center; gap: 2rem; }
+.source-module-hero h1 em { color: #3154a8; font-weight: 500; }
+.source-evidence-note { padding: 1.5rem; border-radius: 1.5rem 3rem 1.5rem 1.5rem; background: #f8e9de; transform: rotate(-1deg); }
+.source-evidence-note > div { display: flex; align-items: start; gap: 0.75rem; padding: 0.8rem 0; border-top: 1px solid #decabc; border-bottom: 1px solid #decabc; }
+.source-evidence-note .source-sample-claim { font-family: var(--serif); font-weight: 750; }
+.source-evidence-note > strong { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; color: #873e29; }
+.source-evidence-note svg { width: 1rem; height: 1rem; }
+.source-label { display: inline-grid; flex: 0 0 auto; min-width: 2rem; min-height: 2rem; padding: 0.3rem; border-radius: 0.55rem; place-items: center; background: #dde6fa; color: #244892; font-weight: 800; }
+.source-studio-callout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: center; margin: 1.5rem 0; padding: 1.5rem; border-radius: 1.25rem 2.5rem 1.25rem 1.25rem; color: #172b50; background: #e4ebfa; }
+.source-studio-callout p { max-width: 680px; }
+.source-studio-callout ul { padding-left: 1.1rem; }
+.source-studio-callout > div:last-child { display: grid; gap: 1rem; justify-items: start; }
+.source-steps { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.5rem; }
+.source-steps a { display: flex; min-height: 44px; align-items: center; gap: 0.5rem; padding: 0.5rem 0.85rem; border-radius: 999px; text-decoration: none; color: #244892; background: #e4ebfa; font-weight: 750; }
+.source-steps span { color: #687591; font-size: 0.68rem; }
+.source-studio-intro { display: flex; align-items: start; gap: 0.75rem; margin: 0 0 1.5rem; color: var(--muted); }
+.source-studio-intro svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
+.source-studio-intro p { margin: 0; }
+.source-panel { margin-bottom: 1.5rem; padding: 1.3rem; border: 1px solid var(--line); border-radius: 1.25rem; background: white; scroll-margin-top: 90px; }
+.source-panel :is(label, fieldset) { min-width: 0; }
+.source-panel label { display: grid; gap: 0.45rem; font-weight: 700; }
+.source-panel :is(input:not([type="checkbox"]), select, textarea) { display: block; width: 100%; min-height: 44px; padding: 0.7rem 0.8rem; border: 1px solid var(--line-strong); border-radius: 0.6rem; color: var(--ink); background: #fdfdff; }
+.source-panel textarea { resize: vertical; }
+.source-panel input[type="checkbox"] { width: 1rem; height: 1rem; margin: 0; accent-color: #3154a8; flex: 0 0 auto; }
+.source-panel fieldset { margin: 0; padding: 0; border: 0; }
+.source-panel legend { margin-bottom: 0.6rem; font-weight: 750; }
+.source-panel .source-checkbox { display: flex; min-height: 44px; align-items: center; gap: 0.75rem; padding: 0.5rem 0; font-weight: 500; }
+.source-case-picker { display: flex; align-items: end; gap: 1rem; }
+.source-case-picker label { flex: 1; }
+.source-case-caption { padding: 1rem; margin: 1rem 0; border-left: 3px solid #3154a8; background: #eff3fc; }
+.source-case-caption > span { font-size: 0.68rem; color: #53658a; }
+.source-case-caption :is(h3, p) { margin: 0.5rem 0 0; }
+.source-brief-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.75rem; }
+.source-helper { color: var(--muted); }
+.source-audit-layout { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 1.25rem; align-items: start; }
+.source-pack { min-width: 0; position: sticky; top: 85px; }
+.source-pack article { margin-bottom: 1rem; padding: 1rem; border-radius: 0.9rem; background: #f4f6fb; }
+.source-pack article > div { display: flex; gap: 0.7rem; align-items: center; }
+.source-pack h3 { margin: 0; }
+.source-pack .source-credit { font-size: 0.68rem; color: var(--muted); }
+.source-pack ol { margin: 1rem 0 0; padding: 0; list-style: none; }
+.source-pack li { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 0.4rem; padding: 0.55rem 0; border-top: 1px solid #dce2ee; }
+.source-pack li > span { color: #3154a8; font-weight: 750; font-size: 0.68rem; }
+.source-pack li p { margin: 0; }
+.source-claim { padding: 1.1rem; margin-bottom: 1rem; border: 1px solid #dce2ee; border-radius: 1rem; }
+.source-claim h3 { margin: 0.6rem 0 1rem; }
+.source-claim > label { margin-bottom: 1rem; }
+.source-panel .source-reference-list { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 1rem; }
+.source-reference-list label { display: flex; min-height: 44px; align-items: center; gap: 0.35rem; padding: 0.4rem 0.5rem; border-radius: 0.5rem; color: #3154a8; background: #f0f4fc; }
+.source-audit-feedback { margin-top: 0.8rem; padding: 0.85rem; border-radius: 0.7rem; background: #fff0e5; color: #683820; }
+.source-audit-feedback.correct { background: #e9effb; color: #244892; }
+.source-audit-feedback p { margin: 0.5rem 0; }
+.source-make-layout { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 1.5rem; }
+.source-prompt { min-width: 0; padding: 1rem; border-radius: 1rem; background: #f4f6fb; }
+.source-prompt pre { padding: 0.9rem; border-left: 3px solid #3154a8; white-space: pre-wrap; overflow-wrap: anywhere; font: 500 0.75rem/1.65 var(--sans); }
+.source-prompt .text-link { display: flex; min-height: 44px; margin-top: 0.5rem; align-items: center; }
+.source-draft-editor label { margin: 1rem 0 0.5rem; }
+.source-draft-editor > small { color: var(--muted); }
+.source-final-review > label { margin-top: 1.5rem; }
+.source-completion { display: flex; gap: 1.5rem; align-items: center; justify-content: space-between; margin-top: 1.5rem; padding: 1rem; border-radius: 1rem; background: #edf2fb; }
+.source-completion > div { min-width: 0; }
+.source-completion ul { padding-left: 1rem; margin-bottom: 0; }
+.source-completion button { flex: 0 0 auto; }
+.source-message { padding: 0.8rem; border-left: 3px solid #3154a8; }
+.source-return-links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+@media (max-width: 1100px) {
+  .source-audit-layout, .source-make-layout { grid-template-columns: 1fr; }
+  .source-pack { position: static; }
+}
+@media (max-width: 720px) {
+  .source-brief-fields, .source-studio-callout { grid-template-columns: 1fr; }
+  .source-case-picker, .source-completion { flex-direction: column; align-items: stretch; }
+  .source-panel { padding: 1rem; }
+  .source-evidence-note { transform: none; }
+  .source-steps a { flex: 1 1 40%; }
+}

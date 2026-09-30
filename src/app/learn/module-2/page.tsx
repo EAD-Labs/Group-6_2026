@@ -18,7 +18,7 @@ export default function ModuleTwoPage() {
 
   return (
     <HydrationGate>
-      <AppShell active="learn">
+      <AppShell active="learn" contentClassName="learning-reading-scale">
         <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/dashboard">Home</Link><Icon name="chevron-right" /><span>Module 2</span></nav>
           <>
             <header className="module-hero craft-module-hero">
