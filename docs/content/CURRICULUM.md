@@ -101,39 +101,45 @@ By the end of the module, the participant can:
 - first and revised prompt versions;
 - dimension-level rubric scores;
 - feedback opened and changes made;
+- three saved prompt templates with examples, failures, review checks and transfer notes;
 - selected classroom scenario and quiz score.
 
 ## Module 3 — Reusable Teacher Assistants
 
 ### Participant goal
 
-Convert a successful classroom prompt into a reusable Gem-style assistant specification and test it with more than one input.
+Convert a successful classroom prompt into a reusable teacher assistant, test it against difficult cases, repair it and hand it to another context with clear limits.
 
-### Lesson sequence
+### Lesson sequence (360 minutes)
 
-1. Prompt versus reusable assistant
-2. Define persona, task, context, format, boundaries, and review checks
-3. Build a reusable assistant specification
-4. Test it with two classroom inputs
-5. Identify one failure or weakness and revise the specification
-6. Five-question knowledge check
+1. **Meet the AI Staffroom (30 min):** distinguish a prompt, reusable assistant, teacher-led workflow and tool-choosing agent.
+2. **Write an assistant's job description (35 min):** define a narrow purpose, required inputs, output contract, boundaries and teacher review.
+3. **Configure and run a reusable assistant (40 min):** save a portable Agent Passport and inspect a fresh test output.
+4. **Supply a knowledge pack and handle gaps (40 min):** use dated, labelled fictional notes; flag absent and conflicting evidence.
+5. **Rehearse teaching with a simulated learner (45 min):** record three synthetic turns, a debrief and a revised teacher question.
+6. **The Repair Clinic (50 min):** run six challenge cases, diagnose a weakness, save a new version and rerun the failed case plus two earlier successes.
+7. **Build a teaching workflow with handoffs (60 min):** pass approved context through a teacher-led relay and record the human stop point.
+8. **Staffroom exchange and transfer challenge (60 min):** export, remix with credit and record colleague reuse or labelled self-transfer.
+9. **Knowledge check:** ten applied questions; seven correct answers pass.
 
 ### Measurable learning outcomes
 
 By the end of the module, the participant can:
 
 - explain why a repeated teacher task is suitable or unsuitable for a reusable assistant;
-- create an assistant specification containing persona, task, context, output format, constraints, and safety boundaries;
-- test the specification with at least two different inputs;
-- document one observed weakness and one revision; and
+- create an Agent Passport with purpose, input contract, output format, source and tool boundaries, stop rules and teacher review;
+- test normal use, missing input, absent evidence, conflicting evidence, quoted instruction conflict and transfer;
+- document a weakness, change the instruction and pass reviewed regression retests;
+- use synthetic learner rehearsal and structured handoffs without claiming to predict real learners;
+- export a portable package with credit and known limits; and
 - score at least 70% on the module quiz.
 
 ### Evidence captured
 
-- assistant purpose and specification;
-- two test inputs;
-- teacher review notes;
-- revised specification and quiz score.
+- versioned Agent Passport, classroom context card and labelled source pack;
+- six case records with expected behavior, input, output, teacher review and verdict;
+- observed weakness, revision and three reviewed retests;
+- synthetic rehearsal, workflow handoff, reuse diary and ten-question quiz score.
 
 ## Module 4 — Working with Teacher-Owned Sources
 
@@ -171,7 +177,7 @@ By the end of the module, the participant can:
 ## Completion and unlocking rules
 
 - A lesson is complete after all required interactions are submitted.
-- A module quiz passes at 70% or above. In the five-question prototype quiz, four correct answers are required.
+- A module quiz passes at 70% or above. Five-question quizzes require four correct answers; the ten-question Module 3 quiz requires seven.
 - A failed quiz shows answer-specific explanations and returns the participant to relevant lesson sections.
 - Retrying is unlimited for the pilot.
 - Passing unlocks the next module and records the completion date.

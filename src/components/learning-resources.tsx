@@ -1,6 +1,25 @@
+"use client";
+
+import { useState } from "react";
+
 import { Icon } from "@/components/ui/icon";
 
 type LearningResource = { label: string; url: string };
+
+function VideoResource({ label, embedUrl }: { label: string; embedUrl: string }) {
+  const [playing, setPlaying] = useState(false);
+  const videoId = embedUrl.split("/").at(-1) ?? "";
+
+  return <article className="embedded-video-card">
+    <div className="video-frame">
+      {playing ? <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" src={`${embedUrl}?autoplay=1`} title={label} /> :
+        <button aria-label={`Play video: ${label}`} className="video-play-button" onClick={() => setPlaying(true)} style={{ backgroundImage: `linear-gradient(rgba(7, 24, 21, 0.15), rgba(7, 24, 21, 0.35)), url(https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg)` }} type="button">
+          <span><Icon name="play" /></span>
+        </button>}
+    </div>
+    <div><Icon name="play" /><strong>{label}</strong></div>
+  </article>;
+}
 
 function youtubeEmbedUrl(url: string) {
   try {
@@ -23,12 +42,7 @@ export function LearningResources({ resources }: { resources: LearningResource[]
 
   return (
     <div className="resource-gallery">
-      {videos.length > 0 ? <div className="embedded-video-grid">{videos.map((video) => (
-        <article className="embedded-video-card" key={video.url}>
-          <div className="video-frame"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" src={video.embedUrl} title={video.label} /></div>
-          <div><Icon name="play" /><strong>{video.label}</strong></div>
-        </article>
-      ))}</div> : null}
+      {videos.length > 0 ? <div className="embedded-video-grid">{videos.map((video) => <VideoResource embedUrl={video.embedUrl} key={video.url} label={video.label} />)}</div> : null}
       {readings.length > 0 ? <div className="reading-resource-list">{readings.map((resource) => (
         <a href={resource.url} key={resource.url} rel={resource.url.startsWith("http") ? "noreferrer" : undefined} target={resource.url.startsWith("http") ? "_blank" : undefined}>
           <span><Icon name="document" /></span><div><small>Reading</small><strong>{resource.label}</strong></div><Icon name="arrow-right" />

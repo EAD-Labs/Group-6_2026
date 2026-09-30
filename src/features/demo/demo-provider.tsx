@@ -45,7 +45,9 @@ type DemoContextValue = {
   saveProfile: (input: ProfileInput) => void;
   setSafeUseAccepted: (accepted: boolean) => void;
   completeLesson: (lessonSlug: string) => void;
+  completeModuleLesson: (module: 2 | 3, lessonId: string) => void;
   recordQuizAttempt: (attempt: QuizAttempt) => void;
+  recordModuleQuizAttempt: (module: 2 | 3, attempt: QuizAttempt) => void;
 };
 
 const DemoContext = createContext<DemoContextValue | null>(null);
@@ -181,12 +183,27 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const completeModuleLesson = useCallback((module: 2 | 3, lessonId: string) => {
+    const key = module === 2 ? "moduleTwoCompletedLessonIds" : "moduleThreeCompletedLessonIds";
+    setState((currentState) => ({
+      ...currentState,
+      [key]: currentState[key].includes(lessonId) ? currentState[key] : [...currentState[key], lessonId],
+    }));
+  }, []);
+
+  const recordModuleQuizAttempt = useCallback((module: 2 | 3, attempt: QuizAttempt) => {
+    const key = module === 2 ? "moduleTwoQuizAttempts" : "moduleThreeQuizAttempts";
+    setState((currentState) => ({ ...currentState, [key]: [...currentState[key], attempt] }));
+  }, []);
+
   const value = useMemo(
     () => ({
       completeLesson,
+      completeModuleLesson,
       hydrated,
       isPresentationDemo,
       recordQuizAttempt,
+      recordModuleQuizAttempt,
       resetDemo,
       saveGoals,
       saveProfile,
@@ -196,9 +213,11 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     }),
     [
       completeLesson,
+      completeModuleLesson,
       hydrated,
       isPresentationDemo,
       recordQuizAttempt,
+      recordModuleQuizAttempt,
       resetDemo,
       saveGoals,
       saveProfile,
