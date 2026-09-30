@@ -66,7 +66,7 @@ The Studio provides guided practice and prepared examples. It does not perform l
 ### Website and participant experience
 
 - Updated PromptShala branding and a redesigned homepage with rounded course cards.
-- A navy and cobalt palette with warmer contrast accents.
+- A dark navy course sidebar with peach active chapters, a warm paper lesson area, terracotta examples and pale blue practice cards.
 - An expandable course sidebar showing modules and chapters, plus a separate main menu.
 - Smaller lesson typography, matched across module overviews, the CRAFT lab and AI Staffroom.
 - Larger lesson video frames that fill the resource area.
