@@ -54,6 +54,15 @@ describe("three-module progression", () => {
     expect(getPathwayStatus({ ...base, craftPracticeCount: 2, promptLibrary }).twoPassed).toBe(true);
   });
 
+  it("records Module 2 and 3 completion independently of earlier modules", () => {
+    const moduleTwo = { ...initialDemoState, moduleTwoCompletedLessonIds: moduleTwoLessons.map((lesson) => lesson.id),
+      moduleTwoQuizAttempts: [pass], craftPracticeCount: 2, promptLibrary };
+    expect(getPathwayStatus(moduleTwo)).toMatchObject({ onePassed: false, twoPassed: true });
+    const moduleThree = { ...initialDemoState, moduleThreeCompletedLessonIds: moduleThreeLessons.map((lesson) => lesson.id),
+      moduleThreeQuizAttempts: [pass], assistants: [assistant] };
+    expect(getPathwayStatus(moduleThree)).toMatchObject({ onePassed: false, twoPassed: false, threePassed: true });
+  });
+
   it("requires all six cases and reviewed regression retests for Module 3", () => {
     const base = { ...initialDemoState,
       completedLessonSlugs: moduleOneLessons.map((lesson) => lesson.slug), quizAttempts: [pass],
