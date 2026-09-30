@@ -15,6 +15,7 @@ const moduleFourId = "00000000-0000-4000-8000-000000000004";
 const moduleOneQuizId = "00000000-0000-4000-8000-000000000201";
 const moduleTwoQuizId = "00000000-0000-4000-8000-000000000202";
 const moduleThreeQuizId = "00000000-0000-4000-8000-000000000203";
+const moduleFourQuizId = "00000000-0000-4000-8000-000000000204";
 const lessonIdBySlug = {
   "meet-generative-ai": "00000000-0000-4000-8000-000000000101",
   "useful-teacher-tasks": "00000000-0000-4000-8000-000000000102",
@@ -37,6 +38,14 @@ const lessonIdBySlug = {
   "source-pack-gaps": "00000000-0000-4000-8000-000000000406",
   "classroom-rehearsal": "00000000-0000-4000-8000-000000000407",
   "workflow-handoffs": "00000000-0000-4000-8000-000000000408",
+  "grounded-vs-fluent": "00000000-0000-4000-8000-000000000501",
+  "choose-safe-sources": "00000000-0000-4000-8000-000000000502",
+  "build-source-notebook": "00000000-0000-4000-8000-000000000503",
+  "ask-with-evidence": "00000000-0000-4000-8000-000000000504",
+  "citation-detective": "00000000-0000-4000-8000-000000000505",
+  "transform-without-drift": "00000000-0000-4000-8000-000000000506",
+  "review-share-responsibly": "00000000-0000-4000-8000-000000000507",
+  "source-to-classroom-capstone": "00000000-0000-4000-8000-000000000508",
 } as const;
 const slugByLessonId: Record<string, string> = Object.fromEntries(
   Object.entries(lessonIdBySlug).map(([slug, id]) => [id, slug]),
@@ -70,7 +79,7 @@ export async function GET() {
     supabase
       .from("profiles")
       .select(
-        "display_name,institution,primary_subject,teaching_level,years_teaching,ai_familiarity,learning_goals,captions_enabled,larger_text,reduced_motion,safe_use_accepted_at,onboarding_completed_at,craft_practice_count,prompt_library",
+        "display_name,institution,primary_subject,teaching_level,years_teaching,ai_familiarity,learning_goals,captions_enabled,larger_text,reduced_motion,safe_use_accepted_at,onboarding_completed_at,craft_practice_count,prompt_library,source_portfolio",
       )
       .eq("id", participantId)
       .maybeSingle(),
@@ -82,7 +91,7 @@ export async function GET() {
       .from("quiz_attempts")
       .select("quiz_id,attempt_number,score_percent,passed,submitted_at")
       .eq("participant_id", participantId)
-      .in("quiz_id", [moduleOneQuizId, moduleTwoQuizId, moduleThreeQuizId])
+      .in("quiz_id", [moduleOneQuizId, moduleTwoQuizId, moduleThreeQuizId, moduleFourQuizId])
       .order("submitted_at"),
     supabase.from("assistant_specs").select("id,spec,updated_at,deleted_at")
       .eq("participant_id", participantId),
@@ -113,11 +122,13 @@ export async function GET() {
     aiFamiliarity: profile?.ai_familiarity,
     craftPracticeCount: profile?.craft_practice_count,
     promptLibrary: profile?.prompt_library,
+    sourcePortfolio: profile?.source_portfolio,
     captionsEnabled: profile?.captions_enabled,
     completedLessonSlugs: completedSlugs,
     lessonEvidence,
     moduleTwoCompletedLessonIds: completedSlugs,
     moduleThreeCompletedLessonIds: completedSlugs,
+    moduleFourCompletedLessonIds: completedSlugs,
     displayName: profile?.display_name,
     goals: profile?.learning_goals,
     institution: profile?.institution,
@@ -127,6 +138,7 @@ export async function GET() {
     quizAttempts: attemptsFor(moduleOneQuizId),
     moduleTwoQuizAttempts: attemptsFor(moduleTwoQuizId),
     moduleThreeQuizAttempts: attemptsFor(moduleThreeQuizId),
+    moduleFourQuizAttempts: attemptsFor(moduleFourQuizId),
     assistants: (assistantResult.data ?? []).map((row) => ({
       ...row.spec as object, id: row.id, updatedAt: row.updated_at,
       deletedAt: row.deleted_at ?? undefined,
@@ -184,6 +196,7 @@ export async function PUT(request: Request) {
       ai_familiarity: state.aiFamiliarity,
       craft_practice_count: state.craftPracticeCount,
       prompt_library: state.promptLibrary,
+      source_portfolio: state.sourcePortfolio,
       learning_goals: state.goals,
       captions_enabled: state.captionsEnabled,
       larger_text: state.largerText,
@@ -195,10 +208,10 @@ export async function PUT(request: Request) {
     { onConflict: "id" },
   );
 
-  const lessonRows = [...new Set([...state.completedLessonSlugs, ...state.moduleTwoCompletedLessonIds, ...state.moduleThreeCompletedLessonIds, ...Object.keys(state.lessonEvidence)])].map((slug) => ({
+  const lessonRows = [...new Set([...state.completedLessonSlugs, ...state.moduleTwoCompletedLessonIds, ...state.moduleThreeCompletedLessonIds, ...state.moduleFourCompletedLessonIds, ...Object.keys(state.lessonEvidence)])].map((slug) => ({
     participant_id: participantId,
     lesson_id: lessonIdBySlug[slug as keyof typeof lessonIdBySlug],
-    completed_at: [...state.completedLessonSlugs, ...state.moduleTwoCompletedLessonIds, ...state.moduleThreeCompletedLessonIds].includes(slug) ? now : null,
+    completed_at: [...state.completedLessonSlugs, ...state.moduleTwoCompletedLessonIds, ...state.moduleThreeCompletedLessonIds, ...state.moduleFourCompletedLessonIds].includes(slug) ? now : null,
     evidence: state.lessonEvidence[slug] ?? null,
     updated_at: now,
   }));
@@ -211,6 +224,7 @@ export async function PUT(request: Request) {
     [moduleOneQuizId, state.quizAttempts],
     [moduleTwoQuizId, state.moduleTwoQuizAttempts],
     [moduleThreeQuizId, state.moduleThreeQuizAttempts],
+    [moduleFourQuizId, state.moduleFourQuizAttempts],
   ] as const).flatMap(([quizId, attempts]) => attempts.map((attempt, index) => ({
     participant_id: participantId,
     quiz_id: quizId,
@@ -254,7 +268,9 @@ export async function PUT(request: Request) {
       {
         participant_id: participantId,
         module_id: moduleFourId,
-        status: pathway.threePassed ? "available" : "locked",
+        status: pathway.fourPassed ? "passed" : pathway.fourLessons || state.moduleFourQuizAttempts.length ? "in_progress" : "available",
+        best_score_percent: state.moduleFourQuizAttempts.reduce((best, attempt) => Math.max(best, attempt.scorePercent), 0) || null,
+        passed_at: pathway.fourPassed ? now : null,
         updated_at: now,
       },
     ],

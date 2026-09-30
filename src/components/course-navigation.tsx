@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useDemo } from "@/features/demo/demo-provider";
 import { learningModules, moduleOneLessons } from "@/features/learning/catalog";
 import { moduleTwoLessons } from "@/features/learning/module-two-content";
+import { moduleFourLessons } from "@/features/learning/module-four-content";
 import { moduleThreeLessons } from "@/features/learning/module-three-content";
 
 import { Brand } from "./ui/brand";
@@ -25,6 +26,7 @@ export function CourseNavigation({ mobileOpen, onClose }: CourseNavigationProps)
     { lessons: moduleOneLessons.map(({ slug, title }) => ({ id: slug, title })), completed: state.completedLessonSlugs },
     { lessons: moduleTwoLessons.map(({ id, title }) => ({ id, title })), completed: state.moduleTwoCompletedLessonIds },
     { lessons: moduleThreeLessons.map(({ id, title }) => ({ id, title })), completed: state.moduleThreeCompletedLessonIds },
+    { lessons: moduleFourLessons.map(({ id, title }) => ({ id, title })), completed: state.moduleFourCompletedLessonIds },
   ];
 
   return (
@@ -36,9 +38,9 @@ export function CourseNavigation({ mobileOpen, onClose }: CourseNavigationProps)
           const content = modules[moduleIndex];
           const modulePath = `/learn/${module.slug}`;
           return <details className="course-navigation-module" key={module.id} open={module.position === currentModule}>
-            <summary><span className="course-navigation-number">{String(module.position).padStart(2, "0")}</span><span className="course-navigation-title"><strong>{module.title}</strong><small>{module.position === 4 ? "Coming soon" : `${content?.completed.length ?? 0}/${content?.lessons.length ?? 0} lessons`}</small></span><Icon name="chevron-right" /></summary>
+            <summary><span className="course-navigation-number">{String(module.position).padStart(2, "0")}</span><span className="course-navigation-title"><strong>{module.title}</strong><small>{`${content?.completed.length ?? 0}/${content?.lessons.length ?? 0} lessons`}</small></span><Icon name="chevron-right" /></summary>
             <div className="course-navigation-items">
-              {module.position === 4 ? <p>Teacher-owned sources and grounded classroom materials are next on the roadmap.</p> : <>
+              <>
                 <Link aria-current={pathname === modulePath ? "page" : undefined} className="course-overview" href={modulePath as Route} onClick={onClose}>Module overview</Link>
                 {content?.lessons.map((lesson, index) => {
                   const href = `${modulePath}/lessons/${lesson.id}`;
@@ -46,8 +48,9 @@ export function CourseNavigation({ mobileOpen, onClose }: CourseNavigationProps)
                 })}
                 {module.position === 2 ? <Link aria-current={pathname === `${modulePath}/practice` ? "page" : undefined} href={`${modulePath}/practice` as Route} onClick={onClose}><span>↳</span>CRAFT practice lab</Link> : null}
                 {module.position === 3 ? <Link aria-current={pathname === `${modulePath}/staffroom` ? "page" : undefined} href={`${modulePath}/staffroom` as Route} onClick={onClose}><span>↳</span>AI Staffroom</Link> : null}
+                {module.position === 4 ? <Link aria-current={pathname === `${modulePath}/studio` ? "page" : undefined} href={`${modulePath}/studio` as Route} onClick={onClose}><span>↳</span>Source Studio</Link> : null}
                 {content ? <Link aria-current={pathname === `${modulePath}/quiz` ? "page" : undefined} href={`${modulePath}/quiz` as Route} onClick={onClose}><span>✓</span>Knowledge check</Link> : null}
-              </>}
+              </>
             </div>
           </details>;
         })}

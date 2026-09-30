@@ -9,6 +9,13 @@ import {
 } from "./demo-state";
 
 describe("presentation demo state", () => {
+  it("loads older saved progress with safe empty Module 4 defaults", () => {
+    const state = loadDemoState({ getItem: () => JSON.stringify({ displayName: "Existing participant", completedLessonSlugs: ["meet-generative-ai"] }) });
+    expect(state.displayName).toBe("Existing participant");
+    expect(state.moduleFourCompletedLessonIds).toEqual([]);
+    expect(state.moduleFourQuizAttempts).toEqual([]);
+    expect(state.sourcePortfolio).toEqual(initialDemoState.sourcePortfolio);
+  });
   it("returns a safe initial state when storage is empty", () => {
     expect(loadDemoState({ getItem: () => null })).toEqual(initialDemoState);
   });
