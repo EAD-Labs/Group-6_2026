@@ -42,6 +42,7 @@ Read `docs/BRANCHING.md` before creating a branch. All changes require a pull re
 - Meeting minutes: `docs/meetings/`
 - Environment plan: `docs/ENVIRONMENTS.md`
 - Prompt framework decision: `docs/PROMPT_FRAMEWORK_DECISION.md`
+- Shared colour system: `docs/design/COLOR_SYSTEM.md`
 - Participant UX plan: `docs/design/PARTICIPANT_UX_PLAN.md`
 - Google Stitch prompts: `docs/design/STITCH_PROMPTS.md`
 - Generated Stitch project manifest: `docs/design/STITCH_PROJECT.md`

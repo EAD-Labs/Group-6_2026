@@ -66,7 +66,7 @@ The Studio provides guided practice and prepared examples. It does not perform l
 ### Website and participant experience
 
 - Updated PromptShala branding and a redesigned homepage with rounded course cards.
-- A dark navy course sidebar with peach active chapters, a warm paper lesson area, terracotta examples and pale blue practice cards.
+- A consistent navy, warm paper, peach and terracotta palette across the homepage, sign-in, onboarding, dashboard, progress, profile, settings and learning pages, with pale blue practice cards.
 - An expandable course sidebar showing modules and chapters, plus a separate main menu.
 - Smaller lesson typography, matched across module overviews, the CRAFT lab and AI Staffroom.
 - Larger lesson video frames that fill the resource area.
@@ -82,7 +82,7 @@ The Studio provides guided practice and prepared examples. It does not perform l
 - A regression check confirms that CRAFT practice opens for a participant with no completed lessons.
 - Module 4 browser checks cover claim feedback, local portfolio reload, capstone completion, the knowledge check and independent progress recording.
 - Phone and desktop layout checks confirm compact typography and accessible activity controls.
-- Course palette checks verify readable sidebar states, classroom examples, lesson text and mobile menu behaviour.
+- Website palette checks cover the public homepage, sign-in, onboarding, dashboard, account pages and learning screens, with readable navigation states and working phone menus.
 - The refreshed Vercel preview is deployed and ready for review.
 - Relevant Jira issues include implementation evidence and outstanding work.
 
