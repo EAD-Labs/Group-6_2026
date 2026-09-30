@@ -7,11 +7,11 @@ import { CraftPractice } from "@/components/craft-practice";
 import { HydrationGate } from "@/components/ui/hydration-gate";
 import { Icon } from "@/components/ui/icon";
 import { useDemo } from "@/features/demo/demo-provider";
-import { hasPassedModuleOne } from "@/features/demo/demo-state";
+import { getPathwayStatus } from "@/features/learning/pathway";
 
 export default function CraftPracticePage() {
   const { isPresentationDemo, state } = useDemo();
-  const unlocked = isPresentationDemo || hasPassedModuleOne(state.quizAttempts);
+  const unlocked = isPresentationDemo || getPathwayStatus(state).onePassed;
 
   return (
     <HydrationGate>

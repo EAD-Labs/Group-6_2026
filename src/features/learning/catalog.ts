@@ -58,7 +58,7 @@ export const learningModules: LearningModule[] = [
   {
     description:
       "Convert a strong prompt into a reusable assistant for recurring teacher tasks.",
-    estimatedMinutes: 35,
+    estimatedMinutes: 360,
     id: "00000000-0000-4000-8000-000000000003",
     position: 3,
     slug: "module-3",

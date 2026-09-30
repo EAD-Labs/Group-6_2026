@@ -1,10 +1,28 @@
 import {
   initialDemoState,
   type AiFamiliarity,
+  type AssistantSpec,
   type DemoState,
   type QuizAttempt,
+  type PromptTemplate,
   type TeachingLevel,
 } from "./demo-state";
+import { moduleTwoLessons } from "@/features/learning/module-two-content";
+import { moduleThreeLessons } from "@/features/learning/module-three-content";
+
+const templateCategories = ["planning", "assessment", "adaptation"] as const;
+
+function cleanPromptLibrary(value: unknown): PromptTemplate[] {
+  if (!Array.isArray(value)) return [];
+  return templateCategories.flatMap((category) => {
+    const raw = value.find((item) => item && typeof item === "object" && item.category === category) as Partial<PromptTemplate> | undefined;
+    return raw ? [{ category, template: cleanString(raw.template, "", 2500),
+      completedExample: cleanString(raw.completedExample, "", 2500),
+      knownFailure: cleanString(raw.knownFailure, "", 1200),
+      reviewChecklist: cleanString(raw.reviewChecklist, "", 1200),
+      transferNote: cleanString(raw.transferNote, "", 1200) }] : [];
+  });
+}
 
 const allowedTeachingLevels: TeachingLevel[] = [
   "Classes 5–7",
@@ -59,7 +77,7 @@ function cleanQuizAttempts(value: unknown): QuizAttempt[] {
             : new Date().toISOString(),
         correctAnswers: Math.max(
           0,
-          Math.min(5, Math.round(Number(attempt.correctAnswers) || 0)),
+          Math.min(10, Math.round(Number(attempt.correctAnswers) || 0)),
         ),
         passed: scorePercent >= 70,
         scorePercent,
@@ -67,6 +85,56 @@ function cleanQuizAttempts(value: unknown): QuizAttempt[] {
     })
     .filter((attempt): attempt is QuizAttempt => Boolean(attempt))
     .slice(0, 20);
+}
+
+function cleanLessonIds(value: unknown, allowed: string[]) {
+  return Array.isArray(value)
+    ? [...new Set(value.filter((id): id is string => typeof id === "string" && allowed.includes(id)))]
+    : [];
+}
+
+function cleanAssistants(value: unknown): AssistantSpec[] {
+  if (!Array.isArray(value)) return [];
+  return value.slice(0, 20).flatMap((item): AssistantSpec[] => {
+    if (!item || typeof item !== "object") return [];
+    const raw = item as Partial<AssistantSpec>;
+    if (typeof raw.id !== "string" || !/^[0-9a-f-]{36}$/i.test(raw.id)) return [];
+    const field = (key: keyof AssistantSpec) => cleanString(raw[key], "", 2500);
+    return [{
+      id: raw.id,
+      version: Math.max(1, Math.min(100, Math.floor(Number(raw.version) || 1))),
+      versions: Array.isArray(raw.versions) ? raw.versions.slice(0, 30).flatMap((entry) =>
+        entry && typeof entry === "object" ? [{
+          version: Math.max(1, Math.min(100, Math.floor(Number(entry.version) || 1))),
+          at: cleanString(entry.at, "", 40), note: cleanString(entry.note, "", 500),
+        }] : [],
+      ) : [],
+      creatorCredit: field("creatorCredit"), sourcePack: field("sourcePack"),
+      classContextCard: field("classContextCard"),
+      optionalInputs: field("optionalInputs"), toolsPermitted: field("toolsPermitted"),
+      clarificationRule: field("clarificationRule"), stopRule: field("stopRule"),
+      sharingScope: field("sharingScope"), handoffNotes: field("handoffNotes"),
+      reuseDiary: field("reuseDiary"), rehearsalTranscript: field("rehearsalTranscript"),
+      revisedQuestion: field("revisedQuestion"),
+      name: cleanString(raw.name, "", 100), purpose: field("purpose"), persona: field("persona"),
+      task: field("task"), context: field("context"), format: field("format"),
+      boundaries: field("boundaries"), reviewChecks: field("reviewChecks"),
+      weakness: field("weakness"), revision: field("revision"),
+      tests: Array.isArray(raw.tests) ? raw.tests.slice(0, 24).flatMap((test) =>
+        test && typeof test === "object" ? [{
+          id: cleanString(test.id, "", 100),
+          caseId: cleanString(test.caseId, "", 10),
+          expected: cleanString(test.expected, "", 1200),
+          verdict: ["pass", "partial", "fail"].includes(String(test.verdict)) ? test.verdict : undefined,
+          version: Math.max(1, Math.min(100, Math.floor(Number(test.version) || 1))),
+          input: cleanString(test.input, "", 2500), output: cleanString(test.output, "", 6000),
+          review: cleanString(test.review, "", 2500), createdAt: cleanString(test.createdAt, "", 40),
+        }] : [],
+      ) : [],
+      updatedAt: cleanString(raw.updatedAt, new Date().toISOString(), 40),
+      deletedAt: raw.deletedAt ? cleanString(raw.deletedAt, "", 40) : undefined,
+    }];
+  });
 }
 
 export function sanitizeDemoState(value: unknown): DemoState {
@@ -86,6 +154,13 @@ export function sanitizeDemoState(value: unknown): DemoState {
     : initialDemoState.aiFamiliarity;
 
   return {
+    assistants: cleanAssistants(input.assistants),
+    craftPracticeCount: Math.max(0, Math.min(1000, Math.floor(Number(input.craftPracticeCount) || 0))),
+    promptLibrary: cleanPromptLibrary(input.promptLibrary),
+    lessonEvidence: input.lessonEvidence && typeof input.lessonEvidence === "object"
+      ? Object.fromEntries(Object.entries(input.lessonEvidence)
+        .filter(([id, value]) => [...moduleTwoLessons.map((lesson) => lesson.id), ...moduleThreeLessons.map((lesson) => lesson.id)].includes(id) && typeof value === "string")
+        .map(([id, value]) => [id, cleanString(value, "", 1200)])) : {},
     aiFamiliarity,
     captionsEnabled: input.captionsEnabled !== false,
     completedLessonSlugs: Array.isArray(input.completedLessonSlugs)
@@ -94,6 +169,8 @@ export function sanitizeDemoState(value: unknown): DemoState {
             typeof slug === "string" && allowedLessonSlugs.includes(slug),
         )
       : [],
+    moduleTwoCompletedLessonIds: cleanLessonIds(input.moduleTwoCompletedLessonIds, moduleTwoLessons.map((lesson) => lesson.id)),
+    moduleThreeCompletedLessonIds: cleanLessonIds(input.moduleThreeCompletedLessonIds, moduleThreeLessons.map((lesson) => lesson.id)),
     displayName: cleanString(input.displayName, "Participant", 120),
     goals: Array.isArray(input.goals)
       ? input.goals
@@ -107,6 +184,8 @@ export function sanitizeDemoState(value: unknown): DemoState {
     onboardingCompleted: Boolean(input.onboardingCompleted),
     primarySubject: cleanString(input.primarySubject, "General", 80),
     quizAttempts: cleanQuizAttempts(input.quizAttempts),
+    moduleTwoQuizAttempts: cleanQuizAttempts(input.moduleTwoQuizAttempts),
+    moduleThreeQuizAttempts: cleanQuizAttempts(input.moduleThreeQuizAttempts),
     reducedMotion: Boolean(input.reducedMotion),
     reflection: cleanString(input.reflection, "", 500),
     safeUseAccepted: Boolean(input.safeUseAccepted),
