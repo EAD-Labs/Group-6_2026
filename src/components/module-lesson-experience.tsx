@@ -8,6 +8,8 @@ import { useDemo } from "@/features/demo/demo-provider";
 import { assistantHasPassport, assistantHasRepairEvidence } from "@/features/learning/pathway";
 import { moduleTwoLessons } from "@/features/learning/module-two-content";
 import { moduleTwoTeaching } from "@/features/learning/module-two-teaching";
+import { moduleFourLessons } from "@/features/learning/module-four-content";
+import { sourceAuditCount, sourcePortfolioReady, sourceReviewChecks } from "@/features/learning/source-studio";
 import { moduleThreeLessons } from "@/features/learning/module-three-content";
 import { promptLibraryReady } from "@/features/learning/prompt-library";
 import { AppShell } from "./app-shell";
@@ -16,22 +18,26 @@ import { PromptLibraryEditor } from "./prompt-library-editor";
 import { HydrationGate } from "./ui/hydration-gate";
 import { Icon } from "./ui/icon";
 
-export function ModuleLessonExperience({ module, slug }: { module: 2 | 3; slug: string }) {
+export function ModuleLessonExperience({ module, slug }: { module: 2 | 3 | 4; slug: string }) {
   const router = useRouter();
   const { state, updateState, completeModuleLesson } = useDemo();
-  const lessons = module === 2 ? moduleTwoLessons : moduleThreeLessons;
+  const lessons = module === 2 ? moduleTwoLessons : module === 3 ? moduleThreeLessons : moduleFourLessons;
   const index = lessons.findIndex((lesson) => lesson.id === slug);
   const lesson = lessons[index];
-  const completed = module === 2 ? state.moduleTwoCompletedLessonIds : state.moduleThreeCompletedLessonIds;
+  const completed = module === 2 ? state.moduleTwoCompletedLessonIds : module === 3 ? state.moduleThreeCompletedLessonIds : state.moduleFourCompletedLessonIds;
   const [evidence, setEvidence] = useState(state.lessonEvidence[slug] ?? "");
   const [selected, setSelected] = useState("");
   if (!lesson) return null;
+  const four = module === 4 ? moduleFourLessons[index] : null;
   const three = module === 3 ? moduleThreeLessons[index] : null;
   const two = module === 2 ? moduleTwoLessons[index] : null;
-  const sections = three?.sections.map((section) => ({ heading: section.heading, body: section.body, example: section.example }))
+  const sections = (four ?? three)?.sections.map((section) => ({ heading: section.heading, body: section.body, example: section.example }))
     ?? (moduleTwoTeaching[slug] ?? []).map((section) => ({ ...section, example: "" }));
-  const check = three?.check;
-  const activityReady = module === 2 ? slug !== "teaching-prompt-library" || promptLibraryReady(state.promptLibrary) : slug === "prompt-versus-assistant" || state.assistants.some((assistant) => {
+  const check = (four ?? three)?.check;
+  const portfolio = state.sourcePortfolio;
+  const briefReady = portfolio.objective.trim().length >= 20 && portfolio.audience.trim().length >= 3 && portfolio.sourceLabel.trim().length >= 3 && Boolean(portfolio.sourcePermission) && portfolio.sourceSafe;
+  const fourReady = !four?.studioTask ? true : four.studioTask === "brief" ? briefReady : four.studioTask === "audit" ? sourceAuditCount(portfolio) === 3 : four.studioTask === "portfolio" ? sourcePortfolioReady(portfolio) : portfolio.draft.trim().length >= 100 && portfolio.revisionNote.trim().length >= 40 && (slug !== "review-share-responsibly" || sourceReviewChecks.every((item) => portfolio.reviewChecks.includes(item.id)));
+  const activityReady = module === 4 ? fourReady : module === 2 ? slug !== "teaching-prompt-library" || promptLibraryReady(state.promptLibrary) : slug === "prompt-versus-assistant" || state.assistants.some((assistant) => {
     if (assistant.deletedAt) return false;
     if (slug === "assistant-passport") return assistantHasPassport(assistant);
     if (slug === "build-assistant") return assistant.tests.length >= 1;
@@ -60,10 +66,10 @@ export function ModuleLessonExperience({ module, slug }: { module: 2 | 3; slug: 
       <article className="course-lesson-main">
         <header className="page-heading"><div><span className="eyebrow">Module {module} · Lesson {index + 1} of {lessons.length}</span><h1>{lesson.title}</h1><p>{lesson.summary}</p></div><span className="duration-pill"><Icon name="clock" />{lesson.durationMinutes} min</span></header>
         <div className="lesson-sections course-sections">{sections.map((section, sectionIndex) => <section key={section.heading}><span className="eyebrow">Idea {sectionIndex + 1}</span><h2>{section.heading}</h2><p>{section.body}</p>{section.example ? <div className="course-example"><strong>Classroom example</strong><p>{section.example}</p></div> : null}</section>)}</div>
-        {two ? <section className="course-activity"><span className="eyebrow">Try it</span><h2>Classroom practice</h2><p>{two.practice}</p><p><strong>Evidence to record:</strong> {two.evidence}</p><LearningResources resources={two.resources} />{slug === "teaching-prompt-library" ? <PromptLibraryEditor /> : null}</section> : <section className="course-activity"><span className="eyebrow">Try it</span><h2>Staffroom activity</h2><p>{three?.activity}</p>{index >= 1 ? <Link className="button button-secondary button-small" href="/learn/module-3/staffroom">Open AI Staffroom <Icon name="arrow-right" /></Link> : null}</section>}
+        {two ? <section className="course-activity"><span className="eyebrow">Try it</span><h2>Classroom practice</h2><p>{two.practice}</p><p><strong>Evidence to record:</strong> {two.evidence}</p><LearningResources resources={two.resources} />{slug === "teaching-prompt-library" ? <PromptLibraryEditor /> : null}</section> : <section className="course-activity"><span className="eyebrow">Try it</span><h2>{four ? "Source-to-classroom practice" : "Staffroom activity"}</h2><p>{(four ?? three)?.activity}</p>{four ? <><p><strong>Evidence to record:</strong> {four.evidenceHint}</p><LearningResources resources={four.resources} /><Link className="button button-secondary button-small" href="/learn/module-4/studio">Open Source Studio <Icon name="arrow-right" /></Link></> : index >= 1 ? <Link className="button button-secondary button-small" href="/learn/module-3/staffroom">Open AI Staffroom <Icon name="arrow-right" /></Link> : null}</section>}
         {check ? <section className="course-activity"><span className="eyebrow">Check the idea</span><h2>{check.prompt}</h2><div className="quiz-options">{check.options.map((option, choiceIndex) => <button aria-pressed={selected === option} className={selected === option ? "quiz-option selected" : "quiz-option"} key={option} onClick={() => setSelected(option)} type="button"><span className="option-key">{String.fromCharCode(65 + choiceIndex)}</span>{option}</button>)}</div>{selected ? <div className={selected === check.answer ? "feedback-box correct" : "feedback-box supportive"}><Icon name={selected === check.answer ? "check" : "info"} /><p>{check.explanation}</p></div> : null}</section> : null}
         <section className="course-activity"><label htmlFor="lesson-evidence"><span className="eyebrow">Your evidence</span><h2>Record what you tried and learned</h2></label><p>Use fictional or general classroom examples. Do not enter student names or records.</p><textarea id="lesson-evidence" maxLength={1200} onBlur={saveEvidence} onChange={(event) => setEvidence(event.target.value)} placeholder="Describe your classroom task, what changed and what you would verify before use…" rows={6} value={evidence} /><small>{evidence.trim().length}/30 minimum characters</small></section>
-        <div className="lesson-footer-actions"><span className="save-state"><Icon name="cloud" />{completed.includes(slug) ? "Lesson completed" : activityReady ? "Evidence saves when you leave the field" : module === 2 ? "Complete three prompt templates first" : "Complete the linked Staffroom activity first"}</span><button className="button button-primary" disabled={!canComplete} onClick={finish} type="button">Complete lesson <Icon name="arrow-right" /></button></div>
+        <div className="lesson-footer-actions"><span className="save-state"><Icon name="cloud" />{completed.includes(slug) ? "Lesson completed" : activityReady ? "Evidence saves when you leave the field" : module === 4 ? "Complete the linked Source Studio evidence first" : module === 2 ? "Complete three prompt templates first" : "Complete the linked Staffroom activity first"}</span><button className="button button-primary" disabled={!canComplete} onClick={finish} type="button">Complete lesson <Icon name="arrow-right" /></button></div>
       </article>
       <aside className="course-lesson-rail"><span className="eyebrow">Your route</span><h2>Module {module}</h2><ol>{lessons.map((item, itemIndex) => <li key={item.id} className={itemIndex === index ? "active" : completed.includes(item.id) ? "complete" : ""}><span>{completed.includes(item.id) ? <Icon name="check" /> : itemIndex + 1}</span><Link href={`/learn/module-${module}/lessons/${item.id}`}>{item.title}</Link></li>)}</ol><Link className="text-link" href={`/learn/module-${module}`}>View module overview <Icon name="arrow-right" /></Link></aside>
     </div>

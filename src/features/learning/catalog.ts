@@ -67,7 +67,7 @@ export const learningModules: LearningModule[] = [
   {
     description:
       "Use teacher-owned sources to build grounded worksheets, quizzes and slide outlines.",
-    estimatedMinutes: 40,
+    estimatedMinutes: 260,
     id: "00000000-0000-4000-8000-000000000004",
     position: 4,
     slug: "module-4",

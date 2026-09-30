@@ -45,9 +45,9 @@ type DemoContextValue = {
   saveProfile: (input: ProfileInput) => void;
   setSafeUseAccepted: (accepted: boolean) => void;
   completeLesson: (lessonSlug: string) => void;
-  completeModuleLesson: (module: 2 | 3, lessonId: string) => void;
+  completeModuleLesson: (module: 2 | 3 | 4, lessonId: string) => void;
   recordQuizAttempt: (attempt: QuizAttempt) => void;
-  recordModuleQuizAttempt: (module: 2 | 3, attempt: QuizAttempt) => void;
+  recordModuleQuizAttempt: (module: 2 | 3 | 4, attempt: QuizAttempt) => void;
 };
 
 const DemoContext = createContext<DemoContextValue | null>(null);
@@ -183,16 +183,16 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
-  const completeModuleLesson = useCallback((module: 2 | 3, lessonId: string) => {
-    const key = module === 2 ? "moduleTwoCompletedLessonIds" : "moduleThreeCompletedLessonIds";
+  const completeModuleLesson = useCallback((module: 2 | 3 | 4, lessonId: string) => {
+    const key = module === 2 ? "moduleTwoCompletedLessonIds" : module === 3 ? "moduleThreeCompletedLessonIds" : "moduleFourCompletedLessonIds";
     setState((currentState) => ({
       ...currentState,
       [key]: currentState[key].includes(lessonId) ? currentState[key] : [...currentState[key], lessonId],
     }));
   }, []);
 
-  const recordModuleQuizAttempt = useCallback((module: 2 | 3, attempt: QuizAttempt) => {
-    const key = module === 2 ? "moduleTwoQuizAttempts" : "moduleThreeQuizAttempts";
+  const recordModuleQuizAttempt = useCallback((module: 2 | 3 | 4, attempt: QuizAttempt) => {
+    const key = module === 2 ? "moduleTwoQuizAttempts" : module === 3 ? "moduleThreeQuizAttempts" : "moduleFourQuizAttempts";
     setState((currentState) => ({ ...currentState, [key]: [...currentState[key], attempt] }));
   }, []);
 

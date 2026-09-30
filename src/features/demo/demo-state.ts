@@ -1,3 +1,5 @@
+import { emptySourcePortfolio, sanitizeSourcePortfolio, type SourcePortfolio } from "@/features/learning/source-studio";
+
 export const demoStorageKey = "promptshala:presentation-state:v1";
 
 export type TeachingLevel = "Classes 5–7" | "Classes 8–10" | "Both";
@@ -73,6 +75,8 @@ export type DemoState = {
   lessonEvidence: Record<string, string>;
   moduleTwoCompletedLessonIds: string[];
   moduleThreeCompletedLessonIds: string[];
+  moduleFourCompletedLessonIds: string[];
+  sourcePortfolio: SourcePortfolio;
   displayName: string;
   goals: string[];
   institution: string;
@@ -82,6 +86,7 @@ export type DemoState = {
   quizAttempts: QuizAttempt[];
   moduleTwoQuizAttempts: QuizAttempt[];
   moduleThreeQuizAttempts: QuizAttempt[];
+  moduleFourQuizAttempts: QuizAttempt[];
   reducedMotion: boolean;
   reflection: string;
   safeUseAccepted: boolean;
@@ -99,6 +104,8 @@ export const initialDemoState: DemoState = {
   lessonEvidence: {},
   moduleTwoCompletedLessonIds: [],
   moduleThreeCompletedLessonIds: [],
+  moduleFourCompletedLessonIds: [],
+  sourcePortfolio: emptySourcePortfolio,
   displayName: "Meera",
   goals: [],
   institution: "",
@@ -108,6 +115,7 @@ export const initialDemoState: DemoState = {
   quizAttempts: [],
   moduleTwoQuizAttempts: [],
   moduleThreeQuizAttempts: [],
+  moduleFourQuizAttempts: [],
   reducedMotion: false,
   reflection: "",
   safeUseAccepted: false,
@@ -135,6 +143,9 @@ export function loadDemoState(storage: Pick<Storage, "getItem">): DemoState {
       moduleThreeCompletedLessonIds: Array.isArray(parsedValue.moduleThreeCompletedLessonIds) ? parsedValue.moduleThreeCompletedLessonIds : [],
       moduleTwoQuizAttempts: Array.isArray(parsedValue.moduleTwoQuizAttempts) ? parsedValue.moduleTwoQuizAttempts : [],
       moduleThreeQuizAttempts: Array.isArray(parsedValue.moduleThreeQuizAttempts) ? parsedValue.moduleThreeQuizAttempts : [],
+      moduleFourQuizAttempts: Array.isArray(parsedValue.moduleFourQuizAttempts) ? parsedValue.moduleFourQuizAttempts : [],
+      moduleFourCompletedLessonIds: Array.isArray(parsedValue.moduleFourCompletedLessonIds) ? parsedValue.moduleFourCompletedLessonIds : [],
+      sourcePortfolio: sanitizeSourcePortfolio(parsedValue.sourcePortfolio),
     };
   } catch {
     return initialDemoState;
