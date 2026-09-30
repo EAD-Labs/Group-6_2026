@@ -47,12 +47,12 @@ export function CourseNavigation({ mobileOpen, onClose }: CourseNavigationProps)
                 <Link aria-current={pathname === modulePath ? "page" : undefined} className="course-overview" href={modulePath as Route} onClick={onClose}>Module overview</Link>
                 {content?.lessons.map((lesson, index) => {
                   const href = `${modulePath}/lessons/${lesson.id}`;
-                  const available = content.unlocked && ((isPresentationDemo && module.position !== 1) || content.completed.includes(lesson.id) || index <= nextIndex);
+                  const available = content.unlocked && (isPresentationDemo || content.completed.includes(lesson.id) || index <= nextIndex);
                   return available ? <Link aria-current={pathname === href ? "page" : undefined} href={href as Route} key={lesson.id} onClick={onClose}><span>{String(index + 1).padStart(2, "0")}</span>{lesson.title}{content.completed.includes(lesson.id) ? <Icon name="check" /> : null}</Link> : <span className="course-navigation-locked" key={lesson.id}><span>{String(index + 1).padStart(2, "0")}</span>{lesson.title}<Icon name="lock" /></span>;
                 })}
                 {module.position === 2 ? content?.unlocked ? <Link aria-current={pathname === `${modulePath}/practice` ? "page" : undefined} href={`${modulePath}/practice` as Route} onClick={onClose}><span>↳</span>CRAFT practice lab</Link> : <span className="course-navigation-locked"><span>↳</span>CRAFT practice lab<Icon name="lock" /></span> : null}
                 {module.position === 3 ? content?.unlocked ? <Link aria-current={pathname === `${modulePath}/staffroom` ? "page" : undefined} href={`${modulePath}/staffroom` as Route} onClick={onClose}><span>↳</span>AI Staffroom</Link> : <span className="course-navigation-locked"><span>↳</span>AI Staffroom<Icon name="lock" /></span> : null}
-                {content?.unlocked && ((isPresentationDemo && module.position !== 1) || content.quizReady) ? <Link aria-current={pathname === `${modulePath}/quiz` ? "page" : undefined} href={`${modulePath}/quiz` as Route} onClick={onClose}><span>✓</span>Knowledge check</Link> : <span className="course-navigation-locked"><span>✓</span>Knowledge check<Icon name="lock" /></span>}
+                {content?.unlocked && (isPresentationDemo || content.quizReady) ? <Link aria-current={pathname === `${modulePath}/quiz` ? "page" : undefined} href={`${modulePath}/quiz` as Route} onClick={onClose}><span>✓</span>Knowledge check</Link> : <span className="course-navigation-locked"><span>✓</span>Knowledge check<Icon name="lock" /></span>}
               </>}
             </div>
           </details>;
