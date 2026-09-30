@@ -1073,8 +1073,8 @@ body { font-size: 16px; }
 .editorial-header { border-bottom: 1px solid var(--ed-rule); background: var(--ed-paper); }
 .editorial-header-inner, .editorial-masthead, .editorial-opening, .editorial-pathway, .editorial-method, .editorial-principle, .editorial-last, .editorial-footer { width: min(1280px, calc(100% - 3rem)); margin-right: auto; margin-left: auto; }
 .editorial-header-inner { display: flex; min-height: 72px; align-items: center; gap: 1.4rem; }
-.editorial-wordmark { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 0.6rem; color: var(--ed-ink); font-family: var(--serif); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.05em; text-decoration: none; }
-.editorial-mark { display: block; width: 12px; height: 12px; background: var(--ed-rust); transform: rotate(-8deg); }
+.editorial-wordmark { display: inline-flex; flex: 0 0 auto; align-items: center; text-decoration: none; }
+.editorial-logo { display: block; width: clamp(10.5rem, 17vw, 13rem); height: auto; }
 .editorial-header-note { padding-left: 1.2rem; border-left: 1px solid var(--ed-rule); color: var(--ed-muted); font-size: 0.73rem; }
 .editorial-header nav { display: flex; margin-left: auto; gap: clamp(1rem, 2vw, 2.2rem); }
 .editorial-header nav a { color: var(--ed-ink); font-size: 0.77rem; font-weight: 650; text-decoration: none; }
@@ -1142,7 +1142,7 @@ body { font-size: 16px; }
 .editorial-last p { max-width: 590px; margin: 0; color: var(--ed-muted); font-size: 0.86rem; }
 .editorial-last .editorial-primary { flex: 0 0 auto; }
 .editorial-footer { display: flex; min-height: 90px; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--ed-rule); color: var(--ed-muted); font-size: 0.7rem; }
-.editorial-footer .editorial-wordmark { font-size: 1.25rem; }
+.editorial-footer .editorial-logo { width: 10rem; }
 
 /* Reduce oversized display type throughout the learning app; keep reading text legible. */
 .page-heading h1 { font-size: clamp(2rem, 3.2vw, 3.1rem); line-height: 1.08; }
@@ -1181,7 +1181,7 @@ body { font-size: 16px; }
   .editorial-last { align-items: flex-start; flex-direction: column; justify-content: center; }
 }
 @media (max-width: 520px) {
-  .editorial-wordmark { font-size: 1.3rem; }
+  .editorial-logo { width: 10.5rem; }
   .editorial-header-cta { min-height: 38px; padding: 0.55rem 0.7rem; font-size: 0.72rem; }
   .editorial-masthead { font-size: 0.6rem; }
   .editorial-intro h1 { font-size: clamp(2rem, 8.8vw, 2.35rem); }
