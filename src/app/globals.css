@@ -1389,3 +1389,26 @@ body, .app-content { font-size: 0.9rem; }
   .editorial-module-list .editorial-module-card { min-height: 0; gap: 0.75rem; }
   .editorial-module-action { margin-top: 0.5rem; }
 }
+
+/* Labs and module overviews use the same reading scale as lesson pages. */
+.course-frame .learning-reading-scale { font-size: 0.75rem; }
+.course-frame .learning-reading-scale h1 {
+  font-size: clamp(1.25rem, 1.6vw, 1.65rem);
+  line-height: 1.2;
+}
+.course-frame .learning-reading-scale h2 { font-size: 1rem; line-height: 1.3; }
+.course-frame .learning-reading-scale h3 { font-size: 0.85rem; line-height: 1.3; }
+.course-frame .learning-reading-scale :is(p, li) { font-size: 0.75rem; line-height: 1.65; }
+.course-frame .learning-reading-scale :is(.page-heading, .module-hero) p { line-height: 1.6; }
+.course-frame .learning-reading-scale :is(button, .button, .text-link, label, input, textarea, select, summary) {
+  font-size: 0.75rem;
+}
+.course-frame .learning-reading-scale :is(input, textarea) { line-height: 1.65; }
+.course-frame .learning-reading-scale :is(label, .scenario-list, .scenario-brief, .craft-dimensions, .craft-feedback-list, .staffroom-library) strong {
+  font-size: 0.75rem;
+}
+.course-frame .learning-reading-scale :is(small, .breadcrumbs, .metadata-row, .section-meta, .preview-badge, .status-pill, .module-badge, .rule-based-chip, .activity-copy > span, .craft-editor-heading > span, .craft-textarea-label > span, .craft-feedback-meta, .module-progress-card > span) {
+  font-size: 0.68rem;
+}
+.course-frame .learning-reading-scale .eyebrow { font-size: 0.62rem; }
+.course-frame .learning-reading-scale .module-progress-card > strong { font-size: 0.85rem; }

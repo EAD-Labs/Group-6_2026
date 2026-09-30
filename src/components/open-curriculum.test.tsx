@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import CraftPracticePage from "@/app/learn/module-2/practice/page";
 import ModuleTwoPage from "@/app/learn/module-2/page";
 import ModuleThreePage from "@/app/learn/module-3/page";
 import { useDemo } from "@/features/demo/demo-provider";
@@ -26,6 +27,13 @@ describe("participant access without prerequisites", () => {
     two.unmount();
     const three = render(<ModuleThreePage />);
     expect(three.container.querySelector('a[href="/learn/module-3/lessons/repair-and-remix"]')).not.toBeNull();
+  });
+
+  it("opens CRAFT practice for a participant with no completed lessons", () => {
+    render(<CraftPracticePage />);
+    expect(screen.getByRole("heading", { level: 1, name: "CRAFT practice lab" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: /What should this prompt help you do/ })).toBeEnabled();
+    expect(screen.queryByText("Complete Module 1 first")).toBeNull();
   });
 
   it.each([2, 3] as const)("opens a later Module %s chapter directly", (module) => {
