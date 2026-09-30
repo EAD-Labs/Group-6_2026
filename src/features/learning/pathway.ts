@@ -51,9 +51,9 @@ export function getPathwayStatus(state: DemoState) {
   const twoLessons = completedCount(state.moduleTwoCompletedLessonIds, moduleTwoLessons.map((lesson) => lesson.id));
   const threeLessons = completedCount(state.moduleThreeCompletedLessonIds, moduleThreeLessons.map((lesson) => lesson.id));
   const onePassed = oneLessons === moduleOneLessons.length && hasPassed(state.quizAttempts);
-  const twoPassed = onePassed && twoLessons === moduleTwoLessons.length && state.craftPracticeCount >= 2 && promptLibraryReady(state.promptLibrary) && hasPassed(state.moduleTwoQuizAttempts);
+  const twoPassed = twoLessons === moduleTwoLessons.length && state.craftPracticeCount >= 2 && promptLibraryReady(state.promptLibrary) && hasPassed(state.moduleTwoQuizAttempts);
   const assistantReady = state.assistants.some(assistantHasEvidence);
-  const threePassed = twoPassed && threeLessons === moduleThreeLessons.length && assistantReady && hasPassed(state.moduleThreeQuizAttempts);
+  const threePassed = threeLessons === moduleThreeLessons.length && assistantReady && hasPassed(state.moduleThreeQuizAttempts);
   const totalActivities = moduleOneLessons.length + moduleTwoLessons.length + moduleThreeLessons.length + 3;
   const completeActivities = oneLessons + twoLessons + threeLessons + Number(onePassed) + Number(twoPassed) + Number(threePassed);
 
