@@ -12,7 +12,7 @@ export default function ModuleThreePage() {
   const { state } = useDemo();
   const status = getPathwayStatus(state);
   const next = moduleThreeLessons.find((lesson) => !state.moduleThreeCompletedLessonIds.includes(lesson.id));
-  return <HydrationGate><AppShell active="learn">
+  return <HydrationGate><AppShell active="learn" contentClassName="learning-reading-scale">
     <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/dashboard">Home</Link><Icon name="chevron-right" /><span>Module 3</span></nav>
     <>
       <header className="module-hero craft-module-hero"><div><span className="module-badge">Module 3 · Reusable Teacher Assistants</span><h1>Build an assistant you can trust and improve.</h1><p>Turn a strong teaching prompt into a reusable Agent Passport. Challenge it with missing context, source gaps and new classroom needs, then repair and share it safely.</p><div className="metadata-row"><span><Icon name="clock" />360 minutes</span><span><Icon name="book" />8 lessons</span><span><Icon name="target" />Repair Clinic + 10-question quiz</span></div><Link className="button button-primary" href={next ? `/learn/module-3/lessons/${next.id}` : "/learn/module-3/staffroom"}>{next ? "Continue lessons" : "Open AI Staffroom"}<Icon name="arrow-right" /></Link></div><div className="craft-letter-stack" aria-label="Module 3 workflow"><span><strong>1</strong>Adopt</span><span><strong>2</strong>Build</span><span><strong>3</strong>Test</span><span><strong>4</strong>Repair</span><span><strong>5</strong>Remix</span></div></header>

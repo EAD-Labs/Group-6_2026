@@ -20,7 +20,7 @@ export default function ModuleOnePage() {
 
   return (
     <HydrationGate>
-      <AppShell active="learn">
+      <AppShell active="learn" contentClassName="learning-reading-scale">
         <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/dashboard">Home</Link><Icon name="chevron-right" /><span>Module 1</span></nav>
         <header className="module-hero">
           <div><span className="module-badge">Module 1</span><h1>{moduleOne.title}</h1><p>{moduleOne.description}</p><div className="metadata-row"><span><Icon name="clock" />{moduleOne.estimatedMinutes} minutes</span><span><Icon name="document" />{moduleOneLessons.length} lessons + quiz</span><span><Icon name="target" />70% to pass</span></div>{passed ? <Link className="button button-primary" href="/learn/module-2">Continue to Module 2 <Icon name="arrow-right" /></Link> : nextLesson ? <Link className="button button-primary" href={`/learn/module-1/lessons/${nextLesson.slug}`}>Continue current lesson <Icon name="arrow-right" /></Link> : <Link className="button button-primary" href="/learn/module-1/quiz">Start knowledge check <Icon name="arrow-right" /></Link>}</div>
