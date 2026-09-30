@@ -43,5 +43,6 @@ These migrations and real signed-in isolation checks have not been applied or es
 - Studio interface: `src/components/source-studio.tsx`
 - Participant API: `src/app/api/participant-state/route.ts`
 - Client report: `progress.md`
-- Review PR: https://github.com/EAD-Labs/Group-6_2026/pull/7
+- Review PR: https://github.com/EAD-Labs/Group-6_2026/pull/8
 - Jira: https://darshansonawane1110.atlassian.net/browse/KAN-21
+- Review deployment: https://promptshala-i2z9im0zc-sus-co.vercel.app/learn/module-4
