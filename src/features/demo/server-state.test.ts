@@ -1,8 +1,18 @@
 import { describe, expect, it } from "vitest";
 
 import { sanitizeDemoState } from "./server-state";
+import { readyPortfolio } from "@/test/fixtures/source-portfolio";
 
 describe("authenticated participant state validation", () => {
+  it("preserves Module 4 evidence and rejects unknown lesson IDs", () => {
+    const state = sanitizeDemoState({ moduleFourCompletedLessonIds: ["citation-detective", "unknown"],
+      moduleFourQuizAttempts: [{ scorePercent: 80, correctAnswers: 4 }],
+      sourcePortfolio: readyPortfolio(), lessonEvidence: { "citation-detective": "Checked A:2 against the contradicted claim." } });
+    expect(state.moduleFourCompletedLessonIds).toEqual(["citation-detective"]);
+    expect(state.moduleFourQuizAttempts[0]).toMatchObject({ scorePercent: 80, passed: true });
+    expect(state.sourcePortfolio.audits.c2.verdict).toBe("contradicted");
+    expect(state.lessonEvidence["citation-detective"]).toContain("A:2");
+  });
   it("keeps supported profile and progress values", () => {
     const state = sanitizeDemoState({
       displayName: " Meera ",

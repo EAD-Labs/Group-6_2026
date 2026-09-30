@@ -1,65 +1,47 @@
-# Progress, Quiz Attempts, and Unlocking Logic
+# Progress, Quiz Attempts, and Access
 
-## State model
+## Current access requirement
 
-Each participant/module record has one of four states:
+All four participant modules, chapters, labs and quizzes are available from the start. This user-requested policy supersedes the original prerequisite/unlocking design. Completing an earlier module is not an access requirement.
 
-- `locked` — the previous required module has not been passed;
-- `available` — prerequisites are passed but the participant has not started;
-- `in_progress` — at least one required lesson or quiz attempt has started;
-- `passed` — the participant has achieved the module pass threshold.
+Access and assessed completion are separate. The database still permits a legacy `locked` status for compatibility, but the current learning UI does not use it to block any implemented module.
 
-Module 1 is `available` immediately after onboarding because it has no previous module prerequisite.
+## Assessed completion
 
-## Lesson progression
+`src/features/learning/pathway.ts` calculates the participant learning record:
 
-1. Opening a lesson records `started_at` once.
-2. A lesson records `completed_at` only after all required interactions are submitted.
-3. Completed lessons remain completed when revisited.
-4. The Module 1 quiz unlocks when all required Module 1 lessons are complete.
-5. Optional media never blocks lesson completion.
+| Module | Required evidence |
+| --- | --- |
+| 1 | Six lessons and passed knowledge check |
+| 2 | Seven lessons, at least two CRAFT attempts, complete prompt library and passed knowledge check |
+| 3 | Eight lessons, a complete tested/repaired assistant package and passed knowledge check |
+| 4 | Eight lessons, a complete Source Studio portfolio and passed knowledge check |
 
-## Quiz rules
+Each module can be completed independently. Whole-course completion requires all four. Course percentage counts the 29 lessons and four assessed module completions, reaching 100% only when every requirement is met.
 
-- The module pass threshold is stored with the module and initially set to 70%.
-- The five-question prototype therefore requires four correct answers, producing 80%; three correct produces 60% and does not pass.
-- Every submission creates a new immutable `quiz_attempts` row and one immutable response row per question.
-- Attempt numbers increase from 1 for each participant and quiz.
-- Retrying is unlimited during the pilot.
-- The latest attempt is shown first; the best score is retained on `module_progress`.
-- After submission, show correctness and the reviewed explanation for each answered question.
-- Never send answer keys to the browser before submission.
+The Module 4 portfolio requires an objective, audience, source register, permission and privacy confirmation; three correct passage-linked audits with explanations; a classroom draft and explained revision; six review checks; and a course reflection. Editing the brief, draft or audit resets the UI's teacher review checks. Existing lesson completion remains recorded; module completion is recalculated from current portfolio evidence.
 
-## Unlocking rules
+## Lesson and quiz behaviour
 
-1. A failed attempt keeps the module `in_progress` and does not unlock the next module.
-2. A passing attempt sets `status = passed`, records `passed_at` once, and updates `best_score_percent`.
-3. Passing Module N creates or updates Module N+1 as `available`.
-4. A later lower retry cannot remove a prior pass or reduce the best score.
-5. Administrators may correct data only through an audited server-side process; the participant UI has no manual unlock control.
+- A required lesson interaction must be completed before the participant marks that lesson complete.
+- Every chapter and quiz remains open regardless of prior progress.
+- Optional media and external Google notebook access do not block completion.
+- Quiz grading uses a 70% threshold. Five-question quizzes require four correct answers; Module 3's ten-question quiz requires seven.
+- Quizzes show explanations after submission, support unlimited retries and retain prior attempts and best scores.
+- A passed quiz alone does not complete a module.
+- Source Studio export is a practice record, not a certificate.
 
-## Transaction boundary
+## Current persistence and release boundary
 
-Quiz grading, attempt creation, response creation, module progress update, and next-module unlocking must run in one database transaction. The browser submits selected option IDs to a server-side function and receives only the completed attempt result. If any write fails, the entire submission rolls back so a score cannot exist without its responses or progress update.
+The review interface stores demo evidence locally and has an authenticated participant-state API that sanitizes records and saves profile, lesson, quiz and assistant data under existing RLS. Module 4 adds a profile `source_portfolio` object, lesson IDs and quiz ID. Apply the Modules 2/3 migration before the Module 4 migration on the target database.
 
-## Pure application rules
+The preview does not establish production persistence. Signed-in round-trip checks and two-participant isolation remain required. Quiz evaluation currently runs in the learning client; the API stores sanitized attempt metadata. It is not yet a server-authoritative assessment transaction and must not determine issued credentials without the certification implementation.
 
-`src/features/learning/progress.ts` provides deterministic functions for:
+Before certificate issuing, implement authoritative server grading with content versions, immutable question responses, validated module evidence and an atomic progress update. Test duplicate/unknown options, invalid scores, concurrent retries, session expiry and failed writes. Keep administrative corrections audited.
 
-- calculating a percentage and pass/fail result;
-- deriving module state;
-- checking whether required lessons unlock the quiz;
-- checking whether a passed module unlocks the next module; and
-- incrementing attempt numbers.
+## Related evidence
 
-These functions support UI behaviour and unit tests. PostgreSQL remains authoritative, and the server must repeat all validation before persisting a result.
-
-## Edge cases
-
-- Zero-question quiz: reject configuration and submission.
-- Correct answers greater than total questions: reject as invalid.
-- Duplicate or unknown option IDs: reject before grading.
-- Concurrent retry submissions: enforce the unique participant/quiz/attempt number and retry the transaction safely.
-- Content changed after an attempt: keep the attempt immutable; add content versioning before production reporting.
-- Session expires during a lesson: retain database progress and require sign-in before the next write.
-
+- Curriculum: `docs/content/CURRICULUM.md`
+- Module 4 review: `docs/testing/MODULE_4_REVIEW.md`
+- Client progress: `progress.md`
+- Participant API: `src/app/api/participant-state/route.ts`

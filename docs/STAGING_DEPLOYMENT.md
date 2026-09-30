@@ -50,7 +50,7 @@ Never reuse a Supabase project or secret across these environments.
 - The quiz remains unavailable until required lessons are complete.
 - Three of five answers fails; four of five passes.
 - A failed attempt can be retried and remains in attempt history.
-- Passing unlocks the next module without reducing the best score.
+- All four learning modules are accessible from the start. Completion records require their lessons, passed quiz and required practice evidence; retries retain the best score.
 - The evaluator key stays on the server and never appears in the browser, screenshots or response payloads.
 - The CRAFT endpoint returns five 0–3 scores, a total out of 15 and a safe deterministic fallback.
 - Authenticated attempts store a one-way prompt fingerprint, scores, evaluator source and safety flags without raw prompt text.

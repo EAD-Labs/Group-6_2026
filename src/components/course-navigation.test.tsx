@@ -5,6 +5,7 @@ import { useDemo } from "@/features/demo/demo-provider";
 import { initialDemoState } from "@/features/demo/demo-state";
 import { moduleOneLessons } from "@/features/learning/catalog";
 import { moduleTwoLessons } from "@/features/learning/module-two-content";
+import { moduleFourLessons } from "@/features/learning/module-four-content";
 import { moduleThreeLessons } from "@/features/learning/module-three-content";
 import { CourseNavigation } from "./course-navigation";
 
@@ -21,13 +22,14 @@ describe("open course access", () => {
 
   it.each([false, true])("links every lesson and quiz with no progress (demo=%s)", (isDemo) => {
     const container = renderNavigation(isDemo);
-    const lessons = [moduleOneLessons.map((lesson) => lesson.slug), moduleTwoLessons.map((lesson) => lesson.id), moduleThreeLessons.map((lesson) => lesson.id)];
+    const lessons = [moduleOneLessons.map((lesson) => lesson.slug), moduleTwoLessons.map((lesson) => lesson.id), moduleThreeLessons.map((lesson) => lesson.id), moduleFourLessons.map((lesson) => lesson.id)];
     lessons.forEach((ids, index) => {
       ids.forEach((id) => expect(container.querySelector(`a[href="/learn/module-${index + 1}/lessons/${id}"]`)).not.toBeNull());
       expect(container.querySelector(`a[href="/learn/module-${index + 1}/quiz"]`)).not.toBeNull();
     });
     expect(container.querySelector('a[href="/learn/module-2/practice"]')).not.toBeNull();
     expect(container.querySelector('a[href="/learn/module-3/staffroom"]')).not.toBeNull();
+    expect(container.querySelector('a[href="/learn/module-4/studio"]')).not.toBeNull();
     expect(container.querySelectorAll(".course-navigation-locked")).toHaveLength(0);
   });
 });
