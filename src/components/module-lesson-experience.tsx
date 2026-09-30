@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useDemo } from "@/features/demo/demo-provider";
-import { assistantHasPassport, assistantHasRepairEvidence, getPathwayStatus } from "@/features/learning/pathway";
+import { assistantHasPassport, assistantHasRepairEvidence } from "@/features/learning/pathway";
 import { moduleTwoLessons } from "@/features/learning/module-two-content";
 import { moduleTwoTeaching } from "@/features/learning/module-two-teaching";
 import { moduleThreeLessons } from "@/features/learning/module-three-content";
@@ -18,14 +18,11 @@ import { Icon } from "./ui/icon";
 
 export function ModuleLessonExperience({ module, slug }: { module: 2 | 3; slug: string }) {
   const router = useRouter();
-  const { state, isPresentationDemo, updateState, completeModuleLesson } = useDemo();
+  const { state, updateState, completeModuleLesson } = useDemo();
   const lessons = module === 2 ? moduleTwoLessons : moduleThreeLessons;
   const index = lessons.findIndex((lesson) => lesson.id === slug);
   const lesson = lessons[index];
   const completed = module === 2 ? state.moduleTwoCompletedLessonIds : state.moduleThreeCompletedLessonIds;
-  const status = getPathwayStatus(state);
-  const unlocked = isPresentationDemo || (module === 2 ? status.onePassed : status.twoPassed);
-  const previousComplete = index === 0 || completed.includes(lessons[index - 1]?.id);
   const [evidence, setEvidence] = useState(state.lessonEvidence[slug] ?? "");
   const [selected, setSelected] = useState("");
   if (!lesson) return null;
@@ -59,7 +56,7 @@ export function ModuleLessonExperience({ module, slug }: { module: 2 | 3; slug: 
 
   return <HydrationGate><AppShell active="learn">
     <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href={`/learn/module-${module}`}>Module {module}</Link><Icon name="chevron-right" /><span>{lesson.title}</span></nav>
-    {!unlocked || (!previousComplete && !isPresentationDemo) ? <section className="empty-state-card locked-module-card"><span className="empty-state-icon"><Icon name="lock" /></span><div><h1>Lesson locked</h1><p>Complete the preceding module and lessons to continue.</p></div><Link className="button button-primary" href={`/learn/module-${module}`}>View module <Icon name="arrow-right" /></Link></section> : <div className="course-lesson-layout">
+    <div className="course-lesson-layout">
       <article className="course-lesson-main">
         <header className="page-heading"><div><span className="eyebrow">Module {module} · Lesson {index + 1} of {lessons.length}</span><h1>{lesson.title}</h1><p>{lesson.summary}</p></div><span className="duration-pill"><Icon name="clock" />{lesson.durationMinutes} min</span></header>
         <div className="lesson-sections course-sections">{sections.map((section, sectionIndex) => <section key={section.heading}><span className="eyebrow">Idea {sectionIndex + 1}</span><h2>{section.heading}</h2><p>{section.body}</p>{section.example ? <div className="course-example"><strong>Classroom example</strong><p>{section.example}</p></div> : null}</section>)}</div>
@@ -69,6 +66,6 @@ export function ModuleLessonExperience({ module, slug }: { module: 2 | 3; slug: 
         <div className="lesson-footer-actions"><span className="save-state"><Icon name="cloud" />{completed.includes(slug) ? "Lesson completed" : activityReady ? "Evidence saves when you leave the field" : module === 2 ? "Complete three prompt templates first" : "Complete the linked Staffroom activity first"}</span><button className="button button-primary" disabled={!canComplete} onClick={finish} type="button">Complete lesson <Icon name="arrow-right" /></button></div>
       </article>
       <aside className="course-lesson-rail"><span className="eyebrow">Your route</span><h2>Module {module}</h2><ol>{lessons.map((item, itemIndex) => <li key={item.id} className={itemIndex === index ? "active" : completed.includes(item.id) ? "complete" : ""}><span>{completed.includes(item.id) ? <Icon name="check" /> : itemIndex + 1}</span><Link href={`/learn/module-${module}/lessons/${item.id}`}>{item.title}</Link></li>)}</ol><Link className="text-link" href={`/learn/module-${module}`}>View module overview <Icon name="arrow-right" /></Link></aside>
-    </div>}
+    </div>
   </AppShell></HydrationGate>;
 }

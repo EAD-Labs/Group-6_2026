@@ -27,8 +27,8 @@
 }
 
 * { box-sizing: border-box; }
-html { min-width: 320px; scroll-behavior: smooth; background: var(--paper); }
-html[data-large-text="true"] { font-size: 112.5%; }
+html { font-size: 15px; min-width: 320px; scroll-behavior: smooth; background: var(--paper); }
+html[data-large-text="true"] { font-size: 17px; }
 body { min-height: 100vh; margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); text-rendering: optimizeLegibility; }
 button, input, select, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
@@ -1161,7 +1161,7 @@ body { font-size: 16px; }
   .editorial-module-list article { grid-template-columns: 2.7rem minmax(140px, 0.8fr) minmax(160px, 1fr); }
   .editorial-module-line { display: none; }
 }
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .editorial-header-inner, .editorial-masthead, .editorial-opening, .editorial-pathway, .editorial-method, .editorial-principle, .editorial-last, .editorial-footer { width: min(100% - 2rem, 600px); }
   .editorial-header-inner { min-height: 64px; }
   .editorial-header nav { display: none; }
@@ -1267,7 +1267,7 @@ body { font-size: 16px; }
 
 /* Lesson pages use a compact reading scale. */
 .course-frame .lesson-heading h1,
-.course-frame .course-lesson-main .page-heading h1 { font-size: clamp(1.75rem, 2.35vw, 2.35rem); line-height: 1.12; }
+.course-frame .course-lesson-main .page-heading h1 { font-size: clamp(1.6rem, 2.1vw, 2.1rem); line-height: 1.12; }
 .course-frame .lesson-heading p,
 .course-frame .course-lesson-main .page-heading p { font-size: 0.9rem; line-height: 1.55; }
 .course-frame .text-lesson .section-heading h2,
@@ -1295,7 +1295,7 @@ body, .app-content { font-size: 0.9rem; }
 .quiz-intro h1, .quiz-result h1, .locked-page-state h1,
 .onboarding-card h1, .auth-story h1, .locked-module-card h1,
 .result-hero h1, .hero-copy h1, .editorial-intro h1 {
-  font-size: clamp(1.75rem, 2.35vw, 2.35rem);
+  font-size: clamp(1.6rem, 2.1vw, 2.1rem);
   line-height: 1.12;
 }
 .page-heading p, .module-hero > div > p, .lesson-heading p,
@@ -1323,5 +1323,58 @@ body, .app-content { font-size: 0.9rem; }
 .outcomes-section h2, .landing-cta h2 { font-size: clamp(1.4rem, 2vw, 1.75rem); line-height: 1.2; }
 
 @media (max-width: 520px) {
-  .editorial-intro h1, .hero-copy h1 { font-size: 1.75rem; }
+  .editorial-intro h1, .hero-copy h1 { font-size: 1.6rem; }
+}
+
+/* Rounded course cards and a softer, asymmetric practice-book layout. */
+.editorial-header-cta, .editorial-primary, .editorial-kicker { border-radius: 999px; }
+.editorial-opening { margin-top: 1.5rem; border: 0; gap: 2rem; background: transparent; align-items: start; }
+.editorial-rail { margin-top: 1rem; padding: 2rem 1.5rem; border: 0; border-radius: 3rem 1.6rem 1.6rem 1.6rem; }
+.editorial-opening-main { padding: 1.5rem 0 0; }
+.editorial-workbook { border: 0; border-radius: 1.8rem; overflow: hidden; box-shadow: 0 14px 36px rgba(24, 43, 80, 0.08); }
+.editorial-workbook-head { padding: 1rem 1.4rem; background: #e9effa; }
+.editorial-workbook-grid { padding: 1rem; gap: 1rem; }
+.editorial-workbook-note { border: 0; border-radius: 1.25rem 2.5rem 1.25rem 1.25rem; }
+.editorial-workbook-example { padding: 0.8rem; }
+.editorial-workbook-foot { padding: 1rem 1.4rem; }
+.editorial-pathway { padding: 4rem 0; border: 0; grid-template-columns: minmax(210px, 0.65fr) minmax(0, 1.75fr); gap: 3rem; }
+.editorial-module-list { display: grid; border: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; }
+.editorial-module-list .editorial-module-card { position: relative; display: flex; min-height: 240px; padding: 1.6rem; border: 0; border-radius: 1.5rem 2.8rem 1.5rem 1.5rem; flex-direction: column; align-items: flex-start; gap: 0.8rem; background: white; }
+.editorial-module-card:nth-child(even) { margin-top: 1.5rem; }
+.editorial-module-number { display: grid; width: 2.75rem; height: 2.75rem; border-radius: 50%; place-items: center; color: #1c4198; background: #e5ecfb; font-size: 1.1rem; }
+.editorial-module-list h3 { margin-top: 0.4rem; font-size: 1.13rem; }
+.editorial-module-list p { margin: 0; font-size: 0.84rem; }
+.editorial-module-list .module-tone-1 { color: white; background: #182b50; }
+.module-tone-1 .editorial-small-label { color: #ffc29e; }
+.editorial-module-list .module-tone-1 p { color: #d4ddef; }
+.module-tone-1 .editorial-module-number { color: #182b50; background: #ffdac3; }
+.editorial-module-list .module-tone-3 { background: #f9e8dc; }
+.editorial-module-list .module-tone-4 { background: #e4ebf8; }
+.editorial-module-action { display: flex; min-height: 44px; width: 100%; margin-top: auto; align-items: center; justify-content: space-between; color: inherit; font-size: 0.82rem; font-weight: 750; text-decoration: none; }
+.editorial-module-action::after { position: absolute; inset: 0; border-radius: inherit; content: ""; }
+.editorial-module-action:hover { text-decoration: underline; text-underline-offset: 0.3rem; }
+.editorial-module-action:focus-visible { outline: none; }
+.editorial-module-action:focus-visible::after { outline: 3px solid var(--focus); outline-offset: 4px; }
+.editorial-module-action svg { width: 1.1rem; height: 1.1rem; }
+.editorial-module-planned { margin-top: auto; padding: 0.45rem 0.8rem; border-radius: 999px; color: #34435e; background: #fff; font-size: 0.78rem; }
+.editorial-method { padding: 3rem 2.5rem; border: 0; border-radius: 3rem 1.5rem 3rem 1.5rem; }
+.editorial-principle > div span { border-radius: 999px; background: white; }
+.editorial-last { margin-top: 1rem; margin-bottom: 2.5rem; min-height: 220px; padding: 2.5rem; border-radius: 2rem 4rem 2rem 2rem; background: #f9e8dc; }
+@media (max-width: 900px) {
+  .editorial-pathway { grid-template-columns: 1fr; gap: 1.5rem; }
+  .editorial-section-head p { max-width: 540px; }
+}
+@media (max-width: 900px) {
+  .editorial-opening { gap: 1.5rem; }
+  .editorial-rail { width: 100%; margin: 0; padding: 1.25rem; border: 0; border-radius: 1.5rem; }
+  .editorial-opening-main { padding: 1rem 0 0; }
+  .editorial-workbook { margin-top: 2rem; }
+  .editorial-method { padding: 2rem 1.5rem; border-radius: 2rem; }
+  .editorial-last { padding: 2rem 1.5rem; border-radius: 2rem; }
+}
+@media (max-width: 520px) {
+  .editorial-module-list { grid-template-columns: 1fr; }
+  .editorial-module-card:nth-child(even) { margin-top: 0; }
+  .editorial-module-list .editorial-module-card { min-height: 0; gap: 0.75rem; }
+  .editorial-module-action { margin-top: 0.5rem; }
 }

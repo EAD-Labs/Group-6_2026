@@ -238,7 +238,7 @@ export async function PUT(request: Request) {
       {
         participant_id: participantId,
         module_id: moduleTwoId,
-        status: pathway.twoPassed ? "passed" : passed ? pathway.twoLessons ? "in_progress" : "available" : "locked",
+        status: pathway.twoPassed ? "passed" : pathway.twoLessons || state.moduleTwoQuizAttempts.length ? "in_progress" : "available",
         best_score_percent: state.moduleTwoQuizAttempts.reduce((best, attempt) => Math.max(best, attempt.scorePercent), 0) || null,
         passed_at: pathway.twoPassed ? now : null,
         updated_at: now,
@@ -246,7 +246,7 @@ export async function PUT(request: Request) {
       {
         participant_id: participantId,
         module_id: moduleThreeId,
-        status: pathway.threePassed ? "passed" : pathway.twoPassed ? pathway.threeLessons ? "in_progress" : "available" : "locked",
+        status: pathway.threePassed ? "passed" : pathway.threeLessons || state.moduleThreeQuizAttempts.length ? "in_progress" : "available",
         best_score_percent: state.moduleThreeQuizAttempts.reduce((best, attempt) => Math.max(best, attempt.scorePercent), 0) || null,
         passed_at: pathway.threePassed ? now : null,
         updated_at: now,
