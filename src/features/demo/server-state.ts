@@ -8,6 +8,8 @@ import {
   type TeachingLevel,
 } from "./demo-state";
 import { moduleTwoLessons } from "@/features/learning/module-two-content";
+import { moduleFourLessons } from "@/features/learning/module-four-content";
+import { sanitizeSourcePortfolio } from "@/features/learning/source-studio";
 import { moduleThreeLessons } from "@/features/learning/module-three-content";
 
 const templateCategories = ["planning", "assessment", "adaptation"] as const;
@@ -159,7 +161,7 @@ export function sanitizeDemoState(value: unknown): DemoState {
     promptLibrary: cleanPromptLibrary(input.promptLibrary),
     lessonEvidence: input.lessonEvidence && typeof input.lessonEvidence === "object"
       ? Object.fromEntries(Object.entries(input.lessonEvidence)
-        .filter(([id, value]) => [...moduleTwoLessons.map((lesson) => lesson.id), ...moduleThreeLessons.map((lesson) => lesson.id)].includes(id) && typeof value === "string")
+        .filter(([id, value]) => [...moduleTwoLessons.map((lesson) => lesson.id), ...moduleThreeLessons.map((lesson) => lesson.id), ...moduleFourLessons.map((lesson) => lesson.id)].includes(id) && typeof value === "string")
         .map(([id, value]) => [id, cleanString(value, "", 1200)])) : {},
     aiFamiliarity,
     captionsEnabled: input.captionsEnabled !== false,
@@ -171,6 +173,8 @@ export function sanitizeDemoState(value: unknown): DemoState {
       : [],
     moduleTwoCompletedLessonIds: cleanLessonIds(input.moduleTwoCompletedLessonIds, moduleTwoLessons.map((lesson) => lesson.id)),
     moduleThreeCompletedLessonIds: cleanLessonIds(input.moduleThreeCompletedLessonIds, moduleThreeLessons.map((lesson) => lesson.id)),
+    moduleFourCompletedLessonIds: cleanLessonIds(input.moduleFourCompletedLessonIds, moduleFourLessons.map((lesson) => lesson.id)),
+    sourcePortfolio: sanitizeSourcePortfolio(input.sourcePortfolio),
     displayName: cleanString(input.displayName, "Participant", 120),
     goals: Array.isArray(input.goals)
       ? input.goals
@@ -186,6 +190,7 @@ export function sanitizeDemoState(value: unknown): DemoState {
     quizAttempts: cleanQuizAttempts(input.quizAttempts),
     moduleTwoQuizAttempts: cleanQuizAttempts(input.moduleTwoQuizAttempts),
     moduleThreeQuizAttempts: cleanQuizAttempts(input.moduleThreeQuizAttempts),
+    moduleFourQuizAttempts: cleanQuizAttempts(input.moduleFourQuizAttempts),
     reducedMotion: Boolean(input.reducedMotion),
     reflection: cleanString(input.reflection, "", 500),
     safeUseAccepted: Boolean(input.safeUseAccepted),

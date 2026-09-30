@@ -4,7 +4,9 @@ PromptShala is a practical AI-literacy platform for beginner primary-school teac
 
 ## Project status
 
-The client review build now covers the participant journey from sign-in through Module 2 unlock. It includes three Module 1 lessons, a retryable 70% quiz gate, responsive desktop and mobile layouts, connected Supabase schema, and a server-side CRAFT prompt evaluator with a deterministic fallback.
+The client review build implements all four participant learning modules: 29 lessons, four retryable knowledge checks, the CRAFT lab, AI Staffroom and Source Studio. All modules are accessible from the start; assessed completion requires each module's lessons, quiz and practice evidence. Source Studio includes three original fictional packs, claim audits, five editable artifact formats and a portable review portfolio.
+
+The application includes Supabase persistence code and a server-side CRAFT evaluator with a deterministic fallback. The extended database migrations, authenticated isolation checks, live AI configuration, certification/administration and final production acceptance remain release requirements. The preview currently uses local practice state and fallback AI evaluation.
 
 ## Confirmed stack
 
@@ -45,6 +47,9 @@ Read `docs/BRANCHING.md` before creating a branch. All changes require a pull re
 - Generated Stitch project manifest: `docs/design/STITCH_PROJECT.md`
 - Client prototype walkthrough: `docs/design/CLIENT_PROTOTYPE_WALKTHROUGH.md`
 - Learning content package: `docs/content/README.md`
+- Participant curriculum: `docs/content/CURRICULUM.md`
+- Client progress report: `progress.md`
+- Module 4 implementation and review checks: `docs/testing/MODULE_4_REVIEW.md`
 - Stack decision: `docs/architecture/STACK_DECISION.md`
 - Authentication and roles: `docs/architecture/AUTHENTICATION_AND_ROLES.md`
 - Module 1 data model: `docs/architecture/MODULE_1_DATA_MODEL.md`

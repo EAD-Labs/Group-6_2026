@@ -2,6 +2,8 @@ import type { AssistantSpec, DemoState, QuizAttempt } from "@/features/demo/demo
 import { moduleOneLessons } from "./catalog";
 import { moduleTwoLessons } from "./module-two-content";
 import { moduleThreeLessons } from "./module-three-content";
+import { moduleFourLessons } from "./module-four-content";
+import { sourcePortfolioReady } from "./source-studio";
 import { staffroomChallenges } from "./staffroom-challenges";
 import { promptLibraryReady } from "./prompt-library";
 
@@ -50,16 +52,21 @@ export function getPathwayStatus(state: DemoState) {
   const oneLessons = completedCount(state.completedLessonSlugs, moduleOneLessons.map((lesson) => lesson.slug));
   const twoLessons = completedCount(state.moduleTwoCompletedLessonIds, moduleTwoLessons.map((lesson) => lesson.id));
   const threeLessons = completedCount(state.moduleThreeCompletedLessonIds, moduleThreeLessons.map((lesson) => lesson.id));
+  const fourLessons = completedCount(state.moduleFourCompletedLessonIds, moduleFourLessons.map((lesson) => lesson.id));
   const onePassed = oneLessons === moduleOneLessons.length && hasPassed(state.quizAttempts);
   const twoPassed = twoLessons === moduleTwoLessons.length && state.craftPracticeCount >= 2 && promptLibraryReady(state.promptLibrary) && hasPassed(state.moduleTwoQuizAttempts);
   const assistantReady = state.assistants.some(assistantHasEvidence);
   const threePassed = threeLessons === moduleThreeLessons.length && assistantReady && hasPassed(state.moduleThreeQuizAttempts);
-  const totalActivities = moduleOneLessons.length + moduleTwoLessons.length + moduleThreeLessons.length + 3;
-  const completeActivities = oneLessons + twoLessons + threeLessons + Number(onePassed) + Number(twoPassed) + Number(threePassed);
+  const sourceReady = sourcePortfolioReady(state.sourcePortfolio);
+  const fourPassed = fourLessons === moduleFourLessons.length && sourceReady && hasPassed(state.moduleFourQuizAttempts);
+  const courseComplete = onePassed && twoPassed && threePassed && fourPassed;
+  const completedModules = Number(onePassed) + Number(twoPassed) + Number(threePassed) + Number(fourPassed);
+  const totalActivities = moduleOneLessons.length + moduleTwoLessons.length + moduleThreeLessons.length + moduleFourLessons.length + 4;
+  const completeActivities = oneLessons + twoLessons + threeLessons + fourLessons + Number(onePassed) + Number(twoPassed) + Number(threePassed) + Number(fourPassed);
 
   return {
-    oneLessons, twoLessons, threeLessons,
-    onePassed, twoPassed, threePassed, assistantReady,
-    coursePercent: Math.round((completeActivities / totalActivities) * 75),
+    oneLessons, twoLessons, threeLessons, fourLessons,
+    onePassed, twoPassed, threePassed, fourPassed, assistantReady, sourceReady, courseComplete, completedModules,
+    coursePercent: Math.round((completeActivities / totalActivities) * 100),
   };
 }

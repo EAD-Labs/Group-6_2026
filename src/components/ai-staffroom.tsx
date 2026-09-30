@@ -174,7 +174,7 @@ export function AiStaffroom() {
     setTestMessage("Reviewed test saved.");
   }
 
-  return <HydrationGate><AppShell active="learn">
+  return <HydrationGate><AppShell active="learn" contentClassName="learning-reading-scale">
     <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/learn/module-3">Module 3</Link><Icon name="chevron-right" /><span>AI Staffroom</span></nav>
     <header className="page-heading"><div><span className="eyebrow">Module 3 · Build, test, repair</span><h1>AI Staffroom</h1><p>Make a reusable teaching assistant you can inspect, test and safely share.</p></div></header>
     <div className="privacy-card wide"><Icon name="shield" /><div><strong>Use fictional or general examples only.</strong><p>Do not enter student names, marks, records or confidential material. Review every AI draft before classroom use.</p></div></div>

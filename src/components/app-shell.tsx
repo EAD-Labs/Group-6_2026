@@ -27,9 +27,11 @@ const navigationItems: NavigationItem[] = [
 export function AppShell({
   active,
   children,
+  contentClassName = "",
 }: {
   active: NavigationItem["id"];
   children: ReactNode;
+  contentClassName?: string;
 }) {
   const { state } = useDemo();
   const [online, setOnline] = useState(true);
@@ -118,7 +120,7 @@ export function AppShell({
           </Link>
         </header>
 
-        <main className="app-content" id="main-content">
+        <main className={`app-content ${contentClassName}`.trim()} id="main-content">
           {children}
         </main>
       </div>
