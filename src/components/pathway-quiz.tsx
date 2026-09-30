@@ -26,8 +26,8 @@ export function PathwayQuiz({ module }: { module: 2 | 3 }) {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
   const [result, setResult] = useState<QuizEvaluation | null>(null);
-  const unlocked = (isPresentationDemo || (module === 2 ? status.onePassed : status.twoPassed)) && lessons.every((lesson) => completed.includes(lesson.id));
-  const evidenceReady = module === 2 ? state.craftPracticeCount >= 2 && promptLibraryReady(state.promptLibrary) : status.assistantReady;
+  const unlocked = isPresentationDemo || ((module === 2 ? status.onePassed : status.twoPassed) && lessons.every((lesson) => completed.includes(lesson.id)));
+  const evidenceReady = isPresentationDemo || (module === 2 ? state.craftPracticeCount >= 2 && promptLibraryReady(state.promptLibrary) : status.assistantReady);
   const question = questions[index];
   const selected = answers[question.id] ?? [];
 

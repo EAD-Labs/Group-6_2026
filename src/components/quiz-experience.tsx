@@ -15,7 +15,7 @@ import { evaluateQuiz, type QuizEvaluation } from "@/features/learning/quiz";
 type QuizStage = "intro" | "questions" | "result";
 
 export function QuizExperience() {
-  const { recordQuizAttempt, state } = useDemo();
+  const { recordQuizAttempt, state, isPresentationDemo } = useDemo();
   const [stage, setStage] = useState<QuizStage>("intro");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
@@ -23,7 +23,7 @@ export function QuizExperience() {
   const question = moduleOneQuizQuestions[questionIndex];
   const currentSelection = answers[question?.id] ?? [];
   const bestScore = Math.max(getBestQuizScore(state.quizAttempts), evaluation?.scorePercent ?? 0);
-  const quizUnlocked = state.completedLessonSlugs.length === moduleOneLessons.length;
+  const quizUnlocked = isPresentationDemo || state.completedLessonSlugs.length === moduleOneLessons.length;
 
   const missedQuestions = useMemo(
     () =>
