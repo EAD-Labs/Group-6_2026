@@ -1265,22 +1265,33 @@ body { font-size: 16px; }
   .course-frame .app-content { padding-bottom: 2rem; }
 }
 
-/* Lesson pages use a compact reading scale. */
+/* Lesson reading text and headings use a deliberately small, dense scale. */
+.course-frame :is(.lesson-main, .course-lesson-main) { font-size: 0.75rem; }
 .course-frame .lesson-heading h1,
-.course-frame .course-lesson-main .page-heading h1 { font-size: clamp(1.6rem, 2.1vw, 2.1rem); line-height: 1.12; }
+.course-frame .course-lesson-main .page-heading h1 { font-size: clamp(1.25rem, 1.6vw, 1.65rem); line-height: 1.2; }
 .course-frame .lesson-heading p,
-.course-frame .course-lesson-main .page-heading p { font-size: 0.9rem; line-height: 1.55; }
+.course-frame .course-lesson-main .page-heading p { font-size: 0.75rem; line-height: 1.6; }
 .course-frame .text-lesson .section-heading h2,
-.course-frame .lesson-resources .section-heading h2 { font-size: 1.15rem; }
+.course-frame .lesson-resources .section-heading h2 { font-size: 0.95rem; }
 .course-frame .text-lesson-body p,
 .course-frame .course-sections p,
-.course-frame .course-activity p { font-size: 0.9rem; line-height: 1.65; }
+.course-frame .course-activity p,
+.course-frame .lesson-sections p,
+.course-frame .concept-check > p { font-size: 0.75rem; line-height: 1.65; }
 .course-frame .lesson-sections > h2,
 .course-frame .concept-check h2,
 .course-frame .course-sections h2,
-.course-frame .course-activity h2 { font-size: 1.3rem; line-height: 1.25; }
-.course-frame .lesson-sections h3 { font-size: 1rem; }
-.course-frame .lesson-sections p { font-size: 0.88rem; }
+.course-frame .course-activity h2 { font-size: 1rem; line-height: 1.3; }
+.course-frame .lesson-sections h3 { font-size: 0.85rem; }
+.course-frame :is(.lesson-main, .course-lesson-main) .eyebrow,
+.course-frame .course-example strong { font-size: 0.62rem; }
+.course-frame :is(.lesson-main, .course-lesson-main) :is(.button, .answer-option, .quiz-option, textarea),
+.course-frame :is(.lesson-main, .course-lesson-main) .reading-resource-list strong,
+.course-frame :is(.lesson-main, .course-lesson-main) .embedded-video-card strong { font-size: 0.75rem; }
+.course-frame :is(.lesson-main, .course-lesson-main) :is(.duration-pill, .save-state) { font-size: 0.68rem; }
+.course-frame :is(.text-lesson, .lesson-sections, .lesson-resources, .concept-check, .course-activity) { padding: 1.2rem; }
+.course-frame .course-sections section + section { margin-top: 1.1rem; padding-top: 1.1rem; }
+.course-frame .course-example { padding: 0.8rem; }
 .course-frame .embedded-video-card > div:last-child { gap: 0.7rem; }
 .course-frame .embedded-video-card > div:last-child svg { width: 1.7rem; height: 1.7rem; }
 .video-play-button { display: grid; width: 100%; height: 100%; padding: 0; border: 0; place-items: center; background-color: #101f3c; background-position: center; background-size: cover; cursor: pointer; }
