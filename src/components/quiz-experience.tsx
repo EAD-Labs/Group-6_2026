@@ -9,7 +9,7 @@ import { Icon } from "@/components/ui/icon";
 import { ProgressRing } from "@/components/ui/progress-ring";
 import { useDemo } from "@/features/demo/demo-provider";
 import { getBestQuizScore } from "@/features/demo/demo-state";
-import { moduleOneLessons, moduleOneQuizQuestions } from "@/features/learning/catalog";
+import { moduleOneQuizQuestions } from "@/features/learning/catalog";
 import { evaluateQuiz, type QuizEvaluation } from "@/features/learning/quiz";
 
 type QuizStage = "intro" | "questions" | "result";
@@ -23,7 +23,6 @@ export function QuizExperience() {
   const question = moduleOneQuizQuestions[questionIndex];
   const currentSelection = answers[question?.id] ?? [];
   const bestScore = Math.max(getBestQuizScore(state.quizAttempts), evaluation?.scorePercent ?? 0);
-  const quizUnlocked = state.completedLessonSlugs.length === moduleOneLessons.length;
 
   const missedQuestions = useMemo(
     () =>
@@ -73,16 +72,6 @@ export function QuizExperience() {
     setStage("questions");
   }
 
-  if (!quizUnlocked) {
-    return (
-      <HydrationGate>
-        <AppShell active="learn">
-          <section className="locked-page-state"><span><Icon name="lock" /></span><div><span className="eyebrow">Knowledge check locked</span><h1>Finish all six lessons first.</h1><p>The quiz unlocks after each required activity is complete. Your current lesson progress is saved.</p><Link className="button button-primary" href="/learn/module-1">Return to Module 1 <Icon name="arrow-right" /></Link></div></section>
-        </AppShell>
-      </HydrationGate>
-    );
-  }
-
   if (stage === "intro") {
     return (
       <HydrationGate>
@@ -114,8 +103,8 @@ export function QuizExperience() {
     <HydrationGate>
       <AppShell active="learn">
         <section className={`quiz-result ${evaluation.passed ? "passed" : "failed"}`}>
-          <div className="result-hero"><div className="result-copy"><span className="result-icon"><Icon name={evaluation.passed ? "sparkles" : "book"} /></span><span className="eyebrow">Attempt {state.quizAttempts.length}</span><h1>{evaluation.passed ? "Module complete—well done!" : "Almost there—review and try again."}</h1><p>{evaluation.passed ? "You showed safe, responsible judgment across the Module 1 concepts." : `You answered ${evaluation.correctAnswers} of 5 correctly. Two focused reviews can get you ready for the next attempt.`}</p><div className="result-actions">{evaluation.passed ? <><Link className="button button-primary" href="/dashboard">See Module 2 unlocked <Icon name="arrow-right" /></Link><button className="button button-secondary" onClick={retryQuiz} type="button"><Icon name="refresh" />Practise again</button></> : <><button className="button button-primary" onClick={retryQuiz} type="button"><Icon name="refresh" />Review and retry</button><Link className="button button-secondary" href={`/learn/module-1/lessons/${missedQuestions[0]?.lessonSlug ?? "review-before-use"}`}><Icon name="book" />Review lesson</Link></>}</div></div><div className="score-card"><ProgressRing label={`Score ${evaluation.scorePercent}%, ${evaluation.passed ? "passed" : "not yet passed"}`} value={evaluation.scorePercent} /><strong>{evaluation.scorePercent}%</strong><span>Pass threshold: 70%</span><small>Highest score retained: {bestScore}%</small></div></div>
-          {evaluation.passed ? <section className="unlock-card"><span className="unlock-icon"><Icon name="sparkles" /></span><div><span className="eyebrow">Newly unlocked</span><h2>Module 2 · Classroom Prompt Writing</h2><p>Build classroom-ready instructions with the CRAFT framework: Context, Role, Action, Format and Target.</p></div><Link className="button button-demo" href="/dashboard">View pathway <Icon name="arrow-right" /></Link></section> : <section className="review-focus"><div className="section-heading"><div><span className="eyebrow">Your focused review</span><h2>Concepts to revisit</h2></div><span className="supportive-label"><Icon name="info" />Feedback, not penalty</span></div><div className="review-grid">{missedQuestions.map((missedQuestion) => <article key={missedQuestion.id}><span><Icon name="book" /></span><div><h3>{missedQuestion.concept}</h3><p>{missedQuestion.explanation}</p><Link className="text-link" href={`/learn/module-1/lessons/${missedQuestion.lessonSlug}`}>Review the lesson <Icon name="arrow-right" /></Link></div></article>)}</div></section>}
+          <div className="result-hero"><div className="result-copy"><span className="result-icon"><Icon name={evaluation.passed ? "sparkles" : "book"} /></span><span className="eyebrow">Attempt {state.quizAttempts.length}</span><h1>{evaluation.passed ? "Module complete—well done!" : "Almost there—review and try again."}</h1><p>{evaluation.passed ? "You showed safe, responsible judgment across the Module 1 concepts." : `You answered ${evaluation.correctAnswers} of 5 correctly. Two focused reviews can get you ready for the next attempt.`}</p><div className="result-actions">{evaluation.passed ? <><Link className="button button-primary" href="/dashboard">Explore Module 2 <Icon name="arrow-right" /></Link><button className="button button-secondary" onClick={retryQuiz} type="button"><Icon name="refresh" />Practise again</button></> : <><button className="button button-primary" onClick={retryQuiz} type="button"><Icon name="refresh" />Review and retry</button><Link className="button button-secondary" href={`/learn/module-1/lessons/${missedQuestions[0]?.lessonSlug ?? "review-before-use"}`}><Icon name="book" />Review lesson</Link></>}</div></div><div className="score-card"><ProgressRing label={`Score ${evaluation.scorePercent}%, ${evaluation.passed ? "passed" : "not yet passed"}`} value={evaluation.scorePercent} /><strong>{evaluation.scorePercent}%</strong><span>Pass threshold: 70%</span><small>Highest score retained: {bestScore}%</small></div></div>
+          {evaluation.passed ? <section className="unlock-card"><span className="unlock-icon"><Icon name="sparkles" /></span><div><span className="eyebrow">Explore next</span><h2>Module 2 · Classroom Prompt Writing</h2><p>Build classroom-ready instructions with the CRAFT framework: Context, Role, Action, Format and Target.</p></div><Link className="button button-demo" href="/dashboard">View pathway <Icon name="arrow-right" /></Link></section> : <section className="review-focus"><div className="section-heading"><div><span className="eyebrow">Your focused review</span><h2>Concepts to revisit</h2></div><span className="supportive-label"><Icon name="info" />Feedback, not penalty</span></div><div className="review-grid">{missedQuestions.map((missedQuestion) => <article key={missedQuestion.id}><span><Icon name="book" /></span><div><h3>{missedQuestion.concept}</h3><p>{missedQuestion.explanation}</p><Link className="text-link" href={`/learn/module-1/lessons/${missedQuestion.lessonSlug}`}>Review the lesson <Icon name="arrow-right" /></Link></div></article>)}</div></section>}
           <section className="answer-review" aria-labelledby="answer-review-title"><div className="section-heading"><div><span className="eyebrow">Transparent feedback</span><h2 id="answer-review-title">Question-by-question review</h2></div><span>{evaluation.correctAnswers}/5 correct</span></div>{moduleOneQuizQuestions.map((item, index) => { const correct = evaluation.correctQuestionIds.includes(item.id); return <details key={item.id}><summary><span className={correct ? "review-status correct" : "review-status missed"}><Icon name={correct ? "check" : "info"} /></span><span><small>Question {index + 1} · {correct ? "Correct" : "Review recommended"}</small><strong>{item.prompt}</strong></span><Icon name="chevron-right" /></summary><div><p>{item.explanation}</p><strong>Correct answer: {item.options.filter((option) => item.correctOptionIds.includes(option.id)).map((option) => option.label).join(", ")}</strong></div></details>; })}</section>
         </section>
       </AppShell>
