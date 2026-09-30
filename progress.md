@@ -115,8 +115,8 @@ The review preview does not currently have a connected participant database. Its
 
 ## Review links
 
-- [PromptShala review preview](https://promptshala-df3wqyy9z-sus-co.vercel.app/learn/module-4)
-- [Course colour refinement and review evidence](https://github.com/EAD-Labs/Group-6_2026/pull/9)
+- [PromptShala review preview](https://promptshala-7wlh3qtly-sus-co.vercel.app/)
+- [Website colour system and review evidence](https://github.com/EAD-Labs/Group-6_2026/pull/9)
 - [Module 4 implementation and verification evidence](https://github.com/EAD-Labs/Group-6_2026/pull/8)
 - [Earlier module and website work](https://github.com/EAD-Labs/Group-6_2026/pull/7)
 - [Learning and AI workflow tracking](https://darshansonawane1110.atlassian.net/browse/KAN-6)
