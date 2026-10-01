@@ -39,4 +39,23 @@ describe("source studio review integrity", () => {
     expect(screen.getByLabelText("Your verdict", { selector: "#verdict-c1" })).toHaveValue("");
     expect(screen.queryByText("Your required portfolio evidence is recorded.")).toBeNull();
   });
+
+  it("preserves a draft and its review while a format change is pending or cancelled", () => {
+    render(<SourceStudio />);
+    const original = readyPortfolio();
+    const format = screen.getByLabelText("Artifact format");
+    fireEvent.change(format, { target: { value: "slides" } });
+    expect(screen.getByLabelText("Your classroom artifact")).toHaveValue(original.draft);
+    expect(screen.getByLabelText("What did you change, and why?")).toHaveValue(original.revisionNote);
+    expect(screen.getByRole("checkbox", { name: /package contains no identifiable/ })).toBeChecked();
+    fireEvent.click(screen.getByRole("button", { name: "Keep current draft" }));
+    expect(format).toHaveValue(original.artifactType);
+    expect(screen.getByLabelText("Your classroom artifact")).toHaveValue(original.draft);
+    fireEvent.change(format, { target: { value: "slides" } });
+    fireEvent.click(screen.getByRole("button", { name: "Change format and clear draft" }));
+    expect(format).toHaveValue("slides");
+    expect(screen.getByLabelText("Your classroom artifact")).toHaveValue("");
+    expect(screen.getByLabelText("What did you change, and why?")).toHaveValue("");
+    expect(screen.getByRole("checkbox", { name: /package contains no identifiable/ })).not.toBeChecked();
+  });
 });

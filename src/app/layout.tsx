@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { DemoProvider } from "@/features/demo/demo-provider";
 
 import "./globals.css";
+import "./platform.css";
 
 export const metadata: Metadata = {
   title: {

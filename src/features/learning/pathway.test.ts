@@ -5,7 +5,7 @@ import { moduleTwoLessons } from "./module-two-content";
 import { moduleFourLessons } from "./module-four-content";
 import { readyPortfolio } from "@/test/fixtures/source-portfolio";
 import { moduleThreeLessons } from "./module-three-content";
-import { assistantHasEvidence, getPathwayStatus } from "./pathway";
+import { assistantHasEvidence, assistantHasRepairEvidence, getPathwayStatus } from "./pathway";
 import { staffroomChallenges } from "./staffroom-challenges";
 import { promptLibraryCategories } from "./prompt-library";
 
@@ -22,19 +22,19 @@ const assistant: AssistantSpec = {
   tests: [
     ...staffroomChallenges.map((challenge, index) => ({
       id: challenge.id, caseId: challenge.id, input: challenge.input, expected: challenge.expected,
-      output: "Reviewed classroom draft", review: "Teacher checked behavior", version: 1,
+      evidenceMode: "external" as const, sourcePack: "Original run source", classContextCard: "Original run classroom", output: "Reviewed classroom draft", review: "Teacher checked behavior", version: 1,
       verdict: (index === 2 ? "partial" : "pass") as "partial" | "pass", createdAt: "2026-09-25T00:00:00Z",
     })),
     ...["T1", "T2", "T3"].map((caseId) => ({ id: `retest-${caseId}`, caseId,
       input: staffroomChallenges.find((challenge) => challenge.id === caseId)!.input,
-      expected: "Corrected behavior", output: "Reviewed updated draft",
+      evidenceMode: "external" as const, sourcePack: "Original run source", classContextCard: "Original run classroom", expected: "Corrected behavior", output: "Reviewed updated draft",
       review: "Teacher compared versions", version: 2, verdict: "pass" as const,
       createdAt: "2026-09-25T00:30:00Z",
     })),
   ],
 };
 const promptLibrary = promptLibraryCategories.map(({ id }) => ({
-  category: id, template: "Create [output] for [grade] and [objective] with [constraints].",
+  category: id, reviewBasis: "observed" as const, template: "Create [output] for [grade] and [objective] with [constraints].",
   completedExample: "Create an exit question for Class 7 evaporation using board only.",
   knownFailure: "First result assumed a projector was available in class.",
   reviewChecklist: "Check answers, learning alignment, timing, language and privacy.",
@@ -88,6 +88,22 @@ describe("four-module progression", () => {
     expect(getPathwayStatus({ ...four, moduleFourCompletedLessonIds: [] }).fourPassed).toBe(false);
   });
 
+  it("accepts an honest all-pass baseline only after a documented improvement and three matching retests", () => {
+    const strengthened: AssistantSpec = { ...assistant, improvementApproach: "strengthen", weakness: "No observed failure; make the source-gap stopping instruction explicit.", tests: assistant.tests.map(test => ({ ...test, verdict: "pass" })) };
+    expect(assistantHasRepairEvidence(strengthened)).toBe(true);
+    expect(assistantHasRepairEvidence({ ...strengthened, improvementApproach: "repair" })).toBe(false);
+    expect(assistantHasRepairEvidence({ ...strengthened, tests: strengthened.tests.filter(test => test.id !== "retest-T3") })).toBe(false);
+    expect(assistantHasRepairEvidence({ ...strengthened, tests: strengthened.tests.map(test => test.id === "retest-T3" ? { ...test, input: "A different task" } : test) })).toBe(false);
+    expect(assistantHasRepairEvidence({ ...strengthened, revision: "" })).toBe(false);
+  });
+
+  it("requires all six baseline cases before the later version and keeps prepared comparisons distinct", () => {
+    expect(assistantHasRepairEvidence({ ...assistant, tests: assistant.tests.map(test => test.id === "T6" ? { ...test, version: 2 } : test) })).toBe(false);
+    const prepared: AssistantSpec = { ...assistant, tests: assistant.tests.map(test => ({ ...test, evidenceMode: "prepared" })) };
+    expect(assistantHasRepairEvidence(prepared)).toBe(true);
+    expect(assistantHasRepairEvidence({ ...prepared, tests: prepared.tests.map(test => test.id === "retest-T3" ? { ...test, evidenceMode: "live" } : test) })).toBe(false);
+  });
+
   it("reaches 100 percent only when all four module requirements are complete", () => {
     const complete = { ...initialDemoState,
       completedLessonSlugs: moduleOneLessons.map((lesson) => lesson.slug), quizAttempts: [pass],
@@ -101,4 +117,11 @@ describe("four-module progression", () => {
     expect(getPathwayStatus({ ...complete, moduleFourQuizAttempts: [] }).coursePercent).toBeLessThan(100);
   });
 
+});
+
+it("does not credit a repaired result obtained after changing the source or classroom conditions", () => {
+  expect(assistantHasRepairEvidence(assistant)).toBe(true);
+  expect(assistantHasRepairEvidence({ ...assistant, tests: assistant.tests.map(test => test.id === "retest-T3" ? { ...test, sourcePack: "Replaced the missing source with the answer" } : test) })).toBe(false);
+  expect(assistantHasRepairEvidence({ ...assistant, tests: assistant.tests.map(test => test.id === "retest-T3" ? { ...test, classContextCard: "Changed the grade and objective" } : test) })).toBe(false);
+  expect(assistantHasRepairEvidence({ ...assistant, tests: assistant.tests.map(test => ({ ...test, sourcePack: undefined, classContextCard: undefined })) })).toBe(false);
 });

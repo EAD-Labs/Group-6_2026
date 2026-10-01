@@ -16,9 +16,10 @@ import { Icon } from "./ui/icon";
 type CourseNavigationProps = {
   mobileOpen: boolean;
   onClose: () => void;
+  id?: string;
 };
 
-export function CourseNavigation({ mobileOpen, onClose }: CourseNavigationProps) {
+export function CourseNavigation({ mobileOpen, onClose, id = "course-navigation" }: CourseNavigationProps) {
   const pathname = usePathname();
   const { state } = useDemo();
   const currentModule = Number(pathname.match(/^\/learn\/module-(\d)/)?.[1] ?? 1);
@@ -30,7 +31,7 @@ export function CourseNavigation({ mobileOpen, onClose }: CourseNavigationProps)
   ];
 
   return (
-    <aside className={`course-navigation${mobileOpen ? " mobile-open" : ""}`} id="course-navigation" aria-label="Course contents">
+    <aside className={`course-navigation${mobileOpen ? " mobile-open" : ""}`} id={id} aria-label="Course contents">
       <div className="course-navigation-brand"><Brand compact /><button className="course-navigation-close" type="button" onClick={onClose} aria-label="Close course contents"><Icon name="x" /></button></div>
       <div className="course-navigation-heading"><span className="eyebrow">Your learning route</span><h2>Course menu</h2></div>
       <nav aria-label="Modules and lessons" className="course-navigation-scroll">
@@ -49,6 +50,7 @@ export function CourseNavigation({ mobileOpen, onClose }: CourseNavigationProps)
                 {module.position === 2 ? <Link aria-current={pathname === `${modulePath}/practice` ? "page" : undefined} href={`${modulePath}/practice` as Route} onClick={onClose}><span>↳</span>CRAFT practice lab</Link> : null}
                 {module.position === 3 ? <Link aria-current={pathname === `${modulePath}/staffroom` ? "page" : undefined} href={`${modulePath}/staffroom` as Route} onClick={onClose}><span>↳</span>AI Staffroom</Link> : null}
                 {module.position === 4 ? <Link aria-current={pathname === `${modulePath}/studio` ? "page" : undefined} href={`${modulePath}/studio` as Route} onClick={onClose}><span>↳</span>Source Studio</Link> : null}
+                {module.position === 4 ? <Link href="/learn/module-4/transform" onClick={onClose}><span>↳</span>Transform my material</Link> : null}
                 {content ? <Link aria-current={pathname === `${modulePath}/quiz` ? "page" : undefined} href={`${modulePath}/quiz` as Route} onClick={onClose}><span>✓</span>Knowledge check</Link> : null}
               </>
             </div>

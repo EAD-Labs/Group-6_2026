@@ -9,7 +9,7 @@ export const promptLibraryCategories = [
 export function promptLibraryReady(templates: PromptTemplate[]) {
   return promptLibraryCategories.every(({ id }) => {
     const template = templates.find((item) => item.category === id);
-    return template && [template.template, template.completedExample, template.knownFailure,
+    return template && Boolean(template.reviewBasis) && [template.template, template.completedExample, template.knownFailure,
       template.reviewChecklist, template.transferNote].every((value) => value.trim().length >= 20);
   });
 }

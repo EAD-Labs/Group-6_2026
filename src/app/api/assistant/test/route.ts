@@ -1,26 +1,18 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { getGeminiEnvironment, hasGeminiEnvironment, hasPublicSupabaseEnvironment } from "@/lib/env";
-import { createClient } from "@/lib/supabase/server";
-import { presentationDemoCookie } from "@/lib/supabase/proxy";
-
-const attempts = new Map<string, { count: number; resetAt: number }>();
+import { getGeminiEnvironment, hasGeminiEnvironment } from "@/lib/env";
+import { consumeAiBudget, getAiAccess } from "@/lib/ai/access";
+import { hasSameOrigin, readJsonBody, RequestValidationError } from "@/lib/server/request";
 
 export async function POST(request: Request) {
-  const demo = (await cookies()).get(presentationDemoCookie)?.value === "active";
-  const supabase = hasPublicSupabaseEnvironment() ? await createClient() : null;
-  const { data } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
-  if (!demo && !data.user) return NextResponse.json({ error: "Sign in to test an assistant." }, { status: 401 });
-  if (!hasGeminiEnvironment()) return NextResponse.json({ error: "Live AI testing is not configured. Record a reviewed output from an approved tool instead." }, { status: 503 });
-
-  const key = data.user?.id ?? `demo:${request.headers.get("x-forwarded-for")?.split(",")[0] ?? "local"}`;
-  const now = Date.now();
-  const existing = attempts.get(key);
-  const next = existing && existing.resetAt > now ? { ...existing, count: existing.count + 1 } : { count: 1, resetAt: now + 60_000 };
-  attempts.set(key, next);
-  if (next.count > 6) return NextResponse.json({ error: "Please wait a minute before another test." }, { status: 429 });
-
-  const body = await request.json().catch(() => null) as Record<string, unknown> | null;
+  if (!hasSameOrigin(request)) return NextResponse.json({ error: "The request origin is not allowed." }, { status: 403 });
+  try {
+    const access = await getAiAccess();
+    if (access.mode === "unauthenticated") return NextResponse.json({ error: "Sign in to test an assistant." }, { status: 401 });
+    if (access.mode === "demo") return NextResponse.json({ error: "Guided demo keeps AI testing local. Paste a reviewed practice output to test your Passport; no input is sent to a provider." }, { status: 503 });
+    if (access.mode === "consent_required") return NextResponse.json({ error: "Accept and synchronize the safe-use notice before live testing." }, { status: 403 });
+    if (!hasGeminiEnvironment()) return NextResponse.json({ error: "Live AI testing is not configured. Record a reviewed output from an approved tool instead." }, { status: 503 });
+    if (!await consumeAiBudget(access.participantId!, "assistant")) return NextResponse.json({ error: "Please wait a minute before another test." }, { status: 429, headers: { "Retry-After": "60" } });
+    const body = await readJsonBody(request, 64_000);
   const fields = ["purpose", "persona", "task", "context", "format", "boundaries", "reviewChecks"] as const;
   const spec = Object.fromEntries(fields.map((field) => [field, typeof body?.[field] === "string" ? body[field].trim() : ""])) as Record<typeof fields[number], string>;
   const sourcePack = typeof body?.sourcePack === "string" ? body.sourcePack.trim().slice(0, 2500) : "";
@@ -51,4 +43,7 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Live test could not finish. Your input is preserved; you can paste a reviewed output from an approved tool." }, { status: 503 });
   } finally { clearTimeout(timeout); }
+  } catch (error) {
+    return NextResponse.json({ error: error instanceof RequestValidationError ? error.message : "Live testing is unavailable. Your input is preserved; use a reviewed practice output or retry." }, { status: error instanceof RequestValidationError ? error.status : 503 });
+  }
 }

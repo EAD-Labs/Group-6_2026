@@ -17,7 +17,7 @@ export default function ApiKeyPage() {
       <div className="privacy-notice" role="note">
         <strong>Current pilot safeguards</strong>
         <p>
-          PromptShala does not store raw prompt text. It records only a one-way
+          The CRAFT evaluation service does not store raw prompt text. Your browser keeps a private account-scoped draft and recent comparison feedback; clear these in Profile. The server records only a one-way
           fingerprint, rubric scores, evaluator source and safety flags for an
           authenticated participant. A transparent local CRAFT check remains
           available if the evaluator is unavailable.
