@@ -1,293 +1,377 @@
-# Initial Quiz Bank
+# PromptShala knowledge-check bank
 
-## Prototype rules
+Reviewed against the implemented curriculum on 30 September 2026. The application arrays in `src/features/learning` are the source of truth. This register contains the same 25 module questions; lesson concept checks are additional formative practice.
 
-- Each module currently contains five questions.
-- Four correct answers out of five are required to pass the prototype quiz.
-- Show the explanation after submission, not while the participant is choosing.
-- After a failed attempt, link each missed question to the relevant lesson section.
-- Shuffle answer order where appropriate, but do not shuffle steps in sequence questions.
-- The bank uses no real student data and requires no live AI service.
+- Modules 1, 2 and 4 have five questions; four correct answers reach the 70% threshold.
+- Module 3 has ten questions; seven correct answers reach the threshold.
+- Multiple-selection questions require every correct option and no additional option.
+- Feedback and retries support revision. A passed quiz does not replace the required practical evidence.
+- These are authored formative questions, not a validated measure of teacher competence or student learning impact.
 
-## Module 1 — AI Foundations and Responsible Use
+## Module 1
 
-### M1-Q1 — Single choice
+### m1-q1 — Generative AI
 
-**Question:** Which example best describes generative AI?
+Lesson: `meet-generative-ai`. Type: single.
 
-A. A calculator returns 72 for 8 × 9.  
-B. A tool drafts three age-appropriate analogies for evaporation.  
-C. A portal marks attendance late after 9:00 a.m.  
-D. A search page lists links containing “evaporation”.
+Which example best describes generative AI?
 
-**Answer:** B
+- A. A calculator returns 72 for 8 × 9.
+- B. A tool drafts three age-appropriate analogies for evaporation.
+- C. A portal marks attendance late after 9:00 a.m.
+- D. A search page lists links containing ‘evaporation’.
 
-**Explanation:** Generative AI creates a new response from an instruction. The other examples calculate, follow a fixed rule, or retrieve existing pages.
+**Answer:** B.
 
-### M1-Q2 — Single choice
+**Explanation:** Generative AI creates a new response from an instruction. The other examples calculate, follow a fixed rule or retrieve existing pages.
 
-**Question:** An AI explanation sounds confident. What should a teacher do before using it?
+### m1-q2 — Accuracy review
 
-A. Assume confidence means accuracy.  
-B. Add more adjectives.  
-C. Verify important claims with trusted curriculum sources.  
-D. Ask a learner to find the mistakes during the lesson.
+Lesson: `review-before-use`. Type: single.
 
-**Answer:** C
+An AI explanation sounds confident. What should a teacher do?
 
-**Explanation:** Generative AI can produce fluent but incorrect information. A teacher remains responsible for verification before classroom use.
+- A. Assume confidence means accuracy.
+- B. Add more adjectives to the response.
+- C. Verify important claims with trusted curriculum sources.
+- D. Use it immediately and ask learners to find mistakes.
 
-### M1-Q3 — Single choice
+**Answer:** C.
 
-**Question:** Which prompt handles student privacy most safely?
+**Explanation:** Generative AI can produce fluent but incorrect information. Verify important claims before classroom use.
 
-A. Include a learner’s full name and marks for personalised feedback.  
-B. Upload counselling notes and ask for a summary.  
-C. Use a fictional learner profile without identifying details.  
-D. Include the parent’s mobile number so the message feels realistic.
+### m1-q3 — Student privacy
 
-**Answer:** C
+Lesson: `review-before-use`. Type: single.
+
+Which request handles student privacy most safely?
+
+- A. Include a learner’s full name and linked marks.
+- B. Upload counselling notes and request a summary.
+- C. Use a fictional learner profile without identifying details.
+- D. Include a parent’s phone number for realism.
+
+**Answer:** C.
 
 **Explanation:** Fictional or generalised examples reduce privacy risk. Personal records and contact details should not be entered into a public AI service.
 
-### M1-Q4 — Multiple select
+### m1-q4 — Teacher review checklist
 
-**Question:** Which checks should a teacher complete before using an AI-generated worksheet? Select all that apply.
+Lesson: `review-before-use`. Type: multiple.
 
-A. Factual accuracy  
-B. Age and reading-level suitability  
-C. Privacy and copyright  
-D. Curriculum alignment  
-E. Whether the AI used confident language
+Which checks are needed before using an AI-generated worksheet?
 
-**Answer:** A, B, C, D
+- A. Factual accuracy
+- B. Age and reading-level suitability
+- C. Privacy and copyright
+- D. Curriculum alignment
+- E. Whether the AI used confident language
 
-**Explanation:** Confidence is not evidence of quality. Accuracy, suitability, privacy, copyright, and curriculum fit require human review.
+**Answer:** A, B, C, D.
 
-### M1-Q5 — Single choice
+**Explanation:** Confidence is not evidence of quality. Accuracy, suitability, privacy, copyright and curriculum fit require human review.
 
-**Question:** What is an appropriate role for AI in teaching?
+### m1-q5 — Appropriate teacher use
 
-A. Replace teacher judgment.  
-B. Produce drafts that the teacher reviews and adapts.  
-C. Make final high-stakes decisions about learners.  
-D. Store private student records in prompts.
+Lesson: `useful-teacher-tasks`. Type: single.
 
-**Answer:** B
+What is an appropriate role for AI in teaching?
+
+- A. Replace teacher judgment.
+- B. Produce drafts that the teacher reviews and adapts.
+- C. Make final high-stakes decisions about learners.
+- D. Store private student records inside prompts.
+
+**Answer:** B.
 
 **Explanation:** AI can support drafting and idea generation, but professional judgment and responsibility remain with the teacher.
 
-## Module 2 — Classroom Prompt Writing
+## Module 2
 
-### M2-Q1 — Single choice
+### m2-q1 — Prompt repair
 
-**Question:** Which addition best defines the learner?
+Lesson: `repair-vague-prompt`. Type: single.
 
-A. “Make it good.”  
-B. “For Class 6 learners who confuse numerator and denominator.”  
-C. “Write quickly.”  
-D. “Use AI.”
+Which revision best improves “Teach fractions” for a Class 5 lesson?
 
-**Answer:** B
+- A. Make it engaging and perfect
+- B. Plan a 20-minute paper-strip activity for Class 5, with an exit question
+- C. Write everything about fractions
 
-**Explanation:** It identifies both the class level and a specific learning need.
+**Answer:** B.
 
-### M2-Q2 — Single choice
+**Explanation:** The stronger prompt gives the learner level, time, materials, task and evidence of learning.
 
-**Question:** Which prompt contains a measurable learning goal?
+### m2-q2 — CRAFT
 
-A. “Teach photosynthesis.”  
-B. “Make a nice science activity.”  
-C. “Create an activity after which learners can sequence the four water-cycle stages.”  
-D. “Tell me everything about water.”
+Lesson: `context-constraints-examples`. Type: multiple.
 
-**Answer:** C
+Which details make a classroom prompt testable? Select all that apply.
 
-**Explanation:** The desired learner behaviour—sequencing four stages—can be observed and checked.
+- A. The learning objective and learner level
+- B. The requested output format
+- C. A promise that AI will always be correct
 
-### M2-Q3 — Multiple select
+**Answer:** A, B.
 
-**Question:** Which details are output-format or quality criteria? Select all that apply.
+**Explanation:** Context, target and format make the task concrete. AI output still needs verification.
 
-A. Under 180 words  
-B. Use a two-column table  
-C. Class 7 learners  
-D. Include an answer key  
-E. Use simple, respectful language
+### m2-q3 — Assessment
 
-**Answer:** A, B, D, E
+Lesson: `questions-rubrics-feedback`. Type: single.
 
-**Explanation:** Class 7 identifies the learner. The other choices specify how the response should be presented or judged.
+An AI-generated answer key looks convincing. What should the teacher do before using it?
 
-### M2-Q4 — Single choice
+- A. Solve and check each question independently
+- B. Publish it because the key is formatted
+- C. Ask the same AI if it is sure
 
-**Question:** A prompt has a role, learner, topic, and task but no safety instruction. What is the best revision?
+**Answer:** A.
 
-A. Add “Be creative.”  
-B. Add more exclamation marks.  
-C. Add “Use fictional examples only; I will verify facts and suitability before use.”  
-D. Remove the learner level.
+**Explanation:** Independent checking catches plausible but wrong answers and misaligned questions.
 
-**Answer:** C
+### m2-q4 — Differentiation
 
-**Explanation:** It addresses privacy and explicitly keeps final review with the teacher.
+Lesson: `differentiate-without-lowering`. Type: single.
 
-### M2-Q5 — Single choice
+Which change supports access while keeping the same learning goal?
 
-**Question:** Why does PromptShala show dimension-level feedback instead of only a total score?
+- A. Remove all reasoning from the task
+- B. Offer a visual scaffold and alternative response mode
+- C. Give the answer first
 
-A. To make the page longer  
-B. To show what is present, what is missing, and how to revise  
-C. To guarantee the AI output is correct  
-D. To prevent teachers from editing prompts
+**Answer:** B.
 
-**Answer:** B
+**Explanation:** Scaffolds can change representation or response while preserving conceptual demand.
 
-**Explanation:** Actionable feedback supports learning and revision. A rubric score cannot guarantee the correctness of a future AI output.
+### m2-q5 — Controlled testing
 
-## Module 3 — Reusable Teacher Assistants
+Lesson: `prompt-laboratory`. Type: single.
 
-### M3-Q1 — Single choice
+Why change one important prompt element at a time during testing?
 
-**Question:** Which task is best suited to a reusable teacher assistant?
+- A. To know which change likely affected the output
+- B. To guarantee factual accuracy
+- C. To avoid reviewing the result
 
-A. A one-time personal message containing confidential information  
-B. Repeatedly producing quiz drafts in the same approved format  
-C. Making final disciplinary decisions  
-D. Storing student medical records
+**Answer:** A.
 
-**Answer:** B
+**Explanation:** Controlled revisions make comparisons useful; output quality still requires teacher review.
 
-**Explanation:** Repeated, structured, low-risk drafting is a suitable use. Confidential records and consequential decisions are not.
+## Module 3
 
-### M3-Q2 — Multiple select
+### m3-q1 — Reusable tasks
 
-**Question:** Which elements belong in a reusable assistant specification? Select all that apply.
+Lesson: `prompt-versus-assistant`. Type: single.
 
-A. Persona  
-B. Repeated task  
-C. Context and boundaries  
-D. Output format  
-E. Teacher review checks
+When is a reusable teaching assistant a good choice?
 
-**Answer:** A, B, C, D, E
+- A. A repeated, low-risk task with changing teacher inputs
+- B. A final decision about a learner
+- C. Any task involving private records
 
-**Explanation:** A reusable assistant needs clear instructions and boundaries for both output consistency and safe use.
+**Answer:** A.
 
-### M3-Q3 — Single choice
+**Explanation:** Use a reusable assistant for repeated drafting work with a stable process and teacher review.
 
-**Question:** Why should a teacher test an assistant with at least two different inputs?
+### m3-q2 — Input contract
 
-A. To see whether the instructions work consistently beyond one example  
-B. To increase the amount of private data stored  
-C. To avoid reviewing the output  
-D. To guarantee that the assistant can never fail
+Lesson: `assistant-passport`. Type: single.
 
-**Answer:** A
+The teacher leaves out the learning objective. What should the assistant do?
 
-**Explanation:** Multiple tests can expose missing instructions or inconsistent formatting, but they cannot guarantee perfect behaviour.
+- A. Invent an objective
+- B. Ask for the objective before drafting
+- C. Use a student's past score
 
-### M3-Q4 — Single choice
+**Answer:** B.
 
-**Question:** A quiz assistant sometimes creates two correct MCQ options. What is the best next step?
+**Explanation:** Missing required input should trigger a question, not an invented assumption.
 
-A. Ignore the issue.  
-B. Add a boundary requiring exactly one defensible answer, then retest.  
-C. Add student names.  
-D. Remove the answer key.
+### m3-q3 — Specification
 
-**Answer:** B
+Lesson: `build-assistant`. Type: multiple.
 
-**Explanation:** The observed failure should lead to a specific instruction change and another test.
+Which belong in an Agent Passport? Select all that apply.
 
-### M3-Q5 — Single choice
+- A. Purpose and teacher role
+- B. Output format and review checks
+- C. Named students and their grades
 
-**Question:** Who is responsible for the classroom resource produced by the assistant?
+**Answer:** A, B.
 
-A. The assistant alone  
-B. The software vendor alone  
-C. The teacher who reviews, adapts, and chooses whether to use it  
-D. No one, because it is AI-generated
+**Explanation:** Document stable purpose, format and safeguards without identifiable learner information.
 
-**Answer:** C
+### m3-q4 — Testing
 
-**Explanation:** A reusable assistant is a drafting aid. The teacher retains professional responsibility.
+Lesson: `test-two-contexts`. Type: single.
 
-## Module 4 — Working with Teacher-Owned Sources
+A test output looks fluent but contains a wrong answer. What is the strongest next step?
 
-### M4-Q1 — Single choice
+- A. Publish it because the wording is good
+- B. Record the error, correct it and revise the instructions
+- C. Try another font
 
-**Question:** Which is the safest source for a source-grounded classroom activity?
+**Answer:** B.
 
-A. A teacher-owned lesson note with no personal data  
-B. A confidential learner support plan  
-C. A downloaded commercial textbook shared without permission  
-D. A file containing student names and marks
+**Explanation:** The test log should capture the failure and guide a specific repair.
 
-**Answer:** A
+### m3-q5 — Safe handoff
 
-**Explanation:** The source should be authorised, relevant, and free of personal or confidential information.
+Lesson: `repair-and-remix`. Type: single.
 
-### M4-Q2 — Single choice
+What should a colleague-ready assistant export include?
 
-**Question:** What does “source-grounded” mean in this module?
+- A. Generic instructions, required inputs, known limits and review checks
+- B. Your private class records
+- C. Only the assistant's name
 
-A. The tool should base its response on the supplied approved sources.  
-B. Every response is automatically correct.  
-C. Copyright no longer applies.  
-D. The teacher does not need to review citations.
+**Answer:** A.
 
-**Answer:** A
+**Explanation:** A useful handoff is reusable and transparent without private classroom data.
 
-**Explanation:** Grounding limits the response to supplied material and can support citation checking, but errors and rights obligations remain possible.
+### m3-q6 — Workflow versus agent
 
-### M4-Q3 — Multiple select
+Lesson: `prompt-versus-assistant`. Type: single.
 
-**Question:** What should a teacher verify in a generated study guide? Select all that apply.
+A teacher manually passes a reviewed plan to a second assistant. What is this?
 
-A. Key claims match the source  
-B. The reading level suits learners  
-C. No private information is exposed  
-D. Images and extracts have appropriate rights  
-E. The output is long
+- A. A teacher-led workflow
+- B. An autonomous agent
+- C. A persistent memory system
 
-**Answer:** A, B, C, D
+**Answer:** A.
 
-**Explanation:** Length alone is not a quality measure. Accuracy, suitability, privacy, and rights all require review.
+**Explanation:** The teacher chose the sequence and controls the handoff; no agent independently selected its next action.
 
-### M4-Q4 — Single choice
+### m3-q7 — Source gaps
 
-**Question:** How should PromptShala use a copyrighted YouTube tutorial selected for optional learning?
+Lesson: `source-pack-gaps`. Type: single.
 
-A. Download and upload it to PromptShala  
-B. Remove the channel name  
-C. Embed or link to the original official upload and provide a text alternative for essential learning  
-D. Copy the full transcript into the lesson
+The source pack has no answer to a policy question. What should the assistant say?
 
-**Answer:** C
+- A. Give a likely answer and invented citation
+- B. Name the missing evidence and request the approved source
+- C. Use an unrelated example as proof
 
-**Explanation:** Linking or embedding the original upload preserves the source and avoids rehosting. Essential learning should not depend on the video alone.
+**Answer:** B.
 
-### M4-Q5 — Single choice
+**Explanation:** The assistant must make a source gap visible and tell the teacher what would unblock the task.
 
-**Question:** A generated slide says something that is not present in the approved source. What should the teacher do?
+### m3-q8 — Conflicting sources
 
-A. Keep it because it sounds useful.  
-B. Verify it with an authorised source or remove it.  
-C. Hide the source citation.  
-D. Ask for more unsupported details.
+Lesson: `source-pack-gaps`. Type: single.
 
-**Answer:** B
+Two supplied notes give different dates. What should happen?
 
-**Explanation:** Unsupported claims should not enter the classroom artifact without independent verification.
+- A. Blend the dates
+- B. Silently choose the newer-looking one
+- C. Flag the conflict and pause for teacher verification
 
-## Bank review checklist
+**Answer:** C.
 
-- Every question maps to a published module outcome.
-- Every keyed answer is defensible and unambiguous.
-- Explanations teach the concept rather than repeat the answer.
-- Distractors reflect plausible misunderstandings without trick wording.
-- Reading level is suitable for beginner adult learners.
-- Accessibility does not depend on colour, images, or drag-and-drop alone.
-- The client reviews terminology, pass rules, and pilot scope before implementation.
+**Explanation:** Conflicting evidence requires an explicit stop and an authoritative check.
 
+### m3-q9 — Synthetic rehearsal
+
+Lesson: `classroom-rehearsal`. Type: single.
+
+What can a simulated learner dialogue support?
+
+- A. Rehearsing and improving a teacher question
+- B. Predicting a real child's behavior
+- C. Diagnosing a named learner
+
+**Answer:** A.
+
+**Explanation:** Synthetic responses are rehearsal data, not evidence about a real child.
+
+### m3-q10 — Handoff
+
+Lesson: `workflow-handoffs`. Type: multiple.
+
+Which details belong in a safe workflow handoff? Select all that apply.
+
+- A. Approved objective and constraints
+- B. Source labels and unresolved issues
+- C. Private student records and unrelated chat history
+
+**Answer:** A, B.
+
+**Explanation:** Pass only the context needed for the next step and keep the teacher in control.
+
+## Module 4
+
+### m4-q1 — Source intake
+
+Lesson: `choose-safe-sources`. Type: multiple.
+
+Which checks belong before importing a teacher source? Select all that apply.
+
+- A. Permission and relevance to the learning goal
+- B. No personal or confidential data, and readable content
+- C. Whether the file looks impressive enough to skip review
+
+**Answer:** A, B.
+
+**Explanation:** Inspect rights, relevance, privacy and readability before using the source. Appearance does not replace these checks.
+
+### m4-q2 — Citation verification
+
+Lesson: `citation-detective`. Type: single.
+
+A cited note says evaporation can happen below boiling. The draft says it requires boiling. What should you do?
+
+- A. Trust the draft because it has a citation
+- B. Mark it contradicted and correct the claim against the passage
+- C. Remove only the citation
+
+**Answer:** B.
+
+**Explanation:** Read the actual passage and compare its meaning. A citation does not guarantee that the claim matches it.
+
+### m4-q3 — Conflicting evidence
+
+Lesson: `ask-with-evidence`. Type: single.
+
+Two copies of the same seed inspection disagree. What belongs in the draft?
+
+- A. An average presented as the actual count
+- B. The larger number because it seems more positive
+- C. Both conflicting counts and a request for the original record
+
+**Answer:** C.
+
+**Explanation:** Surface the conflict. Neither averaging nor choosing a convenient account resolves it.
+
+### m4-q4 — Accessible transformation
+
+Lesson: `transform-without-drift`. Type: multiple.
+
+Which adaptations retain the learning goal and source meaning? Select all that apply.
+
+- A. Simplify language while retaining 'possible' before an inference
+- B. Provide a written alternative to an audio explanation
+- C. Change an uncertain observation into an absolute rule
+
+**Answer:** A, B.
+
+**Explanation:** Improve access without losing qualification, evidence or conceptual demand.
+
+### m4-q5 — Responsible handoff
+
+Lesson: `source-to-classroom-capstone`. Type: single.
+
+Which package is ready for colleague review?
+
+- A. A permitted artifact with passage checks, corrections, source credit and known limits
+- B. An unreviewed draft containing named learner records
+- C. A fluent worksheet described as automatically verified
+
+**Answer:** A.
+
+**Explanation:** A reviewable handoff exposes evidence and limitations. It still needs the receiving teacher's judgment.
+
+## Review limits
+
+Each correct option was checked against the lesson explanation; IDs and answer contracts are preserved. Facilitator review should assess difficulty, distractor plausibility, language suitability and whether participants transfer the ideas to new tasks. Automated tests verify scoring and progression, not the validity of those educational judgments.
