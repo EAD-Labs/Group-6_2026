@@ -66,7 +66,7 @@ The Studio provides guided practice and prepared examples. It does not perform l
 ### Website and participant experience
 
 - Updated PromptShala branding and a redesigned homepage with rounded course cards.
-- A navy and cobalt palette with warmer contrast accents.
+- A consistent navy, warm paper, peach and terracotta palette across the homepage, sign-in, onboarding, dashboard, progress, profile, settings and learning pages, with pale blue practice cards.
 - An expandable course sidebar showing modules and chapters, plus a separate main menu.
 - Smaller lesson typography, matched across module overviews, the CRAFT lab and AI Staffroom.
 - Larger lesson video frames that fill the resource area.
@@ -82,6 +82,7 @@ The Studio provides guided practice and prepared examples. It does not perform l
 - A regression check confirms that CRAFT practice opens for a participant with no completed lessons.
 - Module 4 browser checks cover claim feedback, local portfolio reload, capstone completion, the knowledge check and independent progress recording.
 - Phone and desktop layout checks confirm compact typography and accessible activity controls.
+- Website palette checks cover the public homepage, sign-in, onboarding, dashboard, account pages and learning screens, with readable navigation states and working phone menus.
 - The refreshed Vercel preview is deployed and ready for review.
 - Relevant Jira issues include implementation evidence and outstanding work.
 
@@ -114,7 +115,8 @@ The review preview does not currently have a connected participant database. Its
 
 ## Review links
 
-- [PromptShala review preview](https://promptshala-i2z9im0zc-sus-co.vercel.app/learn/module-4)
+- [PromptShala review preview](https://promptshala-7wlh3qtly-sus-co.vercel.app/)
+- [Website colour system and review evidence](https://github.com/EAD-Labs/Group-6_2026/pull/9)
 - [Module 4 implementation and verification evidence](https://github.com/EAD-Labs/Group-6_2026/pull/8)
 - [Earlier module and website work](https://github.com/EAD-Labs/Group-6_2026/pull/7)
 - [Learning and AI workflow tracking](https://darshansonawane1110.atlassian.net/browse/KAN-6)
