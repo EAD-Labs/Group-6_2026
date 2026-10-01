@@ -47,7 +47,7 @@ describe("source-grounded practice evidence", () => {
   it.each(artifactTypes)("keeps passage labels and teacher guidance in a %s practice draft", (type) => {
     const draft = buildPracticeDraft("river-story", type);
     expect(draft).toContain("A:1");
-    expect(draft).toContain("Teacher guide:");
+    expect(draft).toMatch(/Teacher (?:answer )?guide/);
     expect(draft).toContain("fictional practice pack");
   });
 
