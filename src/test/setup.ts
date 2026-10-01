@@ -5,5 +5,5 @@ import { afterEach } from "vitest";
 
 afterEach(() => {
   cleanup();
-  window.sessionStorage.clear();
+  if (typeof window !== "undefined") window.sessionStorage.clear();
 });

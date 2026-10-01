@@ -1,0 +1,2 @@
+import type { MetadataRoute } from "next";
+export default function manifest():MetadataRoute.Manifest{return {name:"PromptShala — Practical AI literacy",short_name:"PromptShala",description:"A practice course for thoughtful classroom AI use.",start_url:"/dashboard",display:"standalone",background_color:"#f5f1e8",theme_color:"#17233b",icons:[{src:"/brand/promptshala-logo.png",sizes:"2172x724",type:"image/png",purpose:"any"}]};}

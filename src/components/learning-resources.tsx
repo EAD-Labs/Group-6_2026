@@ -3,16 +3,18 @@
 import { useState } from "react";
 
 import { Icon } from "@/components/ui/icon";
+import { useDemo } from "@/features/demo/demo-provider";
 
 type LearningResource = { label: string; url: string };
 
 function VideoResource({ label, embedUrl }: { label: string; embedUrl: string }) {
   const [playing, setPlaying] = useState(false);
+  const { state } = useDemo();
   const videoId = embedUrl.split("/").at(-1) ?? "";
 
   return <article className="embedded-video-card">
     <div className="video-frame">
-      {playing ? <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" src={`${embedUrl}?autoplay=1`} title={label} /> :
+      {playing ? <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" src={`${embedUrl}?autoplay=1&cc_load_policy=${state.captionsEnabled ? "1" : "0"}`} title={label} /> :
         <button aria-label={`Play video: ${label}`} className="video-play-button" onClick={() => setPlaying(true)} style={{ backgroundImage: `linear-gradient(rgba(7, 24, 21, 0.15), rgba(7, 24, 21, 0.35)), url(https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg)` }} type="button">
           <span><Icon name="play" /></span>
         </button>}
@@ -26,8 +28,8 @@ function youtubeEmbedUrl(url: string) {
     const parsed = new URL(url);
     let videoId = "";
     if (parsed.hostname === "youtu.be") videoId = parsed.pathname.slice(1);
-    else if (parsed.hostname.endsWith("youtube.com")) videoId = parsed.searchParams.get("v") ?? parsed.pathname.split("/").filter(Boolean).at(-1) ?? "";
-    return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : null;
+    else if (parsed.hostname === "youtube.com" || parsed.hostname === "www.youtube.com" || parsed.hostname === "m.youtube.com") videoId = parsed.searchParams.get("v") ?? parsed.pathname.split("/").filter(Boolean).at(-1) ?? "";
+    return /^[a-zA-Z0-9_-]{11}$/.test(videoId) ? `https://www.youtube-nocookie.com/embed/${videoId}` : null;
   } catch {
     return null;
   }

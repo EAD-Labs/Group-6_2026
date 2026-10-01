@@ -174,10 +174,12 @@ export function buildPracticeDraft(caseId: string, type: ArtifactType) {
   const current = sourceCases.find((item) => item.id === caseId) ?? sourceCases[0];
   const title = `# ${current.title}\n\nObjective: ${current.objective}\nAudience: ${current.audience}\n\n`;
   const tasks = current.questions.map((item, index) => `${index + 1}. ${item.prompt}\nTeacher guide: ${item.answer} [${item.reference}]`).join("\n\n");
+  const learnerTasks = current.questions.map((item, index) => `${index + 1}. ${item.prompt}`).join("\n\n");
+  const teacherGuide = current.questions.map((item, index) => `${index + 1}. ${item.answer} [${item.reference}]`).join("\n\n");
   const content = type === "slides" ? `Slide 1: Learning question and objective\n\n${tasks}\n\nFinal slide: Which answer could not be settled from the source?`
     : type === "audio-script" ? `Narrator: Today we will inspect the evidence in ${current.title}.\n\n${tasks}\n\nNarrator: Pause after each question. The printed questions and teacher guide are the non-audio alternative. This is a script, not generated audio.`
     : type === "study-guide" ? `Read the source pack, then use these retrieval questions.\n\n${tasks}\n\nExplain the difference between an explicit fact and a claim that still needs evidence.`
-    : `${type === "quiz" ? "Answer each question independently before checking the teacher guide." : "Read, discuss and answer. You may write, speak or draw a labelled response."}\n\n${tasks}`;
+    : `## Learner ${type === "quiz" ? "questions" : "task"}\n${type === "quiz" ? "Answer each question independently before checking the teacher guide." : "Read, discuss and answer. You may write, speak or draw a labelled response."}\n\n${learnerTasks}\n\n## Teacher answer guide — keep separate from the learner copy\n${teacherGuide}`;
   return `${title}${content}\n\nSource credit: Original PromptShala fictional practice pack. Teacher must verify and adapt before classroom use.`;
 }
 
