@@ -2,6 +2,8 @@ import {
   initialDemoState,
   type AiFamiliarity,
   type AssistantSpec,
+  type AssistantPassportSnapshot,
+  type AssistantTest,
   type DemoState,
   type QuizAttempt,
   type PromptTemplate,
@@ -20,6 +22,7 @@ function cleanPromptLibrary(value: unknown): PromptTemplate[] {
     const raw = value.find((item) => item && typeof item === "object" && item.category === category) as Partial<PromptTemplate> | undefined;
     return raw ? [{ category, template: cleanString(raw.template, "", 2500),
       completedExample: cleanString(raw.completedExample, "", 2500),
+      reviewBasis: raw.reviewBasis === "observed" || raw.reviewBasis === "guided" ? raw.reviewBasis : undefined,
       knownFailure: cleanString(raw.knownFailure, "", 1200),
       reviewChecklist: cleanString(raw.reviewChecklist, "", 1200),
       transferNote: cleanString(raw.transferNote, "", 1200) }] : [];
@@ -69,6 +72,9 @@ function cleanQuizAttempts(value: unknown): QuizAttempt[] {
       );
 
       return {
+        id: cleanString(attempt.id, "", 100) || undefined,
+        contentVersion: cleanString(attempt.contentVersion, "", 80) || undefined,
+        verifiedAt: cleanString(attempt.verifiedAt, "", 40) || undefined,
         answers:
           attempt.answers && typeof attempt.answers === "object"
             ? attempt.answers
@@ -85,8 +91,7 @@ function cleanQuizAttempts(value: unknown): QuizAttempt[] {
         scorePercent,
       };
     })
-    .filter((attempt): attempt is QuizAttempt => Boolean(attempt))
-    .slice(0, 20);
+    .filter((attempt): attempt is QuizAttempt => Boolean(attempt));
 }
 
 function cleanLessonIds(value: unknown, allowed: string[]) {
@@ -95,22 +100,76 @@ function cleanLessonIds(value: unknown, allowed: string[]) {
     : [];
 }
 
+function cleanPassportSnapshot(value: unknown): AssistantPassportSnapshot | undefined {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
+  const raw = value as Partial<AssistantPassportSnapshot>;
+  const optional = (key: keyof AssistantPassportSnapshot) => typeof raw[key] === "string" ? cleanString(raw[key], "", 2500) : undefined;
+  return {
+    name: cleanString(raw.name, "", 100), purpose: cleanString(raw.purpose, "", 2000),
+    persona: cleanString(raw.persona, "", 2000), task: cleanString(raw.task, "", 2000),
+    context: cleanString(raw.context, "", 2000), format: cleanString(raw.format, "", 2000),
+    boundaries: cleanString(raw.boundaries, "", 2000), reviewChecks: cleanString(raw.reviewChecks, "", 2000),
+    creatorCredit: optional("creatorCredit"), optionalInputs: optional("optionalInputs"),
+    toolsPermitted: optional("toolsPermitted"), clarificationRule: optional("clarificationRule"),
+    stopRule: optional("stopRule"), sharingScope: optional("sharingScope"),
+  };
+}
+
+function cleanAssistantVersions(value: unknown): NonNullable<AssistantSpec["versions"]> {
+  if (!Array.isArray(value)) return [];
+  const versions = new Map<number, NonNullable<AssistantSpec["versions"]>[number]>();
+  for (const entry of value) {
+    if (!entry || typeof entry !== "object") continue;
+    const version = cleanAssistantVersion(entry.version);
+    if (!versions.has(version)) versions.set(version, {
+      version, at: cleanString(entry.at, "", 40), note: cleanString(entry.note, "", 500),
+      snapshot: cleanPassportSnapshot(entry.snapshot),
+    });
+  }
+  return [...versions.values()];
+}
+
+function cleanAssistantVersion(value: unknown) {
+  const version = Number(value);
+  return Number.isSafeInteger(version) && version > 0 ? version : 1;
+}
+
+function cleanAssistantTests(value: unknown): AssistantTest[] {
+  if (!Array.isArray(value)) return [];
+  const tests = new Map<string, AssistantTest>();
+  // The request is byte-bounded by the API. Do not truncate saved history on
+  // subsequent loads: old reviewed cases are still evidence for their version.
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const test = item as Partial<AssistantTest>;
+    const id = cleanString(test.id, "", 100);
+    if (!id || tests.has(id)) continue;
+    tests.set(id, {
+      id, evidenceMode: ["live", "external", "prepared"].includes(String(test.evidenceMode)) ? test.evidenceMode : undefined,
+      sourcePack: typeof test.sourcePack === "string" ? cleanString(test.sourcePack, "", 2500) : undefined,
+      classContextCard: typeof test.classContextCard === "string" ? cleanString(test.classContextCard, "", 2500) : undefined,
+      caseId: cleanString(test.caseId, "", 10), expected: cleanString(test.expected, "", 1200),
+      verdict: ["pass", "partial", "fail"].includes(String(test.verdict)) ? test.verdict : undefined,
+      version: cleanAssistantVersion(test.version),
+      input: cleanString(test.input, "", 2500), output: cleanString(test.output, "", 6000),
+      review: cleanString(test.review, "", 2500), createdAt: cleanString(test.createdAt, "", 40),
+    });
+  }
+  return [...tests.values()];
+}
+
 function cleanAssistants(value: unknown): AssistantSpec[] {
   if (!Array.isArray(value)) return [];
-  return value.slice(0, 20).flatMap((item): AssistantSpec[] => {
+  return value.flatMap((item): AssistantSpec[] => {
     if (!item || typeof item !== "object") return [];
     const raw = item as Partial<AssistantSpec>;
-    if (typeof raw.id !== "string" || !/^[0-9a-f-]{36}$/i.test(raw.id)) return [];
+    if (typeof raw.id !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(raw.id)) return [];
     const field = (key: keyof AssistantSpec) => cleanString(raw[key], "", 2500);
     return [{
       id: raw.id,
-      version: Math.max(1, Math.min(100, Math.floor(Number(raw.version) || 1))),
-      versions: Array.isArray(raw.versions) ? raw.versions.slice(0, 30).flatMap((entry) =>
-        entry && typeof entry === "object" ? [{
-          version: Math.max(1, Math.min(100, Math.floor(Number(entry.version) || 1))),
-          at: cleanString(entry.at, "", 40), note: cleanString(entry.note, "", 500),
-        }] : [],
-      ) : [],
+      improvementApproach: raw.improvementApproach === "strengthen" ? "strengthen" : "repair",
+      version: cleanAssistantVersion(raw.version),
+      versions: cleanAssistantVersions(raw.versions),
       creatorCredit: field("creatorCredit"), sourcePack: field("sourcePack"),
       classContextCard: field("classContextCard"),
       optionalInputs: field("optionalInputs"), toolsPermitted: field("toolsPermitted"),
@@ -122,19 +181,9 @@ function cleanAssistants(value: unknown): AssistantSpec[] {
       task: field("task"), context: field("context"), format: field("format"),
       boundaries: field("boundaries"), reviewChecks: field("reviewChecks"),
       weakness: field("weakness"), revision: field("revision"),
-      tests: Array.isArray(raw.tests) ? raw.tests.slice(0, 24).flatMap((test) =>
-        test && typeof test === "object" ? [{
-          id: cleanString(test.id, "", 100),
-          caseId: cleanString(test.caseId, "", 10),
-          expected: cleanString(test.expected, "", 1200),
-          verdict: ["pass", "partial", "fail"].includes(String(test.verdict)) ? test.verdict : undefined,
-          version: Math.max(1, Math.min(100, Math.floor(Number(test.version) || 1))),
-          input: cleanString(test.input, "", 2500), output: cleanString(test.output, "", 6000),
-          review: cleanString(test.review, "", 2500), createdAt: cleanString(test.createdAt, "", 40),
-        }] : [],
-      ) : [],
-      updatedAt: cleanString(raw.updatedAt, new Date().toISOString(), 40),
-      deletedAt: raw.deletedAt ? cleanString(raw.deletedAt, "", 40) : undefined,
+      tests: cleanAssistantTests(raw.tests),
+      updatedAt: typeof raw.updatedAt === "string" && Number.isFinite(Date.parse(raw.updatedAt)) ? new Date(raw.updatedAt).toISOString() : new Date().toISOString(),
+      deletedAt: typeof raw.deletedAt === "string" && Number.isFinite(Date.parse(raw.deletedAt)) ? new Date(raw.deletedAt).toISOString() : undefined,
     }];
   });
 }
@@ -175,7 +224,7 @@ export function sanitizeDemoState(value: unknown): DemoState {
     moduleThreeCompletedLessonIds: cleanLessonIds(input.moduleThreeCompletedLessonIds, moduleThreeLessons.map((lesson) => lesson.id)),
     moduleFourCompletedLessonIds: cleanLessonIds(input.moduleFourCompletedLessonIds, moduleFourLessons.map((lesson) => lesson.id)),
     sourcePortfolio: sanitizeSourcePortfolio(input.sourcePortfolio),
-    displayName: cleanString(input.displayName, "Participant", 120),
+    displayName: cleanString(input.displayName, "Participant", 120) || "Participant",
     goals: Array.isArray(input.goals)
       ? input.goals
           .filter((goal): goal is string => typeof goal === "string")
@@ -195,6 +244,6 @@ export function sanitizeDemoState(value: unknown): DemoState {
     reflection: cleanString(input.reflection, "", 500),
     safeUseAccepted: Boolean(input.safeUseAccepted),
     teachingLevel,
-    yearsTeaching: cleanString(input.yearsTeaching, "0", 2),
+    yearsTeaching: String(Math.max(0, Math.min(70, Math.floor(Number(input.yearsTeaching) || 0)))),
   };
 }

@@ -6,6 +6,9 @@ export type TeachingLevel = "Classes 5–7" | "Classes 8–10" | "Both";
 export type AiFamiliarity = "New to AI" | "Tried it a few times" | "Use it sometimes";
 
 export type QuizAttempt = {
+  id?: string;
+  contentVersion?: string;
+  verifiedAt?: string;
   answers: Record<string, string[]>;
   attemptedAt: string;
   correctAnswers: number;
@@ -14,6 +17,9 @@ export type QuizAttempt = {
 };
 
 export type AssistantTest = {
+  evidenceMode?: "live" | "external" | "prepared";
+  sourcePack?: string;
+  classContextCard?: string;
   id: string;
   caseId?: string;
   expected?: string;
@@ -26,9 +32,10 @@ export type AssistantTest = {
 };
 
 export type AssistantSpec = {
+  improvementApproach?: "repair" | "strengthen";
   id: string;
   version?: number;
-  versions?: { version: number; at: string; note: string }[];
+  versions?: { version: number; at: string; note: string; snapshot?: AssistantPassportSnapshot }[];
   creatorCredit?: string;
   sourcePack?: string;
   classContextCard?: string;
@@ -56,7 +63,13 @@ export type AssistantSpec = {
   deletedAt?: string;
 };
 
+export type AssistantPassportSnapshot = Pick<AssistantSpec,
+  "name" | "purpose" | "persona" | "task" | "context" | "format" | "boundaries" | "reviewChecks" |
+  "creatorCredit" | "optionalInputs" | "toolsPermitted" | "clarificationRule" | "stopRule" | "sharingScope"
+>;
+
 export type PromptTemplate = {
+  reviewBasis?: "observed" | "guided";
   category: "planning" | "assessment" | "adaptation";
   template: string;
   completedExample: string;

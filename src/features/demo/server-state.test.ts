@@ -54,4 +54,45 @@ describe("authenticated participant state validation", () => {
     expect(state.moduleThreeCompletedLessonIds).toEqual(["assistant-passport"]);
     expect(state.assistants[0]).toMatchObject({ classContextCard: "Class 7 science", sourcePack: "Source A: fictional note", tests: [{ caseId: "T1", verdict: "pass" }] });
   });
+  it("retains honest prepared-example evidence labels and a strengthening approach", () => {
+    const state = sanitizeDemoState({ assistants: [{ id: "00000000-0000-4000-8000-000000000999", improvementApproach: "strengthen", tests: [
+      { id: "prepared", evidenceMode: "prepared" }, { id: "unknown", evidenceMode: "verified-by-ai" }, { id: "legacy" },
+    ] }] });
+    expect(state.assistants[0].improvementApproach).toBe("strengthen");
+    expect(state.assistants[0].tests.map((test) => test.evidenceMode)).toEqual(["prepared", undefined, undefined]);
+    expect(sanitizeDemoState({ assistants: [{ id: "00000000-0000-4000-8000-000000000999" }] }).assistants[0].improvementApproach).toBe("repair");
+  });
+  it("bounds Passport snapshots, preserves legacy absence, and keeps the first duplicate version", () => {
+    const state = sanitizeDemoState({ assistants: [{ id: "00000000-0000-4000-8000-000000000999", versions: [
+      { version: 1, note: "Original", snapshot: { name: "N".repeat(150), task: "T".repeat(3000), optionalInputs: "I".repeat(3000), unsafeExtra: "discard" } },
+      { version: 1, note: "Overwrite", snapshot: { name: "Replacement" } },
+      { version: 2, note: "Legacy without snapshot" },
+    ] }] });
+    const history = state.assistants[0].versions!;
+    expect(history).toHaveLength(2);
+    expect(history[0].note).toBe("Original");
+    expect(history[0].snapshot?.name).toHaveLength(100);
+    expect(history[0].snapshot?.task).toHaveLength(2000);
+    expect(history[0].snapshot?.optionalInputs).toHaveLength(2500);
+    expect(history[0].snapshot?.creatorCredit).toBeUndefined();
+    expect(history[0].snapshot).not.toHaveProperty("unsafeExtra");
+    expect(history[1].snapshot).toBeUndefined();
+  });
+  it("retains complete deduplicated history and the actual per-run conditions without inventing legacy values", () => {
+    const tests = Array.from({ length: 35 }, (_, i) => ({ id: `test-${i}`, version: i + 1, input: `Original ${i}` }));
+    const state = sanitizeDemoState({ assistants: [{ id: "00000000-0000-4000-8000-000000000999", versions: tests.map((test) => ({ version: test.version })), tests: [
+      ...tests, { id: "test-0", input: "Overwrite" },
+      { id: "contextual", sourcePack: "S".repeat(3000), classContextCard: "C".repeat(3000) },
+      { id: "empty-conditions", sourcePack: "", classContextCard: "" },
+    ] }] });
+    const assistant = state.assistants[0];
+    expect(assistant.tests).toHaveLength(37);
+    expect(assistant.versions).toHaveLength(35);
+    expect(assistant.tests[0].input).toBe("Original 0");
+    expect(assistant.tests[0].sourcePack).toBeUndefined();
+    expect(assistant.tests[0].classContextCard).toBeUndefined();
+    expect(assistant.tests[35].sourcePack).toHaveLength(2500);
+    expect(assistant.tests[35].classContextCard).toHaveLength(2500);
+    expect(assistant.tests[36]).toMatchObject({ sourcePack: "", classContextCard: "" });
+  });
 });
