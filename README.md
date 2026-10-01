@@ -1,65 +1,49 @@
 # PromptShala
 
-PromptShala is a practical AI-literacy platform for beginner primary-school teachers. It helps educators understand AI at a high level, write better prompts, create reusable Gemini-style assistants, and use notebook-based tools for classroom preparation.
+PromptShala helps beginner primary-school teachers understand AI, write classroom prompts, test reusable assistants and turn permitted source material into reviewed teaching drafts.
 
-## Project status
+## Current implementation
 
-The client review build implements all four participant learning modules: 29 lessons, four retryable knowledge checks, the CRAFT lab, AI Staffroom and Source Studio. All modules are accessible from the start; assessed completion requires each module's lessons, quiz and practice evidence. Source Studio includes three original fictional packs, claim audits, five editable artifact formats and a portable review portfolio.
+The local review build contains four learning modules with **29 lessons**, four retryable quizzes (25 questions), CRAFT practice and prompt library, AI Staffroom and guided Source Studio. All modules are accessible from the start; assessed completion separately requires lessons, quizzes and applicable practical evidence. See the [29-lesson review matrix](docs/content/LESSON_REVIEW.md).
 
-The application includes Supabase persistence code and a server-side CRAFT evaluator with a deterministic fallback. The extended database migrations, authenticated isolation checks, live AI configuration, certification/administration and final production acceptance remain release requirements. The preview currently uses local practice state and fallback AI evaluation.
+Connected-service code now includes trusted progress saving, server-validated quiz answers, account-scoped recovery, optional Gemini calls, a separate own-source text transformation workspace, private resource expiry/deletion, certificate PDF/verification, staff roles, lesson addenda, cohort reporting, account export/deletion and retention maintenance. The [participant guide](docs/PARTICIPANT_GUIDE.md) and [admin guide](docs/ADMIN_GUIDE.md) explain the workflows and limits.
 
-## Confirmed stack
+**Implementation is not production acceptance.** Local Supabase/Gemini configuration is absent in the current work environment. Vercel team `sus-co` access returned 403 and needs owner reauthentication/authorised access. Cloud migrations, live AI, connected UAT, measured load, restore rehearsal and the ten-person pilot remain unverified. Historical preview links do not establish that the current revision is deployed. [Progress and remaining work](progress.md) tracks this distinction.
 
-- Next.js 16, React 19 and TypeScript for the web application
-- Supabase Auth and PostgreSQL with Row Level Security
-- GitHub for source control and pull requests
-- Vercel Preview with a separate Supabase staging project
-- Jira project `KAN` for PromptShala delivery tracking
+## Run locally
 
-## Local setup
+Use Node.js 24.19.0 and pnpm 11.19.0:
 
-1. Install Node.js 24.19.0 and pnpm 11.19.0.
-2. Copy `.env.example` to `.env.local`.
-3. Add local Supabase URL and publishable key values. Add `GEMINI_API_KEY` only for live CRAFT evaluation. Never commit secrets.
-4. Install dependencies with `pnpm install --frozen-lockfile`.
-5. Start the development server with `pnpm dev`.
-6. Run validation with `pnpm check` and a production build with `pnpm build`.
+```sh
+cp .env.example .env.local
+pnpm install --frozen-lockfile
+node scripts/check-environment.mjs
+pnpm dev --port 3005
+```
 
-## Team
+Demo reading and practice can run without cloud credentials. For connected accounts, configure the public Supabase URL/publishable key and server-only service key, apply migrations to the intended environment and verify isolation. Live AI additionally requires an approved server-side Gemini configuration. Never commit secrets. The environment checker tests presence only; `--strict` fails when required settings are missing.
 
-- Ashok Chilka
-- Darshan Sonawane
-- Raghuram Gundi
-- Vishal Patel
+```sh
+pnpm check
+pnpm build
+```
 
-## Contribution workflow
+The repository includes a standalone Dockerfile. Image/deployment validation is a separate check. Follow [Operations](docs/OPERATIONS.md) for variables, migration rollout, auth/recovery redirects, first-admin setup, daily cleanup and backup/restore rehearsal.
 
-Read `docs/BRANCHING.md` before creating a branch. All changes require a pull request and review before merging to `main`.
+## Stack and contribution
 
-## Documentation
+Next.js 16, React 19 and TypeScript; Supabase Auth/PostgreSQL with RLS; optional server-side Gemini; Vitest/Testing Library and local PGlite integration tests. GitHub is the source repository, Vercel the intended deployment platform, and Jira project `KAN` tracks delivery. Read [branching workflow](docs/BRANCHING.md) before contributing; use reviewed pull requests for merges.
 
-- HLD: `docs/HLD/PromptShala_HLD_v1.3_CRAFT_Updated.pdf`
-- Meeting minutes: `docs/meetings/`
-- Environment plan: `docs/ENVIRONMENTS.md`
-- Prompt framework decision: `docs/PROMPT_FRAMEWORK_DECISION.md`
-- Shared colour system: `docs/design/COLOR_SYSTEM.md`
-- Participant UX plan: `docs/design/PARTICIPANT_UX_PLAN.md`
-- Google Stitch prompts: `docs/design/STITCH_PROMPTS.md`
-- Generated Stitch project manifest: `docs/design/STITCH_PROJECT.md`
-- Client prototype walkthrough: `docs/design/CLIENT_PROTOTYPE_WALKTHROUGH.md`
-- Learning content package: `docs/content/README.md`
-- Participant curriculum: `docs/content/CURRICULUM.md`
-- Client progress report: `progress.md`
-- Module 4 implementation and review checks: `docs/testing/MODULE_4_REVIEW.md`
-- Stack decision: `docs/architecture/STACK_DECISION.md`
-- Authentication and roles: `docs/architecture/AUTHENTICATION_AND_ROLES.md`
-- Module 1 data model: `docs/architecture/MODULE_1_DATA_MODEL.md`
-- Progress and unlocking rules: `docs/architecture/PROGRESS_QUIZ_AND_UNLOCKING.md`
-- AI credential and prompt handling: `docs/architecture/API_KEY_HANDLING.md`
-- AI CRAFT evaluator: `docs/architecture/AI_CRAFT_EVALUATION.md`
-- Supabase provisioning evidence: `docs/architecture/SUPABASE_PROVISIONING_EVIDENCE.md`
-- Staging deployment: `docs/STAGING_DEPLOYMENT.md`
-- Module 1 test plan: `docs/testing/MODULE_1_TEST_PLAN.md`
-- Module 1 client-review report: `docs/testing/MODULE_1_TEST_REPORT_2026-09-09.md`
-- Per-module test-plan template: `docs/testing/MODULE_TEST_PLAN_TEMPLATE.md`
-- Per-module test-report template: `docs/testing/MODULE_TEST_REPORT_TEMPLATE.md`
+Team: Ashok Chilka, Darshan Sonawane, Raghuram Gundi and Vishal Patel.
+
+## Handover and evidence
+
+- [Participant guide](docs/PARTICIPANT_GUIDE.md), [administrator guide](docs/ADMIN_GUIDE.md), [operations and recovery](docs/OPERATIONS.md)
+- [HLD v1.3](docs/HLD/PromptShala_HLD_v1.3_CRAFT_Updated.pdf) and [implementation plan](docs/HLD/IMPLEMENTATION_PLAN.md)
+- [Final local release review](docs/testing/RELEASE_REVIEW.md) and [19-case UAT and ten-participant pilot plan](docs/testing/UAT_AND_PILOT.md)
+- Delivery report drafts: [1 · Foundation/core](docs/testing/DELIVERY_MODULE_1_REPORT.md), [2 · AI practice/workflows](docs/testing/DELIVERY_MODULE_2_REPORT.md), [3 · Certification/admin](docs/testing/DELIVERY_MODULE_3_REPORT.md)
+- [Curriculum](docs/content/CURRICULUM.md), [lesson review/source register](docs/content/LESSON_REVIEW.md), [quiz bank](docs/content/QUIZ_BANK.md)
+- [Trusted progress and sync](docs/architecture/TRUSTED_PROGRESS_AND_SYNC.md), [AI evaluation](docs/architecture/AI_CRAFT_EVALUATION.md), [CRAFT decision](docs/PROMPT_FRAMEWORK_DECISION.md)
+- [Design records](docs/design/), [meeting records](docs/meetings/), [earlier presentation evidence](docs/presentations/)
+
+Dated earlier reports remain historical evidence for their own revision. Use current implementation, test outputs and acceptance records when making release claims.

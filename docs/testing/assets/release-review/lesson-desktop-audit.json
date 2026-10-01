@@ -1,0 +1,176 @@
+[
+  {
+    "path": "/learn/module-1/lessons/meet-generative-ai",
+    "scroll": 1440,
+    "title": "Meet generative AI",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-1/lessons/useful-teacher-tasks",
+    "scroll": 1440,
+    "title": "Useful teacher tasks",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-1/lessons/review-before-use",
+    "scroll": 1440,
+    "title": "Review before use",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-1/lessons/verify-ai-claims",
+    "scroll": 1440,
+    "title": "Hallucinations and verification",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-1/lessons/choose-the-right-tool",
+    "scroll": 1440,
+    "title": "Choose the right AI assistance",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-1/lessons/responsible-use-challenge",
+    "scroll": 1440,
+    "title": "Responsible-use challenge",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-2/lessons/repair-vague-prompt",
+    "scroll": 1440,
+    "title": "Repair a vague prompt",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-2/lessons/context-constraints-examples",
+    "scroll": 1440,
+    "title": "Context, constraints and examples",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-2/lessons/learning-first-planning",
+    "scroll": 1440,
+    "title": "Lesson planning that begins with learning",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-2/lessons/questions-rubrics-feedback",
+    "scroll": 1440,
+    "title": "Questions, rubrics and actionable feedback",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-2/lessons/differentiate-without-lowering",
+    "scroll": 1440,
+    "title": "Differentiate without lowering the goal",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-2/lessons/prompt-laboratory",
+    "scroll": 1440,
+    "title": "Prompt laboratory: test, compare, revise",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-2/lessons/teaching-prompt-library",
+    "scroll": 1440,
+    "title": "Build your teaching prompt library",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3/lessons/prompt-versus-assistant",
+    "scroll": 1440,
+    "title": "Meet the AI Staffroom",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3/lessons/assistant-passport",
+    "scroll": 1440,
+    "title": "Write an assistant's job description",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3/lessons/build-assistant",
+    "scroll": 1440,
+    "title": "Configure and run a reusable assistant",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3/lessons/source-pack-gaps",
+    "scroll": 1440,
+    "title": "Supply a knowledge pack and handle gaps",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3/lessons/classroom-rehearsal",
+    "scroll": 1440,
+    "title": "Rehearse teaching with a simulated learner",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3/lessons/test-two-contexts",
+    "scroll": 1440,
+    "title": "The Repair Clinic",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3/lessons/workflow-handoffs",
+    "scroll": 1440,
+    "title": "Build a teaching workflow with handoffs",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3/lessons/repair-and-remix",
+    "scroll": 1440,
+    "title": "Staffroom exchange and transfer challenge",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/lessons/grounded-vs-fluent",
+    "scroll": 1440,
+    "title": "Begin with evidence, not a polished answer",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/lessons/choose-safe-sources",
+    "scroll": 1440,
+    "title": "Build a source pack you can safely use",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/lessons/build-source-notebook",
+    "scroll": 1440,
+    "title": "Set up a notebook with a clear purpose",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/lessons/ask-with-evidence",
+    "scroll": 1440,
+    "title": "Write requests that expose the evidence",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/lessons/citation-detective",
+    "scroll": 1440,
+    "title": "The Citation Detective: inspect three claims",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/lessons/transform-without-drift",
+    "scroll": 1440,
+    "title": "Turn a source into something teachable",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/lessons/review-share-responsibly",
+    "scroll": 1440,
+    "title": "Give the draft a teacher's final review",
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/lessons/source-to-classroom-capstone",
+    "scroll": 1440,
+    "title": "Your source-to-classroom portfolio",
+    "width": 1440
+  }
+]

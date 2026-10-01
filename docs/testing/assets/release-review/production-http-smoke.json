@@ -1,0 +1,439 @@
+{
+  "date": "2026-10-01",
+  "runtime": "Node.js 24.19.0 / Next.js standalone 16.3.6",
+  "environment": "local production build; no managed database or AI credentials",
+  "routeSmoke": [
+    {
+      "path": "/",
+      "status": 200,
+      "finalPath": "/",
+      "milliseconds": 114.7,
+      "bytes": 30583,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/access-denied",
+      "status": 200,
+      "finalPath": "/access-denied",
+      "milliseconds": 111.6,
+      "bytes": 10095,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/account-recovery",
+      "status": 200,
+      "finalPath": "/account-recovery",
+      "milliseconds": 105.9,
+      "bytes": 9933,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/certificate",
+      "status": 200,
+      "finalPath": "/certificate",
+      "milliseconds": 113.4,
+      "bytes": 8572,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/dashboard",
+      "status": 200,
+      "finalPath": "/dashboard",
+      "milliseconds": 111.2,
+      "bytes": 8568,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/help",
+      "status": 200,
+      "finalPath": "/help",
+      "milliseconds": 115.6,
+      "bytes": 16116,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-1",
+      "status": 200,
+      "finalPath": "/learn/module-1",
+      "milliseconds": 111.9,
+      "bytes": 9068,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-1/lessons/choose-the-right-tool",
+      "status": 200,
+      "finalPath": "/learn/module-1/lessons/choose-the-right-tool",
+      "milliseconds": 111.7,
+      "bytes": 13552,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-1/lessons/meet-generative-ai",
+      "status": 200,
+      "finalPath": "/learn/module-1/lessons/meet-generative-ai",
+      "milliseconds": 12.6,
+      "bytes": 13849,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-1/lessons/responsible-use-challenge",
+      "status": 200,
+      "finalPath": "/learn/module-1/lessons/responsible-use-challenge",
+      "milliseconds": 9.2,
+      "bytes": 13641,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-1/lessons/review-before-use",
+      "status": 200,
+      "finalPath": "/learn/module-1/lessons/review-before-use",
+      "milliseconds": 9.1,
+      "bytes": 13577,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-1/lessons/useful-teacher-tasks",
+      "status": 200,
+      "finalPath": "/learn/module-1/lessons/useful-teacher-tasks",
+      "milliseconds": 9.0,
+      "bytes": 13411,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-1/lessons/verify-ai-claims",
+      "status": 200,
+      "finalPath": "/learn/module-1/lessons/verify-ai-claims",
+      "milliseconds": 9.0,
+      "bytes": 13458,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-2",
+      "status": 200,
+      "finalPath": "/learn/module-2",
+      "milliseconds": 8.4,
+      "bytes": 9068,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-2/lessons/context-constraints-examples",
+      "status": 200,
+      "finalPath": "/learn/module-2/lessons/context-constraints-examples",
+      "milliseconds": 8.6,
+      "bytes": 9859,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-2/lessons/differentiate-without-lowering",
+      "status": 200,
+      "finalPath": "/learn/module-2/lessons/differentiate-without-lowering",
+      "milliseconds": 7.9,
+      "bytes": 9865,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-2/lessons/learning-first-planning",
+      "status": 200,
+      "finalPath": "/learn/module-2/lessons/learning-first-planning",
+      "milliseconds": 8.5,
+      "bytes": 9844,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-2/lessons/prompt-laboratory",
+      "status": 200,
+      "finalPath": "/learn/module-2/lessons/prompt-laboratory",
+      "milliseconds": 8.1,
+      "bytes": 9826,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-2/lessons/questions-rubrics-feedback",
+      "status": 200,
+      "finalPath": "/learn/module-2/lessons/questions-rubrics-feedback",
+      "milliseconds": 8.1,
+      "bytes": 9853,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-2/lessons/repair-vague-prompt",
+      "status": 200,
+      "finalPath": "/learn/module-2/lessons/repair-vague-prompt",
+      "milliseconds": 8.2,
+      "bytes": 9832,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-2/lessons/teaching-prompt-library",
+      "status": 200,
+      "finalPath": "/learn/module-2/lessons/teaching-prompt-library",
+      "milliseconds": 9.2,
+      "bytes": 9844,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-2/practice",
+      "status": 200,
+      "finalPath": "/learn/module-2/practice",
+      "milliseconds": 7.3,
+      "bytes": 9576,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3",
+      "status": 200,
+      "finalPath": "/learn/module-3",
+      "milliseconds": 8.5,
+      "bytes": 9067,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3/lessons/assistant-passport",
+      "status": 200,
+      "finalPath": "/learn/module-3/lessons/assistant-passport",
+      "milliseconds": 8.4,
+      "bytes": 9829,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3/lessons/build-assistant",
+      "status": 200,
+      "finalPath": "/learn/module-3/lessons/build-assistant",
+      "milliseconds": 6.9,
+      "bytes": 9820,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3/lessons/classroom-rehearsal",
+      "status": 200,
+      "finalPath": "/learn/module-3/lessons/classroom-rehearsal",
+      "milliseconds": 7.0,
+      "bytes": 9832,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3/lessons/prompt-versus-assistant",
+      "status": 200,
+      "finalPath": "/learn/module-3/lessons/prompt-versus-assistant",
+      "milliseconds": 7.0,
+      "bytes": 9844,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3/lessons/repair-and-remix",
+      "status": 200,
+      "finalPath": "/learn/module-3/lessons/repair-and-remix",
+      "milliseconds": 6.8,
+      "bytes": 9823,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3/lessons/source-pack-gaps",
+      "status": 200,
+      "finalPath": "/learn/module-3/lessons/source-pack-gaps",
+      "milliseconds": 6.9,
+      "bytes": 9823,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3/lessons/test-two-contexts",
+      "status": 200,
+      "finalPath": "/learn/module-3/lessons/test-two-contexts",
+      "milliseconds": 6.0,
+      "bytes": 9826,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3/lessons/workflow-handoffs",
+      "status": 200,
+      "finalPath": "/learn/module-3/lessons/workflow-handoffs",
+      "milliseconds": 6.4,
+      "bytes": 9826,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-3/staffroom",
+      "status": 200,
+      "finalPath": "/learn/module-3/staffroom",
+      "milliseconds": 6.4,
+      "bytes": 9228,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4",
+      "status": 200,
+      "finalPath": "/learn/module-4",
+      "milliseconds": 8.0,
+      "bytes": 9068,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/lessons/ask-with-evidence",
+      "status": 200,
+      "finalPath": "/learn/module-4/lessons/ask-with-evidence",
+      "milliseconds": 7.5,
+      "bytes": 9826,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/lessons/build-source-notebook",
+      "status": 200,
+      "finalPath": "/learn/module-4/lessons/build-source-notebook",
+      "milliseconds": 7.4,
+      "bytes": 9838,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/lessons/choose-safe-sources",
+      "status": 200,
+      "finalPath": "/learn/module-4/lessons/choose-safe-sources",
+      "milliseconds": 7.5,
+      "bytes": 9832,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/lessons/citation-detective",
+      "status": 200,
+      "finalPath": "/learn/module-4/lessons/citation-detective",
+      "milliseconds": 7.4,
+      "bytes": 9829,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/lessons/grounded-vs-fluent",
+      "status": 200,
+      "finalPath": "/learn/module-4/lessons/grounded-vs-fluent",
+      "milliseconds": 8.4,
+      "bytes": 9829,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/lessons/review-share-responsibly",
+      "status": 200,
+      "finalPath": "/learn/module-4/lessons/review-share-responsibly",
+      "milliseconds": 6.6,
+      "bytes": 9847,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/lessons/source-to-classroom-capstone",
+      "status": 200,
+      "finalPath": "/learn/module-4/lessons/source-to-classroom-capstone",
+      "milliseconds": 7.8,
+      "bytes": 9859,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/lessons/transform-without-drift",
+      "status": 200,
+      "finalPath": "/learn/module-4/lessons/transform-without-drift",
+      "milliseconds": 10.6,
+      "bytes": 9844,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/studio",
+      "status": 200,
+      "finalPath": "/learn/module-4/studio",
+      "milliseconds": 10.0,
+      "bytes": 8987,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/learn/module-4/transform",
+      "status": 200,
+      "finalPath": "/learn/module-4/transform",
+      "milliseconds": 10.0,
+      "bytes": 9578,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "finalPath": "/privacy",
+      "milliseconds": 10.0,
+      "bytes": 17903,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/profile",
+      "status": 200,
+      "finalPath": "/profile",
+      "milliseconds": 10.1,
+      "bytes": 8328,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/progress",
+      "status": 200,
+      "finalPath": "/progress",
+      "milliseconds": 8.9,
+      "bytes": 8566,
+      "nosniff": true,
+      "frameDeny": true
+    },
+    {
+      "path": "/reset-password",
+      "status": 200,
+      "finalPath": "/reset-password",
+      "milliseconds": 7.7,
+      "bytes": 10330,
+      "nosniff": true,
+      "frameDeny": true
+    }
+  ],
+  "burst": {
+    "concurrency": 25,
+    "requests": 25,
+    "successful": 25,
+    "medianMilliseconds": 6.5,
+    "p95Milliseconds": 8.5,
+    "maximumMilliseconds": 9.2
+  },
+  "limitations": "HTTP response timing only. This is not 25 authenticated users, a browser render measurement, a hosted performance result or a capacity guarantee."
+}

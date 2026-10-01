@@ -1,126 +1,53 @@
-# PromptShala — Project Progress
+# PromptShala — implementation and release progress
 
-## Overall progress
+Updated 1 October 2026. The current working tree implements the four teacher-learning modules and connected workflows below. **It is not yet an accepted production release.** Configuration and owner-access blockers prevent claiming a deployed end-to-end verification.
 
-**All four learning modules are implemented in the review build, covering 29 lessons and four knowledge checks.** The learning experience includes prompt practice, a reusable prompt library, AI Staffroom and Source Studio. Connected-service verification, certification, administration and final release requirements remain pending.
+## What is implemented
 
-This is implementation progress. The complete platform is not yet ready for final production acceptance.
-
-| Area | Status | What is available / what remains |
+| Area | Current code | Verification still required |
 | --- | --- | --- |
-| Module 1: AI Foundations and Responsible Use | Implemented for review | Six lessons, learning resources, practical checks and a retryable knowledge check. |
-| Module 2: Classroom Prompt Writing | Implemented for review | Seven lessons, CRAFT practice, feedback, attempt comparison, prompt library and knowledge check. |
-| Module 3: Reusable Teacher Assistants | Implemented for review | Eight lessons, AI Staffroom, assistant testing and repair activities, export and knowledge check. |
-| Module 4: Working with Teacher-Owned Sources | Implemented for review | Eight lessons, optional notebook guidance, Source Studio, claim verification, classroom artifacts, portfolio and knowledge check. |
-| Website design and navigation | Implemented for review | Refreshed homepage, course sidebar, compact typography and larger lesson video frames. |
-| Participant progress and persistence | Implemented; final verification pending | Progress screens and persistence code are available. The extended database setup and signed-in checks remain. |
-| Certification and administration | Pending | Certificate eligibility and issuing, administration screens, content management and aggregate reporting. |
-| Production release | Pending | Database verification, client acceptance and final release checks. |
+| Learning content | 29 reviewed lessons: six foundations, seven prompting, eight assistant, eight source lessons. Original examples, concept checks, practical criteria/reflection; four retryable quizzes with 25 questions. | Client content approval, full video/caption review and teacher pilot. |
+| CRAFT and prompt library | Context, Role, Action, Format, Target feedback; revision/comparison; reusable templates; explicit live/rule-based source labels. | Configured provider, actual timing/failure and teacher task checks. |
+| AI Staffroom | Editable Passport/context/source pack, six role-aware challenges, expected/actual review, versioned repair/retest, synthetic rehearsal, handoff/reuse, export. | Approved live service, connected save/reload and observed teacher use. |
+| Guided Source Studio | Three fictional packs, passage/claim audit, five prepared artifact formats, revision/review and portfolio export. | Final browser/UAT evidence for current revision. Studio uses authored practice materials. |
+| Own-source transformation | Separate pasted-text/`.txt` workspace, six formats, local extractive scaffold, optional Gemini draft, review/export, private save/load/delete with 30-day expiry. | Managed-database isolation, actual provider calls and scheduled purge. No PDF/Word/cloud imports or generated slide/audio files. |
+| Participant journey | Open access, onward lesson navigation, four-module missing-evidence lists, quiz review/retry, Dashboard/Progress. | Complete mobile, keyboard and screen-reader acceptance on approved deployment. |
+| Auth and trusted progress | Account-scoped recovery, sync status/retry, revision/conflict handling, server scores from quiz answers, immutable attempts and atomic saves; password recovery pages. | Remote migrations, real two-account/session/email recovery and offline/cross-device checks. |
+| Certificates | Synced eligibility, idempotent issuance, owner PDF, public valid/revoked verification, register/revocation. | Deployed eligible/ineligible flow, PDF review and privacy tests. |
+| Administration | Role checks, cohort editing/reassignment/enrollment/removal, scoped names/IDs, aggregate completion/question CSVs, lesson-addendum versions and audit. | Connected role/UAT checks. Addenda supplement code-managed lessons; planning settings do not edit quiz/pass policy. |
+| Account/privacy/operations | Account export/delete, privacy/help, retention function and authenticated daily cron, environment checker, container configuration and guides. | Scheduled execution, restore rehearsal, approved retention decisions, security and handover acceptance. |
 
-## Completed work available for review
+## Curriculum review completed
 
-### Module 1 — AI Foundations and Responsible Use
+All 29 lessons were checked against the HLD and research syllabus. Revisions make the teacher's decision visible: what a model does, what an instruction supplies, which source supports a claim, what to revise and how to judge a classroom draft. Worked examples include fraction reasoning, evidence-based science explanations and story inference. These examples are fictional; no learner outcomes or time savings are invented.
 
-- Six lessons covering generative AI, useful teacher tasks, review before use, hallucinations and verification, tool selection and responsible use.
-- Embedded video and reading resources, classroom examples and interactive concept checks.
-- A five-question knowledge check with answer explanations and retries.
-- Lesson completion and quiz results shown in participant progress.
+[The lesson matrix](docs/content/LESSON_REVIEW.md) records every lesson's changes and source references. Provider/education references were opened and checked. This does not claim every video was watched or an external account flow executed. [The quiz bank](docs/content/QUIZ_BANK.md) reflects the current 25 questions.
 
-### Module 2 — Classroom Prompt Writing
+## Evidence recorded in this work
 
-- Seven lessons covering clear requests, context and constraints, learning-focused planning, questions and feedback, differentiation, prompt experimentation and reusable templates.
-- A CRAFT lab using Context, Role, Action, Format and Target.
-- Custom task and prompt inputs, dimension-level feedback and comparison of attempts.
-- A reusable prompt library with examples, review checks and known limitations.
-- A five-question knowledge check.
-- An AI evaluation integration with a clearly identified rule-based fallback. The review preview currently uses the fallback.
+- Final `pnpm check` passed: lint, TypeScript and **221 tests in 33 files**. Final production build passed with **74 generated pages/routes** in the build output. Production dependency audit reported no known vulnerabilities.
+- All **29 lessons** and **18 additional routes** were checked in Chrome at 360px, 768px and 1440px. Two tablet overview overflows were fixed and rechecked. The earlier 15px root/Inter typography is restored.
+- The standalone local production server returned 200 for all **47 reviewed routes** with expected security headers. A **25-request concurrent HTTP burst** passed; this does not establish 25 authenticated users, hosted performance or render timing.
+- The local database integration suite exercises all eight migrations in a PostgreSQL-compatible harness with Supabase Auth/role shims. It is not a managed Supabase migration or deployed session test.
+- [Final release review and browser evidence](docs/testing/RELEASE_REVIEW.md) records fixes, screenshots, measurements and remaining limitations, including a browser download whose saved file was not verified.
+- Handover documents include the [participant guide](docs/PARTICIPANT_GUIDE.md), [admin guide](docs/ADMIN_GUIDE.md), [operations/restore runbook](docs/OPERATIONS.md), [19 UAT cases and pilot plan](docs/testing/UAT_AND_PILOT.md), and delivery reports [1](docs/testing/DELIVERY_MODULE_1_REPORT.md), [2](docs/testing/DELIVERY_MODULE_2_REPORT.md) and [3](docs/testing/DELIVERY_MODULE_3_REPORT.md).
 
-### Module 3 — Reusable Teacher Assistants
+Earlier reports, previews and screenshots concern earlier revisions. They do not prove these later changes are deployed. The report drafts do not assert the HLD's sequential module handoffs occurred.
 
-- Eight lessons covering assistant design, configuration, source boundaries, classroom rehearsal, testing, repair, handoffs and reuse.
-- AI Staffroom starter templates: Misconception Detective, Lesson Rehearsal Partner and Resource Rescue.
-- Editable Agent Passports defining purpose, required inputs, output format, boundaries and teacher review checks.
-- Classroom context cards and source packs.
-- Six challenge cases with expected behaviour, actual output, teacher review and verdicts.
-- Versioned repair records and retesting evidence.
-- Synthetic learner rehearsal, teacher-led workflow handoffs and reuse records.
-- Assistant duplication and Markdown export.
-- A ten-question knowledge check.
+## Scope decisions requiring an acceptance record
 
-Live assistant testing is implemented but requires a configured AI service. The interface also allows teachers to record and review outputs from an approved external tool.
+All modules open from the start under the user's subsequent direction; completion still requires lessons, quizzes and practice. This differs from HLD AC-04 prerequisite locking. Content administration adds versioned plain-text lesson notes; course settings store planning minutes. Full lesson/quiz authoring and a runtime pass-policy editor are not implemented.
 
-### Module 4 — Working with Teacher-Owned Sources
+The own-source tool handles text, including slide outlines/audio scripts as text output. It does not import arbitrary document formats or connect to Google files. Facilitator workspaces show assigned-cohort membership names/IDs and aggregate completion/question counts; individual quiz answers and private prompt/source work remain excluded.
 
-- Eight lessons covering evidence boundaries, safe source selection, notebook setup, grounded requests, citations, transformation, teacher review and a final portfolio.
-- Source Studio with three original fictional practice packs: The disappearing puddle, Two pots, one careful conclusion and A bridge in the story.
-- Claim-by-claim verdicts, selected source passages, reasoning and corrective feedback, including conflicting evidence.
-- Editable worksheet, quiz, study guide, slide outline and audio script examples.
-- A portable notebook prompt and optional guidance for an approved Google notebook tool.
-- Source permission and privacy records, an explained revision, six teacher review checks and a course reflection.
-- A self-contained Markdown portfolio with original passages, draft, claim audit, revision and limitations.
-- A five-question knowledge check with explanations and retries.
-- Module completion connected to whole-course progress, with all four modules required for full completion.
+Resource expiry is 30 days and audit cleanup 90 days when maintenance runs. An inactivity-based account deletion job and separate three-year certificate archive are not implemented; account deletion can remove certificate records. Resolve these policies before making broader retention promises.
 
-The Studio provides guided practice and prepared examples. It does not perform live AI generation, upload source files or connect to a Google account. The portfolio is a practice record rather than an issued certificate.
+## Remaining release work
 
-### Website and participant experience
+1. Restore owner-authorised Vercel access (`sus-co` currently returns 403) and configure the intended staging/production environments. No local Supabase/Gemini configuration is available in this session.
+2. Back up the target database, apply/reconcile migrations, verify real account/session/RLS isolation and trusted saves, and test recovery email. Communicate any legacy quiz retakes from moving to verifiable answers.
+3. Approve and test live AI with synthetic data; measure timing, failure/retry, rate limits and cost. Verify private-resource lifecycle and daily maintenance.
+4. Extend the recorded local checks with connected acceptance; complete the 19-case UAT, keyboard/screen-reader/current-browser/360px checks, security review and measured 25-user load. Rehearse restore and record results.
+5. Obtain content/privacy/scope/certificate wording decisions, complete three delivery-module reviews, deploy the reviewed revision and hand over ownership. Conduct the ten-participant pilot and report actual observations and limits.
 
-- Updated PromptShala branding and a redesigned homepage with rounded course cards.
-- A consistent navy, warm paper, peach and terracotta palette across the homepage, sign-in, onboarding, dashboard, progress, profile, settings and learning pages, with pale blue practice cards.
-- An expandable course sidebar showing modules and chapters, plus a separate main menu.
-- Smaller lesson typography, matched across module overviews, the CRAFT lab and AI Staffroom.
-- Larger lesson video frames that fill the resource area.
-- All implemented modules, lessons, labs and quizzes accessible from the start. Completion is recorded separately from access.
-- Dashboard and progress screens showing completed lessons, quiz attempts, assistant evidence and source portfolio evidence across all four modules.
-- Sign-in, onboarding and participant profile flows implemented for further acceptance testing.
-
-## Quality checks completed
-
-- All **93 automated tests** pass across **13 test files**.
-- Code quality checks, TypeScript checks and the application build pass.
-- Browser checks verify the compact typography on lesson pages, module overviews, CRAFT inputs and AI Staffroom editor fields.
-- A regression check confirms that CRAFT practice opens for a participant with no completed lessons.
-- Module 4 browser checks cover claim feedback, local portfolio reload, capstone completion, the knowledge check and independent progress recording.
-- Phone and desktop layout checks confirm compact typography and accessible activity controls.
-- Website palette checks cover the public homepage, sign-in, onboarding, dashboard, account pages and learning screens, with readable navigation states and working phone menus.
-- The refreshed Vercel preview is deployed and ready for review.
-- Relevant Jira issues include implementation evidence and outstanding work.
-
-## Remaining work
-
-### 1. Finish certification and administration
-
-- Implement course-completion eligibility and certificate issuing and verification.
-- Complete authorised administration screens, content management and cohort reporting.
-- Verify role permissions and administrative audit controls.
-
-The reusable-assistant learning module is distinct from the certification and administration work described in the technical delivery plan.
-
-### 2. Verify connected services and participant data
-
-- Apply the additional database changes for Modules 2, 3 and 4, AI Staffroom evidence and Source Studio portfolios.
-- Verify that signed-in participants can save, reload and recover their learning records.
-- Test that two separate participants can access only their own records.
-- Configure and verify live AI evaluation and assistant testing in the intended release environment.
-
-The review preview does not currently have a connected participant database. Its working interface does not establish production persistence readiness.
-
-### 3. Complete acceptance and release
-
-- Obtain client review of lesson content, assessment wording and the participant experience.
-- Complete the signed-in journey, accessibility and mobile acceptance checks.
-- Resolve issues found during user acceptance testing.
-- Complete production deployment and verification, handover documentation and pilot preparation.
-- Conduct the participant pilot and analyse feedback and learning results.
-
-## Review links
-
-- [PromptShala review preview](https://promptshala-7wlh3qtly-sus-co.vercel.app/)
-- [Website colour system and review evidence](https://github.com/EAD-Labs/Group-6_2026/pull/9)
-- [Module 4 implementation and verification evidence](https://github.com/EAD-Labs/Group-6_2026/pull/8)
-- [Earlier module and website work](https://github.com/EAD-Labs/Group-6_2026/pull/7)
-- [Learning and AI workflow tracking](https://darshansonawane1110.atlassian.net/browse/KAN-6)
-- [Module 4 and Source Studio tracking](https://darshansonawane1110.atlassian.net/browse/KAN-21)
-- [Integration and release tracking](https://darshansonawane1110.atlassian.net/browse/KAN-9)
-
-The preview requires authorised Vercel team access. Client review access should be arranged before sharing it externally.
+Cloud migrations, live provider success, production deployment, client UAT, load results, restore rehearsal, pilot participation and sign-off are **not claimed complete**.
