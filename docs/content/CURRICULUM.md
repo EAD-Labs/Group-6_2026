@@ -24,9 +24,9 @@ Understand what generative AI can and cannot do, identify appropriate classroom 
 
 ### Lesson sequence (180 minutes)
 
-1. **Where AI fits in a teacher's day (25 min):** map drafting, retrieval, calculation and decisions about people to an appropriate level of assistance.
-2. **How generation works, without the mathematics (25 min):** use tokens, prompts and context to explain why generated language is flexible but not guaranteed factual.
-3. **Privacy, fairness and professional judgment (30 min):** redact identifiable information, repair hidden assumptions and keep consequential decisions with people.
+1. **Meet generative AI (25 min):** distinguish training and current context, generation and retrieval; explain why plausible wording can contain invented detail.
+2. **Useful teacher tasks (25 min):** map drafting, retrieval, calculation and decisions about people to a suitable method and a concrete review.
+3. **Review before use (30 min):** minimise information, repair hidden access assumptions and record six teacher-review findings.
 4. **Hallucinations, uncertainty and verification (30 min):** audit claims against evidence and distinguish unsupported statements from proven falsehoods.
 5. **Choose the right tool and level of assistance (30 min):** select chat, source notebooks, reusable assistants, calculators or spreadsheets according to task and evidence needs.
 6. **Responsible-use challenge (40 min):** create a ten-minute learning activity and document sources, checks, edits, rejected suggestions and final teacher approval.
@@ -54,10 +54,9 @@ By the end of the module, the participant can:
 
 ### Evidence captured
 
-- activity selections and explanations viewed;
-- privacy scenario score;
-- one-sentence reflection on a useful teacher task;
-- quiz score and retry count.
+- lesson completion and quiz attempts;
+- formative concept checks shown during the lesson;
+- learner-held task maps, claim audits and responsible-use decision cards. These are practice expectations; a completion flag does not mean the application or a facilitator has graded their quality.
 
 ## Module 2 — Classroom Prompt Writing
 
@@ -72,7 +71,7 @@ Turn a vague request into a clear, classroom-ready prompt and improve it using s
 3. **Lesson planning that begins with learning (35 min):** align the objective, activity, evidence, timing and a low-resource alternative.
 4. **Questions, rubrics and actionable feedback (35 min):** independently check generated questions and turn generic praise into a concrete next action.
 5. **Differentiate without lowering the goal (35 min):** adapt representation, language support and response options while preserving conceptual demand.
-6. **Prompt laboratory (35 min):** run a baseline and two controlled revisions, score the outputs and repeat the strongest version to observe inconsistency.
+6. **Prompt laboratory (35 min):** compare a baseline and two prompt revisions; distinguish CRAFT feedback from actual generated-output testing, and record unavailable runs honestly.
 7. **Build a teaching prompt library (45 min):** create three field-based, tested templates with a completed example, known failure and verification checklist.
 
 ### Prompt structure and media
@@ -166,6 +165,8 @@ The practical workbench uses three original fictional source packs: **The disapp
 Teachers record an objective, audience, source register, permission and privacy confirmation; complete three explained audits; edit an artifact and describe its revision; inspect six review checks; and write a next-use reflection. Changes to the draft or its evidence reset the review checks. The exported Markdown package includes original passages, a portable prompt, draft, audit, repair record, checklist and limits.
 
 Prepared examples are clearly labelled. Source Studio does not generate live AI outputs, upload files or connect to a Google account. An approved external notebook exercise is optional and must be identified accurately in the participant's evidence. The practice export does not issue a certificate.
+
+The separate **teacher-owned source workspace** at `/learn/module-4/transform` supports transfer to permitted pasted text or a plain-text file. Participants choose an output, inspect whether the result is an extractive fallback or an actual AI draft, edit, review and export it. Connected private saving/deletion and approved live services depend on the environment. This workspace does not replace the guided Source Studio portfolio requirements.
 
 ### Optional notebook guidance
 
