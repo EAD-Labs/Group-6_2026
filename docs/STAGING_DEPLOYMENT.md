@@ -21,9 +21,9 @@ Never reuse a Supabase project or secret across these environments.
 3. Configure `main` as the Vercel production branch but keep production promotion controlled until release approval.
 4. Create and protect a `staging` branch in GitHub.
 5. Assign the `staging` branch a stable Vercel Preview URL or alias.
-6. Add staging values for `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `NEXT_PUBLIC_APP_ENV=staging` to the Vercel Preview environment.
-7. Add `GEMINI_API_KEY` and `GEMINI_CRAFT_MODEL` as server-only values. Never expose either value with a `NEXT_PUBLIC_` prefix.
-8. Keep `SUPABASE_SERVICE_ROLE_KEY` absent from the web deployment unless a reviewed server-only workflow requires it.
+6. Add staging values for `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_SITE_URL` (the exact stable preview origin), and `NEXT_PUBLIC_APP_ENV=staging` to the Vercel Preview environment. Configure Supabase Auth site/redirect URLs for that origin and `/auth/callback`.
+7. Add `GEMINI_API_KEY` and `GEMINI_CRAFT_MODEL` as optional server-only values only when enabling approved live AI. Never expose either value with a `NEXT_PUBLIC_` prefix. Guided practice and supported deterministic fallbacks remain available without them.
+8. Add `SUPABASE_SERVICE_ROLE_KEY` as a server-only value: trusted progress writes, staff operations, certificate issuance and account deletion require it. Add a separate random `CRON_SECRET` for retention cleanup. Run `node scripts/check-environment.mjs --strict`; this checks presence, not credential validity or connectivity.
 9. Apply migrations to staging using an authorised maintainer account.
 10. Provision only the approved ten pilot users and one or two administrators.
 
@@ -34,7 +34,7 @@ Never reuse a Supabase project or secret across these environments.
 3. Vercel creates an ephemeral Preview for interface review.
 4. After review, merge the feature into `staging`.
 5. Review pending SQL, back up staging, and apply migrations in filename order.
-6. Run the Module 1 smoke test against the stable staging URL.
+6. Run the current four-module smoke and acceptance tests against the stable staging URL, including account recovery, sync retry, role isolation and certificate operations.
 7. Record results and defects in Jira.
 8. Demonstrate the accepted module to the client.
 9. Open a release pull request from `staging` to `main` only after module acceptance.
@@ -47,7 +47,7 @@ Never reuse a Supabase project or secret across these environments.
 - A signed-out visitor is redirected from `/dashboard`, `/learn/**`, and `/settings/**`.
 - Participant A cannot read Participant B’s profile, progress, attempts, or responses.
 - Module 1 is available after onboarding.
-- The quiz remains unavailable until required lessons are complete.
+- Lessons and quizzes can be opened for practice; completion requires all of the module's lessons and required evidence.
 - Three of five answers fails; four of five passes.
 - A failed attempt can be retried and remains in attempt history.
 - All four learning modules are accessible from the start. Completion records require their lessons, passed quiz and required practice evidence; retries retain the best score.
@@ -55,6 +55,12 @@ Never reuse a Supabase project or secret across these environments.
 - The CRAFT endpoint returns five 0–3 scores, a total out of 15 and a safe deterministic fallback.
 - Authenticated attempts store a one-way prompt fingerprint, scores, evaluator source and safety flags without raw prompt text.
 - Keyboard navigation, visible focus, zoom, and screen-reader feedback are checked.
+- Drafts remain scoped to the signed-in account; offline changes retry visibly and concurrent saves do not silently overwrite reviewed evidence.
+- Recovery emails return to the correct environment, expired links fail safely, and account export/deletion affect only the authenticated participant.
+- Certificate issuance requires saved trusted progress; repeated requests are idempotent, PDFs download only for their owner, and public verification reflects revocation without exposing account email or private evidence.
+- Staff actions respect facilitator/content-manager/admin scope, and daily cleanup deletes expired synthetic resources without deleting current resources.
+
+See [Operations](OPERATIONS.md) for migration ordering, first-administrator setup, cleanup rehearsal, backup/restore and the remaining release evidence. A local test or a configured health response does not establish deployed acceptance.
 
 ## Rollback
 
