@@ -1,4 +1,4 @@
-export const appRoles = ["participant", "admin"] as const;
+export const appRoles = ["participant", "facilitator", "content_manager", "admin"] as const;
 
 export type AppRole = (typeof appRoles)[number];
 
@@ -18,6 +18,8 @@ const authenticatedRoutePrefixes = [
   "/profile",
   "/progress",
   "/settings",
+  "/staff",
+  "/certificate",
 ];
 
 export function isPathWithin(pathname: string, prefix: string) {
@@ -43,7 +45,12 @@ export function getRouteAccessDecision({
     return "sign_in";
   }
 
-  if (isPathWithin(pathname, "/admin") && role !== "admin") {
+  if (isPathWithin(pathname, "/admin") || isPathWithin(pathname, "/staff")) {
+    if (role === "admin") return "allow";
+    const isStaff = role === "facilitator" || role === "content_manager";
+    if (isStaff && (pathname === "/admin" || pathname === "/staff" ||
+      isPathWithin(pathname, "/admin/content") || isPathWithin(pathname, "/staff/content"))) return "allow";
+    if (role === "facilitator" && (isPathWithin(pathname, "/admin/reports") || isPathWithin(pathname, "/staff/reports"))) return "allow";
     return "forbidden";
   }
 
