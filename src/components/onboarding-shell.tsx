@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { Brand } from "./ui/brand";
 import { Icon } from "./ui/icon";
+import { SyncStatus } from "./sync-status";
 
 const steps = ["Safe use", "Teacher profile", "Goals"];
 
@@ -38,8 +39,7 @@ export function OnboardingShell({
             })}
           </ol>
           <div className="rail-note">
-            <Icon name="cloud" />
-            <span>Your choices are saved on this device.</span>
+            <SyncStatus />
           </div>
         </aside>
         <main className="onboarding-main" id="main-content">

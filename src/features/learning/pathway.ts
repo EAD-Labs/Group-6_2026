@@ -23,22 +23,28 @@ export function assistantHasPassport(assistant: AssistantSpec) {
 }
 
 export function assistantHasRepairEvidence(assistant: AssistantSpec) {
-  const firstVersion = assistant.tests.filter((test) => (test.version ?? 1) === 1);
   const isChallenge = (caseId?: string) => staffroomChallenges.some((challenge) => challenge.id === caseId);
+  const reviewed = (test: AssistantSpec["tests"][number]) => isChallenge(test.caseId) && Boolean(test.verdict) &&
+    [test.input, test.output, test.review, test.expected ?? ""].every((value) => value.trim().length >= 3);
+  const firstVersion = assistant.tests.filter((test) => (test.version ?? 1) === 1 && reviewed(test));
   const problem = firstVersion.find((test) => isChallenge(test.caseId) && (test.verdict === "partial" || test.verdict === "fail"));
   const hasPassingRetest = (test: AssistantSpec["tests"][number]) => assistant.tests.some((later) =>
     (later.version ?? 1) >= 2 && later.caseId === test.caseId && later.verdict === "pass" &&
-    later.input.trim() === test.input.trim() && later.output.trim().length >= 3 &&
-    later.review.trim().length >= 3,
+    reviewed(later) && later.input.trim() === test.input.trim() &&
+    typeof test.sourcePack === "string" && typeof test.classContextCard === "string" &&
+    later.sourcePack === test.sourcePack && later.classContextCard === test.classContextCard &&
+    (later.evidenceMode === "prepared") === (test.evidenceMode === "prepared"),
   );
   const priorPassingRetests = firstVersion.filter((test) => isChallenge(test.caseId) && test.verdict === "pass" && hasPassingRetest(test));
+  const allInitialCasesPass = staffroomChallenges.every((challenge) =>
+    firstVersion.some((test) => test.caseId === challenge.id && test.verdict === "pass"));
+  const retestsReady = assistant.improvementApproach === "strengthen"
+    ? !problem && allInitialCasesPass && new Set(priorPassingRetests.map((test) => test.caseId)).size >= 3
+    : Boolean(problem && hasPassingRetest(problem)) && new Set(priorPassingRetests.map((test) => test.caseId)).size >= 2;
   return assistant.weakness.trim().length >= 3 && assistant.revision.trim().length >= 3 &&
-    staffroomChallenges.every((challenge) => assistant.tests.some((test) =>
-      test.caseId === challenge.id && Boolean(test.verdict) &&
-      test.input.trim().length >= 3 && test.output.trim().length >= 3 && test.review.trim().length >= 3,
-    )) && new Set(assistant.tests.map((test) => test.input.trim().toLowerCase())).size >= 2 &&
-    (assistant.version ?? 1) >= 2 && Boolean(problem && hasPassingRetest(problem)) &&
-    new Set(priorPassingRetests.map((test) => test.caseId)).size >= 2;
+    staffroomChallenges.every((challenge) => firstVersion.some((test) => test.caseId === challenge.id)) &&
+    new Set(firstVersion.map((test) => test.input.trim().toLowerCase())).size >= 2 &&
+    (assistant.version ?? 1) >= 2 && retestsReady;
 }
 
 export function assistantHasEvidence(assistant: AssistantSpec) {
