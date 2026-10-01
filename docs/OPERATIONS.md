@@ -1,6 +1,6 @@
 # PromptShala operations and recovery
 
-Updated 1 October 2026. **Runbook, not execution evidence.** Cloud migration, email recovery, live Gemini, production deployment, scheduled cleanup and backup/restore rehearsal have not been verified in this work session. Local Supabase/Gemini configuration is absent. The current Vercel connection cannot access team `sus-co` (403); the owner must reauthenticate or restore authorised access before release work can proceed.
+Updated 1 October 2026. **Runbook, not execution evidence.** Cloud migration, email recovery, live Gemini, production deployment, scheduled cleanup and backup/restore rehearsal have not been verified in this work session. Local Supabase/Gemini configuration is absent. Vercel access was restored and a protected guided review preview was deployed; production recovery origin and a sensitive cleanup secret were configured. The production Supabase hostname does not resolve and the trusted server credential is missing. Owner access is required to complete database and connected-service setup.
 
 ## Ownership and environment register
 
@@ -10,7 +10,7 @@ Use separate staging and production databases, credentials and participant recor
 
 ## Local setup and configuration
 
-Use Node.js 24.19.0 (`.nvmrc`) and pnpm 11.19.0. From the application directory:
+Use Node.js 24.19.0 (`.nvmrc`) and pnpm 11.19.0. The package engine restricts hosted runtime selection to Node 24; Vercel applies supported minor/patch updates within that major. See [Vercel Node.js versions](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions). From the application directory:
 
 ```sh
 cp .env.example .env.local

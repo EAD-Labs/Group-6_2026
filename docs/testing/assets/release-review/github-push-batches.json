@@ -1,0 +1,30 @@
+[
+  {
+    "account": "luffy-taro-106",
+    "commitsPushed": 5,
+    "throughCommit": 5,
+    "sha": "e4ed1592295b3a5c7c96c5cf15d5e74ce73e932a",
+    "time": "2026-10-01T17:37:15.172251+00:00"
+  },
+  {
+    "account": "RAGHURAMGUNDI",
+    "commitsPushed": 5,
+    "throughCommit": 10,
+    "sha": "1cfb057bcac1a7fd56d5ac39b53b0fafba05e065",
+    "time": "2026-10-01T17:37:19.385937+00:00"
+  },
+  {
+    "account": "vishalpatel04",
+    "commitsPushed": 5,
+    "throughCommit": 15,
+    "sha": "72374cc05b447c69a093f1c95ebfb8b001256714",
+    "time": "2026-10-01T17:37:23.574643+00:00"
+  },
+  {
+    "account": "ashokchilka99",
+    "commitsPushed": 5,
+    "throughCommit": 20,
+    "sha": "69673748aa388494def73ce76fb3ca96a2becb1c",
+    "time": "2026-10-01T17:37:28.389088+00:00"
+  }
+]
