@@ -2,10 +2,12 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import type { Route } from "next";
 
 import { hasPublicSupabaseEnvironment } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { presentationDemoCookie } from "@/lib/supabase/proxy";
+import { getSafePostAuthPath } from "@/features/auth/authorization";
 
 export async function startPresentationDemo() {
   const cookieStore = await cookies();
@@ -39,7 +41,9 @@ export async function signIn(formData: FormData) {
     redirect("/sign-in?error=invalid");
   }
 
-  redirect("/dashboard");
+  (await cookies()).delete(presentationDemoCookie);
+
+  redirect(getSafePostAuthPath(String(formData.get("next") ?? "")) as Route);
 }
 
 export async function signOut() {

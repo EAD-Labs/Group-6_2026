@@ -54,6 +54,6 @@ export default function HomePage() {
       <section className="editorial-last" aria-labelledby="last-title"><div><span className="editorial-small-label">Begin here</span><h2 id="last-title">Bring a lesson you are already planning.</h2><p>Start with Foundations, then turn one real teaching need into a prompt you can test and improve.</p></div><Link className="editorial-primary" href="/sign-in">Start learning <Icon name="arrow-right" /></Link></section>
     </main>
 
-    <footer className="editorial-footer"><Link className="editorial-wordmark" href="/" aria-label="PromptShala home"><Image alt="" className="editorial-logo" height={724} src="/brand/promptshala-logo.png" width={2172} /></Link><span>Practice-first AI literacy for educators</span><span>ET-617 · Group 6</span></footer>
+    <footer className="editorial-footer"><Link className="editorial-wordmark" href="/" aria-label="PromptShala home"><Image alt="" className="editorial-logo" height={724} src="/brand/promptshala-logo.png" width={2172} /></Link><span>Practice-first AI literacy for educators</span><nav aria-label="Help and privacy"><Link href="/help">User guide</Link><Link href="/privacy">Privacy and safe use</Link></nav><span>ET-617 · Group 6</span></footer>
   </div>;
 }
