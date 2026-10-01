@@ -1,0 +1,3 @@
+"use client";
+import Link from "next/link";
+export default function ErrorPage({reset}:{error:Error&{digest?:string};reset:()=>void}){return <main className="public-document" id="main-content"><span className="eyebrow">Let’s get you back to your work</span><h1>This page couldn’t finish loading.</h1><p>Your saved learning record is unchanged. Try the page again; if the problem continues, return to your dashboard.</p><div className="platform-actions"><button className="button button-primary" onClick={reset}>Try again</button><Link className="button button-secondary" href="/dashboard">Go to my dashboard</Link></div></main>;}
