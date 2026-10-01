@@ -1,303 +1,74 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-import { initialDemoState, type DemoState } from "@/features/demo/demo-state";
 import { sanitizeDemoState } from "@/features/demo/server-state";
+import { assessParticipantState, assessmentBanks, AssessmentValidationError } from "@/features/demo/server-assessment";
+import { getParticipantState } from "@/features/demo/participant-persistence";
 import { getPathwayStatus } from "@/features/learning/pathway";
 import { hasPublicSupabaseEnvironment } from "@/lib/env";
 import { presentationDemoCookie } from "@/lib/supabase/proxy";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { hasSameOrigin, readJsonBody, RequestValidationError } from "@/lib/server/request";
 
-const moduleOneId = "00000000-0000-4000-8000-000000000001";
-const moduleTwoId = "00000000-0000-4000-8000-000000000002";
-const moduleThreeId = "00000000-0000-4000-8000-000000000003";
-const moduleFourId = "00000000-0000-4000-8000-000000000004";
-const moduleOneQuizId = "00000000-0000-4000-8000-000000000201";
-const moduleTwoQuizId = "00000000-0000-4000-8000-000000000202";
-const moduleThreeQuizId = "00000000-0000-4000-8000-000000000203";
-const moduleFourQuizId = "00000000-0000-4000-8000-000000000204";
-const lessonIdBySlug = {
-  "meet-generative-ai": "00000000-0000-4000-8000-000000000101",
-  "useful-teacher-tasks": "00000000-0000-4000-8000-000000000102",
-  "review-before-use": "00000000-0000-4000-8000-000000000103",
-  "verify-ai-claims": "00000000-0000-4000-8000-000000000104",
-  "choose-the-right-tool": "00000000-0000-4000-8000-000000000105",
-  "responsible-use-challenge": "00000000-0000-4000-8000-000000000106",
-  "repair-vague-prompt": "00000000-0000-4000-8000-000000000301",
-  "context-constraints-examples": "00000000-0000-4000-8000-000000000302",
-  "learning-first-planning": "00000000-0000-4000-8000-000000000303",
-  "questions-rubrics-feedback": "00000000-0000-4000-8000-000000000304",
-  "differentiate-without-lowering": "00000000-0000-4000-8000-000000000305",
-  "prompt-laboratory": "00000000-0000-4000-8000-000000000306",
-  "teaching-prompt-library": "00000000-0000-4000-8000-000000000307",
-  "prompt-versus-assistant": "00000000-0000-4000-8000-000000000401",
-  "assistant-passport": "00000000-0000-4000-8000-000000000402",
-  "build-assistant": "00000000-0000-4000-8000-000000000403",
-  "test-two-contexts": "00000000-0000-4000-8000-000000000404",
-  "repair-and-remix": "00000000-0000-4000-8000-000000000405",
-  "source-pack-gaps": "00000000-0000-4000-8000-000000000406",
-  "classroom-rehearsal": "00000000-0000-4000-8000-000000000407",
-  "workflow-handoffs": "00000000-0000-4000-8000-000000000408",
-  "grounded-vs-fluent": "00000000-0000-4000-8000-000000000501",
-  "choose-safe-sources": "00000000-0000-4000-8000-000000000502",
-  "build-source-notebook": "00000000-0000-4000-8000-000000000503",
-  "ask-with-evidence": "00000000-0000-4000-8000-000000000504",
-  "citation-detective": "00000000-0000-4000-8000-000000000505",
-  "transform-without-drift": "00000000-0000-4000-8000-000000000506",
-  "review-share-responsibly": "00000000-0000-4000-8000-000000000507",
-  "source-to-classroom-capstone": "00000000-0000-4000-8000-000000000508",
-} as const;
-const slugByLessonId: Record<string, string> = Object.fromEntries(
-  Object.entries(lessonIdBySlug).map(([slug, id]) => [id, slug]),
-);
+const json = (body: unknown, status = 200) => NextResponse.json(body, { status, headers: { "Cache-Control": "private, no-store" } });
 
 async function getMode() {
-  const cookieStore = await cookies();
-  if (cookieStore.get(presentationDemoCookie)?.value === "active") {
-    return "demo" as const;
-  }
-  if (!hasPublicSupabaseEnvironment()) {
-    return "unavailable" as const;
-  }
-  return "supabase" as const;
+  if ((await cookies()).get(presentationDemoCookie)?.value === "active") return "demo";
+  return hasPublicSupabaseEnvironment() ? "supabase" : "unavailable";
 }
 
 export async function GET() {
   const mode = await getMode();
-  if (mode !== "supabase") {
-    return NextResponse.json({ mode });
-  }
-
+  if (mode !== "supabase") return json({ mode });
   const supabase = await createClient();
-  const { data: authData } = await supabase.auth.getUser();
-  if (!authData.user) {
-    return NextResponse.json({ mode: "unauthenticated" }, { status: 401 });
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) return json({ mode: "unauthenticated" }, 401);
+  try {
+    const record = await getParticipantState(supabase, data.user.id);
+    return json({ mode, participantId: data.user.id, ...record });
+  } catch {
+    return json({ error: "Your saved progress could not be loaded. Retry when the service is available." }, 503);
   }
-
-  const participantId = authData.user.id;
-  const [profileResult, lessonResult, attemptResult, assistantResult] = await Promise.all([
-    supabase
-      .from("profiles")
-      .select(
-        "display_name,institution,primary_subject,teaching_level,years_teaching,ai_familiarity,learning_goals,captions_enabled,larger_text,reduced_motion,safe_use_accepted_at,onboarding_completed_at,craft_practice_count,prompt_library,source_portfolio",
-      )
-      .eq("id", participantId)
-      .maybeSingle(),
-    supabase
-      .from("lesson_progress")
-      .select("lesson_id,completed_at,evidence")
-      .eq("participant_id", participantId),
-    supabase
-      .from("quiz_attempts")
-      .select("quiz_id,attempt_number,score_percent,passed,submitted_at")
-      .eq("participant_id", participantId)
-      .in("quiz_id", [moduleOneQuizId, moduleTwoQuizId, moduleThreeQuizId, moduleFourQuizId])
-      .order("submitted_at"),
-    supabase.from("assistant_specs").select("id,spec,updated_at,deleted_at")
-      .eq("participant_id", participantId),
-  ]);
-
-  if (profileResult.error || lessonResult.error || attemptResult.error || assistantResult.error) {
-    return NextResponse.json(
-      { error: "Participant progress could not be loaded." },
-      { status: 503 },
-    );
-  }
-
-  const profile = profileResult.data;
-  const attemptsFor = (quizId: string) => (attemptResult.data ?? [])
-    .filter((attempt) => attempt.quiz_id === quizId)
-    .map((attempt) => ({
-      answers: {}, attemptedAt: attempt.submitted_at,
-      correctAnswers: Math.round(attempt.score_percent / (quizId === moduleThreeQuizId ? 10 : 20)),
-      passed: attempt.passed, scorePercent: attempt.score_percent,
-    }));
-  const completedSlugs = (lessonResult.data ?? []).filter((row) => row.completed_at)
-    .map((row) => slugByLessonId[row.lesson_id]).filter(Boolean);
-  const lessonEvidence = Object.fromEntries((lessonResult.data ?? [])
-    .filter((row) => row.evidence && slugByLessonId[row.lesson_id])
-    .map((row) => [slugByLessonId[row.lesson_id], row.evidence]));
-  const state: DemoState = sanitizeDemoState({
-    ...initialDemoState,
-    aiFamiliarity: profile?.ai_familiarity,
-    craftPracticeCount: profile?.craft_practice_count,
-    promptLibrary: profile?.prompt_library,
-    sourcePortfolio: profile?.source_portfolio,
-    captionsEnabled: profile?.captions_enabled,
-    completedLessonSlugs: completedSlugs,
-    lessonEvidence,
-    moduleTwoCompletedLessonIds: completedSlugs,
-    moduleThreeCompletedLessonIds: completedSlugs,
-    moduleFourCompletedLessonIds: completedSlugs,
-    displayName: profile?.display_name,
-    goals: profile?.learning_goals,
-    institution: profile?.institution,
-    largerText: profile?.larger_text,
-    onboardingCompleted: Boolean(profile?.onboarding_completed_at),
-    primarySubject: profile?.primary_subject,
-    quizAttempts: attemptsFor(moduleOneQuizId),
-    moduleTwoQuizAttempts: attemptsFor(moduleTwoQuizId),
-    moduleThreeQuizAttempts: attemptsFor(moduleThreeQuizId),
-    moduleFourQuizAttempts: attemptsFor(moduleFourQuizId),
-    assistants: (assistantResult.data ?? []).map((row) => ({
-      ...row.spec as object, id: row.id, updatedAt: row.updated_at,
-      deletedAt: row.deleted_at ?? undefined,
-    })),
-    reducedMotion: profile?.reduced_motion,
-    safeUseAccepted: Boolean(profile?.safe_use_accepted_at),
-    teachingLevel: profile?.teaching_level,
-    yearsTeaching:
-      profile?.years_teaching === null || profile?.years_teaching === undefined
-        ? undefined
-        : String(profile.years_teaching),
-  });
-
-  return NextResponse.json({ mode, state });
 }
 
 export async function PUT(request: Request) {
+  if (!hasSameOrigin(request)) return json({ error: "The request origin is not allowed." }, 403);
   const mode = await getMode();
-  if (mode !== "supabase") {
-    return NextResponse.json({ mode });
-  }
-
-  const body = (await request.json().catch(() => null)) as {
-    state?: unknown;
-  } | null;
-  const state = sanitizeDemoState(body?.state);
+  if (mode !== "supabase") return json({ mode }, mode === "demo" ? 200 : 503);
   const supabase = await createClient();
-  const { data: authData } = await supabase.auth.getUser();
-  if (!authData.user) {
-    return NextResponse.json({ mode: "unauthenticated" }, { status: 401 });
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) return json({ mode: "unauthenticated" }, 401);
+  try {
+    const body = await readJsonBody(request, 4_000_000);
+    if (body.participantId !== data.user.id) return json({ error: "The signed-in account changed. Your previous account's draft remains separate.", mode: "account_changed" }, 409);
+    if (!body.state || typeof body.state !== "object" || Array.isArray(body.state) || !Number.isSafeInteger(body.revision) || Number(body.revision) < 0) {
+      return json({ error: "Provide a valid participant state and revision." }, 400);
+    }
+    const record = await getParticipantState(supabase, data.user.id);
+    if (record.revision !== body.revision) return json({ error: "Saved progress changed on another device.", conflict: true, participantId: data.user.id, ...record }, 409);
+    const state = assessParticipantState(sanitizeDemoState(body.state), record.state);
+    const pathway = getPathwayStatus(state);
+    const fields = Object.keys(assessmentBanks) as Array<keyof typeof assessmentBanks>;
+    const passes = [pathway.onePassed, pathway.twoPassed, pathway.threePassed, pathway.fourPassed];
+    const lessons = [pathway.oneLessons, pathway.twoLessons, pathway.threeLessons, pathway.fourLessons];
+    const progress = fields.map((field, index) => ({
+      moduleId: `00000000-0000-4000-8000-00000000000${index + 1}`,
+      status: passes[index] ? "passed" : lessons[index] || state[field].length ? "in_progress" : "available",
+      scorePercent: state[field].reduce((best, attempt) => Math.max(best, attempt.scorePercent), 0),
+    }));
+    const attempts = fields.flatMap((field, index) => state[field].map((attempt, attemptIndex) => ({
+      ...attempt, quizId: `00000000-0000-4000-8000-00000000020${index + 1}`, attemptNumber: attemptIndex + 1,
+    })));
+    const result = await createAdminClient().rpc("save_participant_state", {
+      p_participant_id: data.user.id, p_expected_revision: record.revision,
+      p_state: state, p_progress: progress, p_attempts: attempts,
+    });
+    if (result.error?.code === "40001") return json({ error: "Saved progress changed. Retry to merge your work.", conflict: true }, 409);
+    if (result.error) throw new Error("save failed");
+    return json({ mode, saved: true, participantId: data.user.id, state, revision: result.data });
+  } catch (error) {
+    if (error instanceof RequestValidationError) return json({ error: error.message }, error.status);
+    if (error instanceof AssessmentValidationError) return json({ error: error.message }, 400);
+    return json({ error: "Your changes are saved on this device but could not be synchronized. Please retry." }, 503);
   }
-
-  const participantId = authData.user.id;
-  const now = new Date().toISOString();
-  const pathway = getPathwayStatus(state);
-  const passed = pathway.onePassed;
-  const bestScore = state.quizAttempts.reduce(
-    (best, attempt) => Math.max(best, attempt.scorePercent),
-    0,
-  );
-  const moduleOneStatus = passed
-    ? "passed"
-    : state.completedLessonSlugs.length
-      ? "in_progress"
-      : "available";
-
-  const profileResult = await supabase.from("profiles").upsert(
-    {
-      id: participantId,
-      display_name: state.displayName,
-      institution: state.institution || null,
-      primary_subject: state.primarySubject,
-      teaching_level: state.teachingLevel,
-      years_teaching: Number(state.yearsTeaching) || 0,
-      ai_familiarity: state.aiFamiliarity,
-      craft_practice_count: state.craftPracticeCount,
-      prompt_library: state.promptLibrary,
-      source_portfolio: state.sourcePortfolio,
-      learning_goals: state.goals,
-      captions_enabled: state.captionsEnabled,
-      larger_text: state.largerText,
-      reduced_motion: state.reducedMotion,
-      safe_use_accepted_at: state.safeUseAccepted ? now : null,
-      onboarding_completed_at: state.onboardingCompleted ? now : null,
-      updated_at: now,
-    },
-    { onConflict: "id" },
-  );
-
-  const lessonRows = [...new Set([...state.completedLessonSlugs, ...state.moduleTwoCompletedLessonIds, ...state.moduleThreeCompletedLessonIds, ...state.moduleFourCompletedLessonIds, ...Object.keys(state.lessonEvidence)])].map((slug) => ({
-    participant_id: participantId,
-    lesson_id: lessonIdBySlug[slug as keyof typeof lessonIdBySlug],
-    completed_at: [...state.completedLessonSlugs, ...state.moduleTwoCompletedLessonIds, ...state.moduleThreeCompletedLessonIds, ...state.moduleFourCompletedLessonIds].includes(slug) ? now : null,
-    evidence: state.lessonEvidence[slug] ?? null,
-    updated_at: now,
-  }));
-  const lessonResult = lessonRows.length
-    ? await supabase
-        .from("lesson_progress")
-        .upsert(lessonRows, { onConflict: "participant_id,lesson_id" })
-    : { error: null };
-  const attemptRows = ([
-    [moduleOneQuizId, state.quizAttempts],
-    [moduleTwoQuizId, state.moduleTwoQuizAttempts],
-    [moduleThreeQuizId, state.moduleThreeQuizAttempts],
-    [moduleFourQuizId, state.moduleFourQuizAttempts],
-  ] as const).flatMap(([quizId, attempts]) => attempts.map((attempt, index) => ({
-    participant_id: participantId,
-    quiz_id: quizId,
-    attempt_number: index + 1,
-    score_percent: attempt.scorePercent,
-    passed: attempt.passed,
-    submitted_at: attempt.attemptedAt,
-  })));
-  const attemptResult = attemptRows.length
-    ? await supabase.from("quiz_attempts").upsert(attemptRows, {
-        onConflict: "participant_id,quiz_id,attempt_number",
-      })
-    : { error: null };
-  const progressResult = await supabase.from("module_progress").upsert(
-    [
-      {
-        participant_id: participantId,
-        module_id: moduleOneId,
-        status: moduleOneStatus,
-        best_score_percent: bestScore || null,
-        started_at: state.completedLessonSlugs.length ? now : null,
-        passed_at: passed ? now : null,
-        updated_at: now,
-      },
-      {
-        participant_id: participantId,
-        module_id: moduleTwoId,
-        status: pathway.twoPassed ? "passed" : pathway.twoLessons || state.moduleTwoQuizAttempts.length ? "in_progress" : "available",
-        best_score_percent: state.moduleTwoQuizAttempts.reduce((best, attempt) => Math.max(best, attempt.scorePercent), 0) || null,
-        passed_at: pathway.twoPassed ? now : null,
-        updated_at: now,
-      },
-      {
-        participant_id: participantId,
-        module_id: moduleThreeId,
-        status: pathway.threePassed ? "passed" : pathway.threeLessons || state.moduleThreeQuizAttempts.length ? "in_progress" : "available",
-        best_score_percent: state.moduleThreeQuizAttempts.reduce((best, attempt) => Math.max(best, attempt.scorePercent), 0) || null,
-        passed_at: pathway.threePassed ? now : null,
-        updated_at: now,
-      },
-      {
-        participant_id: participantId,
-        module_id: moduleFourId,
-        status: pathway.fourPassed ? "passed" : pathway.fourLessons || state.moduleFourQuizAttempts.length ? "in_progress" : "available",
-        best_score_percent: state.moduleFourQuizAttempts.reduce((best, attempt) => Math.max(best, attempt.scorePercent), 0) || null,
-        passed_at: pathway.fourPassed ? now : null,
-        updated_at: now,
-      },
-    ],
-    { onConflict: "participant_id,module_id" },
-  );
-  const assistantRows = state.assistants.map((assistant) => ({
-    id: assistant.id,
-    participant_id: participantId,
-    spec: assistant,
-    updated_at: assistant.updatedAt,
-    deleted_at: assistant.deletedAt ?? null,
-  }));
-  const assistantSaveResult = assistantRows.length
-    ? await supabase.from("assistant_specs").upsert(assistantRows, { onConflict: "id" })
-    : { error: null };
-
-  if (
-    profileResult.error ||
-    lessonResult.error ||
-    attemptResult.error ||
-    progressResult.error || assistantSaveResult.error
-  ) {
-    return NextResponse.json(
-      { error: "Participant progress could not be saved." },
-      { status: 503 },
-    );
-  }
-
-  return NextResponse.json({ mode, saved: true });
 }
