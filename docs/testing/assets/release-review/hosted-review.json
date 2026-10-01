@@ -1,0 +1,82 @@
+{
+  "url": "https://promptshala-4jx95cgrc-sus-co.vercel.app",
+  "deploymentId": "dpl_rgDCsVbmam2zwgHchYYfupg7vu6i",
+  "readyState": "READY",
+  "target": "preview",
+  "protection": "Vercel authentication",
+  "sourceSnapshot": "69673748aa388494def73ce76fb3ca96a2becb1c",
+  "cloudBuild": "passed; 74 generated pages/routes",
+  "smoke": [
+    {
+      "path": "/api/health",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.58881,
+      "bytes": 105,
+      "passed": true,
+      "configuration": {
+        "aiEvaluator": "fallback",
+        "environment": "preview",
+        "model": "gemini-3.5-flash",
+        "supabase": "not-configured"
+      }
+    },
+    {
+      "path": "/api/participant-state",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.518225,
+      "bytes": 15,
+      "passed": true,
+      "mode": "demo"
+    },
+    {
+      "path": "/api/maintenance",
+      "status": 401,
+      "expected": 401,
+      "seconds": 0.469042,
+      "bytes": 26,
+      "passed": true
+    },
+    {
+      "path": "/learn/module-3/lessons/source-pack-gaps",
+      "status": 200,
+      "expected": 200,
+      "seconds": 0.732837,
+      "bytes": 9858,
+      "passed": true
+    }
+  ],
+  "browser": {
+    "fictionalDemo": true,
+    "onboardingCompleted": true,
+    "conceptCheckAndLessonNavigationPassed": true,
+    "lessonProgressRestored": true,
+    "sourceWorksheetCreated": true,
+    "rootFontSize": "15px",
+    "fontFamily": "Inter",
+    "width": 1280,
+    "scrollWidth": 1280,
+    "downloadEventObserved": false
+  },
+  "productionConfiguration": {
+    "supabasePublicSettingsPresent": true,
+    "supabaseHostResolves": false,
+    "trustedServerKeyPresent": false,
+    "siteOriginConfigured": true,
+    "cleanupSecretStoredAsSensitive": true,
+    "geminiConfigured": false
+  },
+  "note": "Initial and final guided hosted review evidence. Original twenty release commits were merged through PR #10; final evidence/runtime update follows in PR #11. Connected production acceptance remains pending.",
+  "finalDeployment": {
+    "url": "https://promptshala-8aq6q4l4z-sus-co.vercel.app",
+    "id": "dpl_2pPCh8M1Wu539pvmHzbtrbDZoVak",
+    "readyState": "READY",
+    "sourceSnapshot": "0cda6142f9235151309bbe0ef8e73198c4255c0b",
+    "nodeMajor": "24.x",
+    "healthStatus": 200,
+    "browserRootFontSize": "15px",
+    "browserWidth": 1280,
+    "browserScrollWidth": 1280
+  }
+}

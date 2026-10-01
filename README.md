@@ -8,7 +8,7 @@ The local review build contains four learning modules with **29 lessons**, four 
 
 Connected-service code now includes trusted progress saving, server-validated quiz answers, account-scoped recovery, optional Gemini calls, a separate own-source text transformation workspace, private resource expiry/deletion, certificate PDF/verification, staff roles, lesson addenda, cohort reporting, account export/deletion and retention maintenance. The [participant guide](docs/PARTICIPANT_GUIDE.md) and [admin guide](docs/ADMIN_GUIDE.md) explain the workflows and limits.
 
-**Implementation is not production acceptance.** Local Supabase/Gemini configuration is absent in the current work environment. Vercel team `sus-co` access returned 403 and needs owner reauthentication/authorised access. Cloud migrations, live AI, connected UAT, measured load, restore rehearsal and the ten-person pilot remain unverified. Historical preview links do not establish that the current revision is deployed. [Progress and remaining work](progress.md) tracks this distinction.
+**Implementation is not production acceptance.** Local Supabase/Gemini configuration is absent in the current work environment. Vercel access was restored and a [protected guided review preview](https://promptshala-8aq6q4l4z-sus-co.vercel.app) was deployed. The configured Supabase hostname does not resolve and the trusted server credential remains missing; completing the connected release requires owner access. Cloud migrations, live AI, connected UAT, measured load, restore rehearsal and the ten-person pilot remain unverified. Historical preview links do not establish that the current revision is deployed. [Progress and remaining work](progress.md) tracks this distinction.
 
 ## Run locally
 

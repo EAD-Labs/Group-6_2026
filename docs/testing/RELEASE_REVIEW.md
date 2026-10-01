@@ -44,9 +44,28 @@ Chrome's viewport was confirmed against actual `innerWidth`. The in-app browser 
 
 In the own-source workspace, a fictional teacher source produced a local worksheet scaffold containing the original numbered passages. The brief and editable draft survived navigation/reload, and editing the draft cleared checked review items. The browser displayed the download request, but its download-event observer timed out and no saved file was verified; a real saved-file check remains in UAT. Tests verify the export includes source passages and unfinished-review status. No participant or pupil data was used in this review.
 
+## Hosted review and publication
+
+Vercel access was restored. The [protected guided review preview](https://promptshala-4jx95cgrc-sus-co.vercel.app) reached READY as deployment `dpl_rgDCsVbmam2zwgHchYYfupg7vu6i`, from source snapshot `69673748`. Its cloud production build passed with 74 generated pages/routes. It requires the existing Vercel authentication; project-wide deployment protection remains enabled.
+
+Hosted health returned 200 with the intended preview/fallback/not-configured flags. Demo state returned 200, unauthorized maintenance returned 401, and the source-gap lesson returned 200. A fictional teacher completed all three onboarding steps, answered a concept check, continued to the next lesson with one completion retained, and created an own-source worksheet scaffold. The hosted dashboard confirmed 15px root typography, Inter and no horizontal overflow at its actual 1280px width. The resource download request was visible, but the browser download event was still not observed.
+
+- [Hosted dashboard](assets/release-review/deployed-dashboard.png)
+- [Hosted checks and configuration flags](assets/release-review/hosted-review.json)
+- [Four authenticated GitHub push batches](assets/release-review/github-push-batches.json)
+- [Draft release PR](https://github.com/EAD-Labs/Group-6_2026/pull/10) and [successful initial GitHub CI](https://github.com/EAD-Labs/Group-6_2026/actions/runs/36900982728)
+
+Twenty new commits were authored/committed five each by the four requested GitHub identities, and pushed in matching batches using each account's authenticated credential. The final release-evidence commit is amended after this initial hosted check to include these records and restrict the runtime to Node 24, preserving the requested twenty-commit split. The preview was uploaded from tracked Git files; user-owned PROJECT.md, local environment files and credentials were excluded.
+
+Production `NEXT_PUBLIC_SITE_URL` is set to the existing canonical origin. A cryptographically random `CRON_SECRET` is stored as a sensitive production variable. No secret values are recorded in this report. This does not establish a scheduled execution. The production project's public Supabase settings exist, but its database hostname fails DNS resolution and the trusted server credential is absent. No managed database write or migration was performed.
+
+The original twenty release commits were merged into main through PR #10 before this hosted record was complete. Their five-per-account attribution remains intact. The final eight-file evidence/runtime update is rebased onto that merge as the [post-release follow-up](https://github.com/EAD-Labs/Group-6_2026/pull/11); protected main history is preserved.
+
+The [final guided preview](https://promptshala-8aq6q4l4z-sus-co.vercel.app) is deployment `dpl_2pPCh8M1Wu539pvmHzbtrbDZoVak`, READY, built from snapshot `0cda6142`. Its cloud build passed with Node major 24 pinned and 74 generated pages/routes; its health check returned 200. The browser confirmed the 15px root size and no horizontal overflow at 1280px. Application, font and migration source are unchanged from the merged release.
+
 ## External release work still pending
 
-Vercel's stored credential returned 403 for the existing project/team. A device-login refresh was initiated; hosting is not claimed successful until authentication, deployment completion and an origin smoke check are recorded. Local app credentials are absent. The latest database migrations have not been applied to the managed target in this session.
+Local app credentials remain absent. Supabase owner sign-in is required to restore/check the intended project and configure the trusted server credential. Its sign-in screen asks agreement to the service terms; the owner must complete that step. The latest database migrations have not been applied to the managed target in this session. A guided review deployment is verified; a connected production rollout is not.
 
 Use the [HLD ledger](../HLD/IMPLEMENTATION_PLAN.md), [operations runbook](../OPERATIONS.md) and [19-case UAT/pilot plan](UAT_AND_PILOT.md) for the remaining work: approved environment configuration, backed-up migration rollout, real two-account/role checks, recovery email, approved live AI, cloud save/reload/cleanup, hosted performance, backup/restore rehearsal, complete keyboard/screen-reader checks, client content/privacy/certificate decisions and the ten-participant study. Full course/quiz authoring and inactivity/certificate-archive retention policies remain documented scope gaps; versioned lesson addenda and resource/audit retention are implemented.
 
