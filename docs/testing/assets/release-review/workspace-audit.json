@@ -1,0 +1,380 @@
+[
+  {
+    "path": "/",
+    "scroll": 360,
+    "title": "A better first draft.A teacher’s final call.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/dashboard",
+    "scroll": 360,
+    "title": "Welcome, Meera.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/progress",
+    "scroll": 360,
+    "title": "See how far you have come.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/profile",
+    "scroll": 360,
+    "title": "Profile and accessibility",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/certificate",
+    "scroll": 360,
+    "title": "A record of the work you have done.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/help",
+    "scroll": 360,
+    "title": "A little help, when you need it.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/privacy",
+    "scroll": 360,
+    "title": "Your data. Your classroom judgement.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/learn/module-1",
+    "scroll": 360,
+    "title": "AI Foundations and Responsible Use",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/learn/module-2",
+    "scroll": 360,
+    "title": "Classroom Prompt Writing",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/learn/module-3",
+    "scroll": 360,
+    "title": "Build an assistant you can inspect and improve.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/learn/module-4",
+    "scroll": 360,
+    "title": "A beautiful draft.A visible trail of evidence.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/learn/module-2/practice",
+    "scroll": 360,
+    "title": "CRAFT practice lab",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/learn/module-3/staffroom",
+    "scroll": 360,
+    "title": "AI Staffroom",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/learn/module-4/studio",
+    "scroll": 360,
+    "title": "Source Studio",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/learn/module-4/transform",
+    "scroll": 360,
+    "title": "Start with a source you trust.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/account-recovery",
+    "scroll": 360,
+    "title": "Recover your account.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/reset-password",
+    "scroll": 360,
+    "title": "Choose a new password.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/access-denied",
+    "scroll": 360,
+    "title": "This page needs a staff account.",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "path": "/",
+    "scroll": 768,
+    "title": "A better first draft.A teacher’s final call.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/dashboard",
+    "scroll": 768,
+    "title": "Welcome, Meera.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/progress",
+    "scroll": 768,
+    "title": "See how far you have come.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/profile",
+    "scroll": 768,
+    "title": "Profile and accessibility",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/certificate",
+    "scroll": 768,
+    "title": "A record of the work you have done.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/help",
+    "scroll": 768,
+    "title": "A little help, when you need it.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/privacy",
+    "scroll": 768,
+    "title": "Your data. Your classroom judgement.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/learn/module-1",
+    "scroll": 768,
+    "title": "AI Foundations and Responsible Use",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/learn/module-2",
+    "scroll": 772,
+    "title": "Classroom Prompt Writing",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/learn/module-3",
+    "scroll": 772,
+    "title": "Build an assistant you can inspect and improve.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/learn/module-4",
+    "scroll": 768,
+    "title": "A beautiful draft.A visible trail of evidence.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/learn/module-2/practice",
+    "scroll": 768,
+    "title": "CRAFT practice lab",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/learn/module-3/staffroom",
+    "scroll": 768,
+    "title": "AI Staffroom",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/learn/module-4/studio",
+    "scroll": 768,
+    "title": "Source Studio",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/learn/module-4/transform",
+    "scroll": 768,
+    "title": "Start with a source you trust.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/account-recovery",
+    "scroll": 768,
+    "title": "Recover your account.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/reset-password",
+    "scroll": 768,
+    "title": "Choose a new password.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/access-denied",
+    "scroll": 768,
+    "title": "This page needs a staff account.",
+    "unlabelled": 0,
+    "width": 768
+  },
+  {
+    "path": "/",
+    "scroll": 1440,
+    "title": "A better first draft.A teacher’s final call.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/dashboard",
+    "scroll": 1440,
+    "title": "Welcome, Meera.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/progress",
+    "scroll": 1440,
+    "title": "See how far you have come.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/profile",
+    "scroll": 1440,
+    "title": "Profile and accessibility",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/certificate",
+    "scroll": 1440,
+    "title": "A record of the work you have done.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/help",
+    "scroll": 1440,
+    "title": "A little help, when you need it.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/privacy",
+    "scroll": 1440,
+    "title": "Your data. Your classroom judgement.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-1",
+    "scroll": 1440,
+    "title": "AI Foundations and Responsible Use",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-2",
+    "scroll": 1440,
+    "title": "Classroom Prompt Writing",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3",
+    "scroll": 1440,
+    "title": "Build an assistant you can inspect and improve.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4",
+    "scroll": 1440,
+    "title": "A beautiful draft.A visible trail of evidence.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-2/practice",
+    "scroll": 1440,
+    "title": "CRAFT practice lab",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-3/staffroom",
+    "scroll": 1440,
+    "title": "AI Staffroom",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/studio",
+    "scroll": 1440,
+    "title": "Source Studio",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/learn/module-4/transform",
+    "scroll": 1440,
+    "title": "Start with a source you trust.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/account-recovery",
+    "scroll": 1440,
+    "title": "Recover your account.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/reset-password",
+    "scroll": 1440,
+    "title": "Choose a new password.",
+    "unlabelled": 0,
+    "width": 1440
+  },
+  {
+    "path": "/access-denied",
+    "scroll": 1440,
+    "title": "This page needs a staff account.",
+    "unlabelled": 0,
+    "width": 1440
+  }
+]

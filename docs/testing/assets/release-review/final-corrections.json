@@ -1,0 +1,24 @@
+{
+  "tablet": [
+    {
+      "fontSize": "15px",
+      "path": "/learn/module-2",
+      "scrollWidth": 768,
+      "width": 768
+    },
+    {
+      "fontSize": "15px",
+      "path": "/learn/module-3",
+      "scrollWidth": 768,
+      "width": 768
+    }
+  ],
+  "sourceWorkspace": {
+    "fictionalSourceOnly": true,
+    "briefAndDraftRestoredOnNavigation": true,
+    "editResetsReviewChecks": true,
+    "downloadRequestShown": true,
+    "downloadEventObserved": false,
+    "downloadEventLimitation": "Browser download event timed out; a saved file was not verified."
+  }
+}

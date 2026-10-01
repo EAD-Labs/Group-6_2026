@@ -1,0 +1,234 @@
+[
+  {
+    "bodyCharacters": 3799,
+    "path": "/learn/module-1/lessons/meet-generative-ai",
+    "scroll": 360,
+    "title": "Meet generative AI",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3630,
+    "path": "/learn/module-1/lessons/useful-teacher-tasks",
+    "scroll": 360,
+    "title": "Useful teacher tasks",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3698,
+    "path": "/learn/module-1/lessons/review-before-use",
+    "scroll": 360,
+    "title": "Review before use",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3785,
+    "path": "/learn/module-1/lessons/verify-ai-claims",
+    "scroll": 360,
+    "title": "Hallucinations and verification",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3670,
+    "path": "/learn/module-1/lessons/choose-the-right-tool",
+    "scroll": 360,
+    "title": "Choose the right AI assistance",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3887,
+    "path": "/learn/module-1/lessons/responsible-use-challenge",
+    "scroll": 360,
+    "title": "Responsible-use challenge",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4495,
+    "path": "/learn/module-2/lessons/repair-vague-prompt",
+    "scroll": 360,
+    "title": "Repair a vague prompt",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4267,
+    "path": "/learn/module-2/lessons/context-constraints-examples",
+    "scroll": 360,
+    "title": "Context, constraints and examples",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4319,
+    "path": "/learn/module-2/lessons/learning-first-planning",
+    "scroll": 360,
+    "title": "Lesson planning that begins with learning",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4226,
+    "path": "/learn/module-2/lessons/questions-rubrics-feedback",
+    "scroll": 360,
+    "title": "Questions, rubrics and actionable feedback",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4148,
+    "path": "/learn/module-2/lessons/differentiate-without-lowering",
+    "scroll": 360,
+    "title": "Differentiate without lowering the goal",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4641,
+    "path": "/learn/module-2/lessons/prompt-laboratory",
+    "scroll": 360,
+    "title": "Prompt laboratory: test, compare, revise",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 5748,
+    "path": "/learn/module-2/lessons/teaching-prompt-library",
+    "scroll": 360,
+    "title": "Build your teaching prompt library",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4355,
+    "path": "/learn/module-3/lessons/prompt-versus-assistant",
+    "scroll": 360,
+    "title": "Meet the AI Staffroom",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3702,
+    "path": "/learn/module-3/lessons/assistant-passport",
+    "scroll": 360,
+    "title": "Write an assistant's job description",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3966,
+    "path": "/learn/module-3/lessons/build-assistant",
+    "scroll": 360,
+    "title": "Configure and run a reusable assistant",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3793,
+    "path": "/learn/module-3/lessons/source-pack-gaps",
+    "scroll": 360,
+    "title": "Supply a knowledge pack and handle gaps",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3815,
+    "path": "/learn/module-3/lessons/classroom-rehearsal",
+    "scroll": 360,
+    "title": "Rehearse teaching with a simulated learner",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4926,
+    "path": "/learn/module-3/lessons/test-two-contexts",
+    "scroll": 360,
+    "title": "The Repair Clinic",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3678,
+    "path": "/learn/module-3/lessons/workflow-handoffs",
+    "scroll": 360,
+    "title": "Build a teaching workflow with handoffs",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 3767,
+    "path": "/learn/module-3/lessons/repair-and-remix",
+    "scroll": 360,
+    "title": "Staffroom exchange and transfer challenge",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4326,
+    "path": "/learn/module-4/lessons/grounded-vs-fluent",
+    "scroll": 360,
+    "title": "Begin with evidence, not a polished answer",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4466,
+    "path": "/learn/module-4/lessons/choose-safe-sources",
+    "scroll": 360,
+    "title": "Build a source pack you can safely use",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4448,
+    "path": "/learn/module-4/lessons/build-source-notebook",
+    "scroll": 360,
+    "title": "Set up a notebook with a clear purpose",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4397,
+    "path": "/learn/module-4/lessons/ask-with-evidence",
+    "scroll": 360,
+    "title": "Write requests that expose the evidence",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4140,
+    "path": "/learn/module-4/lessons/citation-detective",
+    "scroll": 360,
+    "title": "The Citation Detective: inspect three claims",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 5930,
+    "path": "/learn/module-4/lessons/transform-without-drift",
+    "scroll": 360,
+    "title": "Turn a source into something teachable",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4193,
+    "path": "/learn/module-4/lessons/review-share-responsibly",
+    "scroll": 360,
+    "title": "Give the draft a teacher's final review",
+    "unlabelled": 0,
+    "width": 360
+  },
+  {
+    "bodyCharacters": 4502,
+    "path": "/learn/module-4/lessons/source-to-classroom-capstone",
+    "scroll": 360,
+    "title": "Your source-to-classroom portfolio",
+    "unlabelled": 0,
+    "width": 360
+  }
+]
