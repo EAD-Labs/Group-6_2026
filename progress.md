@@ -1,6 +1,6 @@
 # PromptShala — implementation and release progress
 
-Updated 1 October 2026. The current working tree implements the four teacher-learning modules and connected workflows below. **It is not yet an accepted production release.** Configuration and owner-access blockers prevent claiming a deployed end-to-end verification.
+Updated 1 October 2026. The release branch implements the four teacher-learning modules and connected workflows below. **It is not yet an accepted production release.** A protected guided review preview is deployed and smoke-tested. Supabase owner access and configuration still prevent a connected production acceptance.
 
 ## What is implemented
 
@@ -28,6 +28,8 @@ All 29 lessons were checked against the HLD and research syllabus. Revisions mak
 - Final `pnpm check` passed: lint, TypeScript and **221 tests in 33 files**. Final production build passed with **74 generated pages/routes** in the build output. Production dependency audit reported no known vulnerabilities.
 - All **29 lessons** and **18 additional routes** were checked in Chrome at 360px, 768px and 1440px. Two tablet overview overflows were fixed and rechecked. The earlier 15px root/Inter typography is restored.
 - The standalone local production server returned 200 for all **47 reviewed routes** with expected security headers. A **25-request concurrent HTTP burst** passed; this does not establish 25 authenticated users, hosted performance or render timing.
+- Vercel access was restored; the [guided review preview](https://promptshala-8aq6q4l4z-sus-co.vercel.app) reached READY. Hosted onboarding, lesson completion/onward navigation, draft restoration and source scaffolding passed with fictional data. Health returned 200, and unauthorized maintenance returned 401. Production recovery origin and a sensitive cleanup secret are configured.
+- GitHub CI passed and twenty new commits were published in four authenticated batches of five, one through each requested account.
 - The local database integration suite exercises all eight migrations in a PostgreSQL-compatible harness with Supabase Auth/role shims. It is not a managed Supabase migration or deployed session test.
 - [Final release review and browser evidence](docs/testing/RELEASE_REVIEW.md) records fixes, screenshots, measurements and remaining limitations, including a browser download whose saved file was not verified.
 - Handover documents include the [participant guide](docs/PARTICIPANT_GUIDE.md), [admin guide](docs/ADMIN_GUIDE.md), [operations/restore runbook](docs/OPERATIONS.md), [19 UAT cases and pilot plan](docs/testing/UAT_AND_PILOT.md), and delivery reports [1](docs/testing/DELIVERY_MODULE_1_REPORT.md), [2](docs/testing/DELIVERY_MODULE_2_REPORT.md) and [3](docs/testing/DELIVERY_MODULE_3_REPORT.md).
@@ -44,7 +46,7 @@ Resource expiry is 30 days and audit cleanup 90 days when maintenance runs. An i
 
 ## Remaining release work
 
-1. Restore owner-authorised Vercel access (`sus-co` currently returns 403) and configure the intended staging/production environments. No local Supabase/Gemini configuration is available in this session.
+1. Restore owner access to the configured Supabase project (its hostname does not resolve), obtain/configure the trusted server credential and verify the intended staging/production environments. Vercel access is restored; production recovery origin and cleanup secret are set. Gemini remains unconfigured.
 2. Back up the target database, apply/reconcile migrations, verify real account/session/RLS isolation and trusted saves, and test recovery email. Communicate any legacy quiz retakes from moving to verifiable answers.
 3. Approve and test live AI with synthetic data; measure timing, failure/retry, rate limits and cost. Verify private-resource lifecycle and daily maintenance.
 4. Extend the recorded local checks with connected acceptance; complete the 19-case UAT, keyboard/screen-reader/current-browser/360px checks, security review and measured 25-user load. Rehearse restore and record results.
