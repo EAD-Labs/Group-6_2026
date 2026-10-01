@@ -4,10 +4,10 @@ import { useDemo } from "@/features/demo/demo-provider";
 import type { PromptTemplate } from "@/features/demo/demo-state";
 import { promptLibraryCategories, promptLibraryReady } from "@/features/learning/prompt-library";
 
-const fields: { key: Exclude<keyof PromptTemplate, "category">; label: string; hint: string }[] = [
+const fields: { key: Exclude<keyof PromptTemplate, "category" | "reviewBasis">; label: string; hint: string }[] = [
   { key: "template", label: "Reusable template", hint: "Use named slots such as [objective], [grade], [source] and [constraints]." },
   { key: "completedExample", label: "Completed example", hint: "Fill the slots using a fictional or general classroom task." },
-  { key: "knownFailure", label: "Known failure", hint: "Name a weakness found during testing and the input that exposed it." },
+  { key: "knownFailure", label: "Limitation and next check", hint: "Record an observed issue, an untested risk, or that no failure appeared in your sampled cases. Name the input and what still needs checking." },
   { key: "reviewChecklist", label: "Teacher verification", hint: "List facts, alignment, accessibility and safety checks before use." },
   { key: "transferNote", label: "Transfer result", hint: "Try a different topic or grade and record what needed changing." },
 ];
@@ -15,7 +15,7 @@ const fields: { key: Exclude<keyof PromptTemplate, "category">; label: string; h
 function downloadLibrary(templates: PromptTemplate[]) {
   const content = ["# PromptShala teaching prompt library", "", ...promptLibraryCategories.flatMap(({ id, label }) => {
     const template = templates.find((item) => item.category === id);
-    return [`## ${label}`, "", ...fields.flatMap(({ key, label: fieldLabel }) =>
+    return [`## ${label}`, "", `Review basis: ${template?.reviewBasis === "observed" ? "Observed output from an approved tool" : template?.reviewBasis === "guided" ? "Guided review — no AI run; risks are predictions" : "Legacy entry — review basis not recorded"}`, "", ...fields.flatMap(({ key, label: fieldLabel }) =>
       [`### ${fieldLabel}`, template?.[key] || "Not recorded", ""]), ""];
   }), "Check all AI outputs before classroom use. Do not add private learner records."].join("\n");
   const url = URL.createObjectURL(new Blob([content], { type: "text/markdown;charset=utf-8" }));
@@ -37,12 +37,12 @@ export function PromptLibraryEditor() {
   }
   return <div className="prompt-library-editor">
     <div className="section-heading"><div><span className="eyebrow">Portfolio artifact</span><h2>Three reusable templates</h2></div><button className="button button-secondary button-small" onClick={() => downloadLibrary(state.promptLibrary)} type="button">Export library</button></div>
-    <p>Complete each template, test it with a different classroom context, and record one known failure. Your drafts save with your progress.</p>
+    <p>Complete each template and review a different classroom context. Record what you observed or label a predicted risk. If all sampled cases pass, say so and name a remaining limitation. Your drafts save with your progress.</p>
     {promptLibraryCategories.map(({ id, label }) => {
       const template = state.promptLibrary.find((item) => item.category === id);
-      const complete = template && fields.every(({ key }) => template[key].trim().length >= 20);
-      return <details className="prompt-library-card" key={id} open={id === "planning" && !complete}><summary>{label} · {complete ? "Ready" : "In progress"}</summary>{fields.map(({ key, label: fieldLabel, hint }) => <label key={key}><strong>{fieldLabel}</strong><small>{hint}</small><textarea maxLength={key === "template" || key === "completedExample" ? 2500 : 1200} onChange={(event) => edit(id, key, event.target.value)} rows={4} value={template?.[key] ?? ""} /></label>)}</details>;
+      const complete = template && Boolean(template.reviewBasis) && fields.every(({ key }) => template[key].trim().length >= 20);
+      return <details className="prompt-library-card" key={id} open={id === "planning" && !complete}><summary>{label} · {complete ? "Ready" : "In progress"}</summary><label><strong>Review basis</strong><small>Choose observed output only when you used an approved generation tool. Guided review examines the prompt and example without claiming an AI test.</small><select value={template?.reviewBasis ?? ""} onChange={event => edit(id, "reviewBasis", event.target.value)}><option value="">Choose a review basis</option><option value="observed">Observed output from an approved tool</option><option value="guided">Guided review · no AI run</option></select></label>{fields.map(({ key, label: fieldLabel, hint }) => <label key={key}><strong>{fieldLabel}</strong><small>{hint}</small><textarea maxLength={key === "template" || key === "completedExample" ? 2500 : 1200} onChange={(event) => edit(id, key, event.target.value)} rows={4} value={template?.[key] ?? ""} /></label>)}</details>;
     })}
-    <p role="status">{promptLibraryReady(state.promptLibrary) ? "All three templates are ready for teacher review and export." : "Complete all five fields for each of the three templates to finish this lesson."}</p>
+    <p role="status">{promptLibraryReady(state.promptLibrary) ? "All three templates are ready for teacher review and export." : "Choose the review basis and complete all five fields for each of the three templates to finish this lesson."}</p>
   </div>;
 }
