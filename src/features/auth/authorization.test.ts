@@ -45,6 +45,16 @@ describe("authentication route rules", () => {
 });
 
 describe("role authorization", () => {
+  it.each([
+    ["facilitator", "/admin", "allow"],
+    ["facilitator", "/admin/reports", "allow"],
+    ["content_manager", "/admin/content", "allow"],
+    ["content_manager", "/admin/reports", "forbidden"],
+    ["facilitator", "/admin/users", "forbidden"],
+    ["participant", "/staff/content", "forbidden"],
+  ] as const)("checks %s on %s", (role, pathname, expected) => {
+    expect(getRouteAccessDecision({ hasVerifiedIdentity: true, pathname, role })).toBe(expected);
+  });
   it("allows a participant to access participant routes", () => {
     expect(
       getRouteAccessDecision({

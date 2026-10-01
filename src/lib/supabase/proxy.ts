@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-import { requiresAuthentication } from "@/features/auth/authorization";
+import { appRoles, getRouteAccessDecision, isPathWithin, requiresAuthentication, type AppRole } from "@/features/auth/authorization";
 import {
   getPublicSupabaseEnvironment,
   hasPublicSupabaseEnvironment,
@@ -16,6 +16,12 @@ export async function updateSession(request: NextRequest) {
     request.cookies.get(presentationDemoCookie)?.value === "active";
 
   if (hasPresentationSession) {
+    if (isPathWithin(request.nextUrl.pathname, "/admin") || isPathWithin(request.nextUrl.pathname, "/staff")) {
+      const accessUrl = request.nextUrl.clone();
+      accessUrl.pathname = "/access-denied";
+      accessUrl.search = "";
+      return NextResponse.redirect(accessUrl);
+    }
     return response;
   }
 
@@ -53,6 +59,17 @@ export async function updateSession(request: NextRequest) {
     signInUrl.pathname = "/sign-in";
     signInUrl.searchParams.set("next", request.nextUrl.pathname);
     return NextResponse.redirect(signInUrl);
+  }
+
+  if (data?.claims && (isPathWithin(request.nextUrl.pathname, "/admin") || isPathWithin(request.nextUrl.pathname, "/staff"))) {
+    const { data: profile } = await supabase.from("profiles").select("role").eq("id", data.claims.sub).maybeSingle();
+    const role: AppRole | null = profile && appRoles.includes(profile.role) ? profile.role : null;
+    if (getRouteAccessDecision({ hasVerifiedIdentity: true, pathname: request.nextUrl.pathname, role }) !== "allow") {
+      const accessUrl = request.nextUrl.clone();
+      accessUrl.pathname = "/access-denied";
+      accessUrl.search = "";
+      return NextResponse.redirect(accessUrl);
+    }
   }
 
   return response;
