@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useScopedDraft } from "./ui/use-scoped-draft";
 
 import {
   createRuleBasedCraftEvaluation,
@@ -15,86 +16,58 @@ import {
 import { Icon } from "./ui/icon";
 import { useDemo } from "@/features/demo/demo-provider";
 
-type Attempt = CraftAiEvaluation & {
-  number: number;
-};
+type Attempt = CraftAiEvaluation & { number: number; prompt: string; task: string; createdAt: string };
+type PracticeDraft = { suggestionId?: string; task: string; prompt: string; attempts: Attempt[] };
+const initialPractice: PracticeDraft = { suggestionId: craftScenarios[0].id, task: craftScenarios[0].task, prompt: craftScenarios[0].startingPrompt, attempts: [] };
+function cleanPractice(value: unknown): PracticeDraft {
+  const raw = value && typeof value === "object" ? value as Partial<PracticeDraft> : {};
+  return { suggestionId: craftScenarios.some((item) => item.id === raw.suggestionId) ? raw.suggestionId : undefined,
+    task: typeof raw.task === "string" ? raw.task.slice(0, 300) : initialPractice.task,
+    prompt: typeof raw.prompt === "string" ? raw.prompt.slice(0, 12000) : initialPractice.prompt,
+    attempts: Array.isArray(raw.attempts) ? raw.attempts.filter((item) => item && typeof item.prompt === "string" && typeof item.task === "string" && typeof item.overallScore === "number" && Array.isArray(item.dimensions) && item.dimensions.length === 5 && item.dimensions.every((dimension) => dimension && typeof dimension.score === "number" && typeof dimension.label === "string") && Array.isArray(item.safetyFlags)).slice(-8) : [] };
+}
 
 export function CraftPractice() {
+  const { storageScope } = useDemo();
+  return <CraftPracticeWorkspace key={storageScope} />;
+}
+function CraftPracticeWorkspace() {
   const { updateState } = useDemo();
-  const [suggestionId, setSuggestionId] = useState<string | undefined>(
-    craftScenarios[0].id,
-  );
-  const [task, setTask] = useState(craftScenarios[0].task);
-  const scenario = useMemo(
-    () => createCraftScenario(task, suggestionId),
-    [suggestionId, task],
-  );
-  const [draft, setDraft] = useState(craftScenarios[0].startingPrompt);
-  const [result, setResult] = useState<CraftAiEvaluation | null>(null);
-  const [attempts, setAttempts] = useState<Attempt[]>([]);
+  const [practice, setPractice, storage] = useScopedDraft("craft", initialPractice, cleanPractice);
+  const { task, suggestionId, prompt: draft, attempts } = practice;
+  const scenario = useMemo(() => createCraftScenario(task, suggestionId), [task, suggestionId]);
+  const latest = attempts.at(-1);
+  const result = latest?.prompt === draft && latest.task === task ? latest : null;
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [fallbackReason, setFallbackReason] = useState("");
+  const controllerRef = useRef<AbortController | null>(null);
+  const cancelledRef = useRef(false);
+  useEffect(() => () => { cancelledRef.current = true; controllerRef.current?.abort(); }, []);
 
   function selectSuggestion(nextScenarioId: string) {
-    const nextScenario =
-      craftScenarios.find((item) => item.id === nextScenarioId) ?? craftScenarios[0];
-    setSuggestionId(nextScenario.id);
-    setTask(nextScenario.task);
-    setDraft(nextScenario.startingPrompt);
-    setResult(null);
-    setAttempts([]);
+    const next = craftScenarios.find((item) => item.id === nextScenarioId) ?? craftScenarios[0];
+    setPractice({ ...practice, suggestionId: next.id, task: next.task, prompt: next.startingPrompt });
     setFallbackReason("");
   }
-
+  function record(evaluation: CraftAiEvaluation) {
+    setPractice({ ...practice, attempts: [...attempts, { ...evaluation, number: (attempts.at(-1)?.number ?? 0) + 1, prompt: draft, task, createdAt: new Date().toISOString() }].slice(-8) });
+    updateState((current) => ({ ...current, craftPracticeCount: current.craftPracticeCount + 1 }));
+  }
   async function evaluateDraft() {
-    setIsEvaluating(true);
-    setFallbackReason("");
-
+    setIsEvaluating(true); setFallbackReason(""); cancelledRef.current = false;
+    const controller = new AbortController(); controllerRef.current = controller;
+    const timeout = window.setTimeout(() => controller.abort(), 30000);
     try {
-      const response = await fetch("/api/craft/evaluate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: draft, suggestionId, task }),
-      });
-      const payload = (await response.json()) as {
-        error?: string;
-        evaluation?: CraftAiEvaluation;
-        fallbackReason?: string;
-      };
-
-      if (!response.ok || !payload.evaluation) {
-        throw new Error(payload.error ?? "Prompt evaluation failed.");
-      }
-
-      const evaluation = payload.evaluation;
-      setResult(evaluation);
-      setFallbackReason(payload.fallbackReason ?? "");
-      setAttempts((currentAttempts) => [
-        ...currentAttempts,
-        { ...evaluation, number: currentAttempts.length + 1 },
-      ]);
-      updateState((current) => ({ ...current, craftPracticeCount: current.craftPracticeCount + 1 }));
+      const response = await fetch("/api/craft/evaluate", { method: "POST", headers: { "Content-Type": "application/json" }, signal: controller.signal, body: JSON.stringify({ prompt: draft, suggestionId, task }) });
+      const payload = await response.json() as { error?: string; evaluation?: CraftAiEvaluation; fallbackReason?: string };
+      if (!response.ok || !payload.evaluation) throw new Error(payload.error ?? "Evaluation unavailable.");
+      if (!cancelledRef.current) { record(payload.evaluation); setFallbackReason(payload.fallbackReason ?? ""); }
     } catch {
-      const fallback = createRuleBasedCraftEvaluation(draft, scenario);
-      setResult(fallback);
-      setFallbackReason(
-        "The evaluator could not be reached, so PromptShala used its transparent CRAFT fallback.",
-      );
-      setAttempts((currentAttempts) => [
-        ...currentAttempts,
-        { ...fallback, number: currentAttempts.length + 1 },
-      ]);
-      updateState((current) => ({ ...current, craftPracticeCount: current.craftPracticeCount + 1 }));
-    } finally {
-      setIsEvaluating(false);
-    }
+      if (!cancelledRef.current) { record(createRuleBasedCraftEvaluation(draft, scenario)); setFallbackReason("The AI evaluator was unavailable. This checklist checks visible CRAFT signals; it cannot judge factual accuracy or nuance. Your draft is preserved for another try."); }
+    } finally { window.clearTimeout(timeout); if (!cancelledRef.current) setIsEvaluating(false); }
   }
-
-  function useStrongExample() {
-    setDraft(scenario.strongPrompt);
-    setResult(null);
-    setFallbackReason("");
-  }
+  function cancelEvaluation() { cancelledRef.current = true; controllerRef.current?.abort(); setIsEvaluating(false); setFallbackReason("Evaluation cancelled. Your draft is unchanged and ready to try again."); }
+  function useStrongExample() { setPractice({ ...practice, prompt: scenario.strongPrompt }); setFallbackReason(""); }
 
   return (
     <>
@@ -128,6 +101,7 @@ export function CraftPractice() {
                 aria-pressed={suggestionId === item.id}
                 className={suggestionId === item.id ? "active" : ""}
                 key={item.id}
+                disabled={isEvaluating}
                 onClick={() => selectSuggestion(item.id)}
                 type="button"
               >
@@ -159,19 +133,8 @@ export function CraftPractice() {
             <input
               id="craft-task"
               maxLength={300}
-              onChange={(event) => {
-                const nextTask = event.target.value;
-                setTask(nextTask);
-                if (
-                  !craftScenarios.some(
-                    (item) =>
-                      item.id === suggestionId && item.task === nextTask,
-                  )
-                ) {
-                  setSuggestionId(undefined);
-                }
-                setResult(null);
-              }}
+              disabled={isEvaluating}
+              onChange={(event) => setPractice({ ...practice, task: event.target.value, suggestionId: craftScenarios.some((item) => item.id === suggestionId && item.task === event.target.value) ? suggestionId : undefined })}
               placeholder="For example: Make a question bank for a revision lesson"
               type="text"
               value={task}
@@ -182,14 +145,13 @@ export function CraftPractice() {
             Prompt to analyse
             <textarea
               id="craft-prompt"
-              onChange={(event) => {
-                setDraft(event.target.value);
-                setResult(null);
-              }}
+              maxLength={12000}
+              disabled={isEvaluating}
+              onChange={(event) => setPractice({ ...practice, prompt: event.target.value })}
               rows={9}
               value={draft}
             />
-            <span>{draft.length} characters · Evaluated server-side; the API key never reaches the browser</span>
+            <span>{draft.length}/12,000 characters · Only your task and prompt are sent when you select Score.</span>
           </label>
           <div className="craft-editor-actions">
             <button
@@ -203,10 +165,14 @@ export function CraftPractice() {
                 : "Score my CRAFT prompt"}{" "}
               <Icon name="arrow-right" />
             </button>
-            <button className="button button-secondary" disabled={!scenario.strongPrompt} onClick={useStrongExample} type="button">
+            <button className="button button-secondary" disabled={!scenario.strongPrompt || isEvaluating} onClick={useStrongExample} type="button">
               Load strong example
             </button>
+            {isEvaluating ? <button className="text-link" type="button" onClick={cancelEvaluation}>Cancel evaluation</button> : null}
           </div>
+          <p className="draft-note" role="status">{isEvaluating ? "Reviewing the five CRAFT dimensions. This may take up to 30 seconds." : storage.persisted ? "Draft and recent feedback saved on this device for this account. Use only fictional examples." : "Device storage is unavailable. Keep this tab open to retain your draft."}</p>
+          {fallbackReason && !result ? <p className="feedback-box supportive" role="status">{fallbackReason}</p> : null}
+          {attempts.length ? <button className="text-link" type="button" disabled={isEvaluating} onClick={() => { setPractice(initialPractice); setFallbackReason("This device’s practice draft and feedback were cleared. Your completed practice count remains in your learning record."); }}>Clear this device’s practice draft</button> : null}
         </section>
       </div>
 
@@ -271,20 +237,7 @@ export function CraftPractice() {
         </section>
       ) : null}
 
-      {attempts.length > 1 ? (
-        <section className="attempt-comparison" aria-labelledby="attempt-comparison-title">
-          <div><span className="eyebrow">Visible improvement</span><h2 id="attempt-comparison-title">Attempt comparison</h2></div>
-          <div>
-            {attempts.slice(-3).map((attempt) => (
-              <article key={attempt.number}>
-                <span>Attempt {attempt.number}</span>
-                <strong>{attempt.overallScore}/15</strong>
-                <small>{attempt.scorePercent}% score</small>
-              </article>
-            ))}
-          </div>
-        </section>
-      ) : null}
+      {attempts.length > 1 ? <section className="attempt-comparison" aria-labelledby="attempt-comparison-title"><div><span className="eyebrow">Read the change, not just the score</span><h2 id="attempt-comparison-title">Your two latest attempts</h2><p>Compare the words you changed and the feedback on each dimension. A score is guidance; teacher review still matters.</p></div><div>{attempts.slice(-2).map((attempt) => <article key={attempt.number}><span className="eyebrow">Attempt {attempt.number} · {attempt.source === "gemini" ? "AI feedback" : "Checklist feedback"}</span><h3>{attempt.task}</h3><strong className="attempt-score">{attempt.overallScore}/15</strong><pre>{attempt.prompt}</pre><div className="attempt-dimensions">{attempt.dimensions.map((dimension) => <span key={dimension.id}>{dimension.label}<strong>{dimension.score}/3</strong></span>)}</div><p>{attempt.summary}</p><button className="text-link" disabled={isEvaluating} type="button" onClick={() => setPractice({ ...practice, task: attempt.task, prompt: attempt.prompt, suggestionId: undefined })}>Use this draft again<Icon name="arrow-right" /></button></article>)}</div></section> : null}
     </>
   );
 }
