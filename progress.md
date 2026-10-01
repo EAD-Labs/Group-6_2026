@@ -1,6 +1,6 @@
 # PromptShala — implementation and release progress
 
-Updated 1 October 2026. The release branch implements the four teacher-learning modules and connected workflows below. **It is not yet an accepted production release.** A protected guided review preview is deployed and smoke-tested. Supabase owner access and configuration still prevent a connected production acceptance.
+Updated 2 October 2026. The four learning modules and connected workflows below are implemented. **Production acceptance remains pending.** The guided preview is verified. Owner access is restored, an encrypted pre-change application backup is recorded, and the four missing production migrations have succeeded. Connected deployment and synthetic-account checks are in progress.
 
 ## What is implemented
 
@@ -46,10 +46,10 @@ Resource expiry is 30 days and audit cleanup 90 days when maintenance runs. An i
 
 ## Remaining release work
 
-1. Restore owner access to the configured Supabase project (its hostname does not resolve), obtain/configure the trusted server credential and verify the intended staging/production environments. Vercel access is restored; production recovery origin and cleanup secret are set. Gemini remains unconfigured.
-2. Back up the target database, apply/reconcile migrations, verify real account/session/RLS isolation and trusted saves, and test recovery email. Communicate any legacy quiz retakes from moving to verifiable answers.
+1. Complete the connected production deployment and choose the first verified administrator identity. Supabase owner access, server credential, canonical auth origin and cleanup secret are configured. Gemini remains unconfigured.
+2. Verify ordinary two-account/session isolation, trusted saves and recovery email. The encrypted application/schema backup and four missing managed migrations succeeded; there were no existing Auth users, participant profiles or passed records. An isolated restore rehearsal is still required.
 3. Approve and test live AI with synthetic data; measure timing, failure/retry, rate limits and cost. Verify private-resource lifecycle and daily maintenance.
 4. Extend the recorded local checks with connected acceptance; complete the 19-case UAT, keyboard/screen-reader/current-browser/360px checks, security review and measured 25-user load. Rehearse restore and record results.
 5. Obtain content/privacy/scope/certificate wording decisions, complete three delivery-module reviews, deploy the reviewed revision and hand over ownership. Conduct the ten-participant pilot and report actual observations and limits.
 
-Cloud migrations, live provider success, production deployment, client UAT, load results, restore rehearsal, pilot participation and sign-off are **not claimed complete**.
+Managed migrations are recorded as executed. Live provider success, connected production deployment, client UAT, load results, isolated restore rehearsal, pilot participation and sign-off are **not yet claimed complete**.

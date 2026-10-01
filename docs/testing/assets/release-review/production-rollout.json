@@ -1,0 +1,110 @@
+{
+  "reviewDate": "2026-10-02",
+  "project": "atqbligrqsderauzfrqi",
+  "preChangeBackup": {
+    "createdAt": "2026-10-01T19:05:04.940Z",
+    "project": "atqbligrqsderauzfrqi",
+    "tableCounts": {
+      "lessons": 13,
+      "quizzes": 1,
+      "quiz_answer_keys": 0,
+      "learning_modules": 4,
+      "profiles": 0,
+      "module_progress": 0,
+      "lesson_progress": 0,
+      "craft_prompt_attempts": 0,
+      "quiz_options": 0,
+      "quiz_attempts": 0,
+      "quiz_responses": 0,
+      "quiz_questions": 0
+    },
+    "authUserCount": 0,
+    "checksum": "400323ca98ffa2761af294395e1cb1170b4d53e85eadc1216ef5511289043e42",
+    "encryption": "AES-256-GCM",
+    "decryptionIntegrity": true,
+    "scope": "Application tables, schema catalogue, Auth Admin user metadata; not a full pg_dump or isolated restore rehearsal"
+  },
+  "appliedMigrations": [
+    {
+      "file": "202609250001_modules_two_three_and_staffroom.sql",
+      "sha256": "ce459129b83693542161a32067a89592e5bea13b76498600c0a163478560cc88",
+      "result": "Success. No rows returned",
+      "transactional": true
+    },
+    {
+      "file": "202609300001_module_four_source_portfolio.sql",
+      "sha256": "987a462d65729bf901d2865b6063c1cdc3075a78a4c5bc4bc52416519a7e09b6",
+      "result": "Success. No rows returned",
+      "transactional": true
+    },
+    {
+      "file": "202609300002_trusted_participant_state.sql",
+      "sha256": "d4f901eadc5a465d23533654cadfeb695be3832d5210b9bdf1d684628c938609",
+      "result": "Success. No rows returned",
+      "transactional": true
+    },
+    {
+      "file": "202609300003_platform_operations.sql",
+      "sha256": "e8f4a1699892a8d4220b232f4ba2fafb0f6d0234bee10acecfe7454d3b234b23",
+      "result": "Success. No rows returned",
+      "transactional": true
+    }
+  ],
+  "schemaVerification": {
+    "tables": 22,
+    "lessons": 29,
+    "quizzes": 4,
+    "profile_trigger": 1,
+    "private_tables_without_rls": 0,
+    "participant_can_change_role": false,
+    "participant_can_write_state": false,
+    "privileged_function_permissions": [
+      {
+        "name": "cleanup_expired_learning_data",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "consume_ai_rate_limit",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "issue_completion_certificate",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "save_participant_state",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "staff_cohort_evidence",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "staff_operation",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      }
+    ]
+  },
+  "history": "Earlier four migrations already represented in the schema; no Supabase CLI migration history exists and none was fabricated. Four missing files applied through authenticated owner SQL editor.",
+  "dns": "Local resolver failed; secure per-request lookup through Cloudflare resolved the project and REST TLS validation remained enabled.",
+  "productionSecrets": {
+    "trustedServiceKey": true,
+    "cronSecret": true,
+    "recoveryOrigin": true,
+    "liveGemini": false
+  },
+  "functionRegion": "sin1",
+  "deployment": "Pending connected deployment and synthetic-account smoke checks"
+}

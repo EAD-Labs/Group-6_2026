@@ -1,4 +1,4 @@
-# Release review — 1 October 2026
+# Release review — 1–2 October 2026
 
 ## Result and boundaries
 
@@ -57,7 +57,7 @@ Hosted health returned 200 with the intended preview/fallback/not-configured fla
 
 Twenty new commits were authored/committed five each by the four requested GitHub identities, and pushed in matching batches using each account's authenticated credential. The final release-evidence commit is amended after this initial hosted check to include these records and restrict the runtime to Node 24, preserving the requested twenty-commit split. The preview was uploaded from tracked Git files; user-owned PROJECT.md, local environment files and credentials were excluded.
 
-Production `NEXT_PUBLIC_SITE_URL` is set to the existing canonical origin. A cryptographically random `CRON_SECRET` is stored as a sensitive production variable. No secret values are recorded in this report. This does not establish a scheduled execution. The production project's public Supabase settings exist, but its database hostname fails DNS resolution and the trusted server credential is absent. No managed database write or migration was performed.
+Production `NEXT_PUBLIC_SITE_URL` is set to the existing canonical origin. A cryptographically random `CRON_SECRET` is stored as a sensitive production variable. No secret values are recorded in this report. This does not establish a scheduled execution. At that initial preview check, the local DNS resolver failed and the trusted server key was missing. No managed migration had yet been performed. The 2 October rollout below supersedes this initial configuration status.
 
 The original twenty release commits were merged into main through PR #10 before this hosted record was complete. Their five-per-account attribution remains intact. The final eight-file evidence/runtime update is rebased onto that merge as the [post-release follow-up](https://github.com/EAD-Labs/Group-6_2026/pull/11); protected main history is preserved.
 
@@ -65,8 +65,18 @@ The [final guided preview](https://promptshala-8aq6q4l4z-sus-co.vercel.app) is d
 
 ## External release work still pending
 
-Local app credentials remain absent. Supabase owner sign-in is required to restore/check the intended project and configure the trusted server credential. Its sign-in screen asks agreement to the service terms; the owner must complete that step. The latest database migrations have not been applied to the managed target in this session. A guided review deployment is verified; a connected production rollout is not.
+Production owner access is now restored; the 2 October rollout below records the managed migrations and secure configuration. Local app credentials remain absent. Connected deployment and ordinary-account smoke checks are in progress; full client acceptance is pending.
 
 Use the [HLD ledger](../HLD/IMPLEMENTATION_PLAN.md), [operations runbook](../OPERATIONS.md) and [19-case UAT/pilot plan](UAT_AND_PILOT.md) for the remaining work: approved environment configuration, backed-up migration rollout, real two-account/role checks, recovery email, approved live AI, cloud save/reload/cleanup, hosted performance, backup/restore rehearsal, complete keyboard/screen-reader checks, client content/privacy/certificate decisions and the ten-participant study. Full course/quiz authoring and inactivity/certificate-archive retention policies remain documented scope gaps; versioned lesson addenda and resource/audit retention are implemented.
 
 The requested release is organised into twenty new topic-based commits, five per named GitHub identity. Commit and push completion are verified in Git/GitHub, separately from the earlier four palette commits already on this branch.
+
+## Managed production rollout — 2 October 2026
+
+The authenticated owner session identified project `atqbligrqsderauzfrqi` in Singapore as healthy. The earlier hostname failure was confined to the local resolver: per-request secure DNS lookup restored REST access with TLS certificate verification intact. There were no Auth users, participant profiles or passed progress records.
+
+Before changes, all 12 public application tables, schema catalogue definitions and Auth Admin user metadata were exported into an AES-256-GCM encrypted local backup outside Git. Decryption integrity passed; the checksum and counts are recorded in [production rollout evidence](assets/release-review/production-rollout.json). This is an application backup, not a full pg_dump or a completed isolated restore rehearsal.
+
+The four missing migrations (202609250001 and 202609300001–003) were verified against their complete source text and executed in order, each in a transaction, through the owner SQL editor. All returned success. Earlier schema changes were already present; no CLI migration history was fabricated. The resulting schema has 22 RLS-enabled tables, 29 published lessons, four published quizzes and the auth profile trigger. Participant/anonymous roles cannot execute any of the six privileged functions, write trusted participant state or update profile roles. The service role can execute the privileged functions.
+
+The existing service-role key is stored only as a sensitive Vercel production variable. The canonical site/recovery origin and cleanup secret are configured. Vercel functions are set to `sin1`, near the Singapore database, following [Vercel region guidance](https://vercel.com/docs/functions/configuring-functions/region). Connected deployment and two-account smoke checks are the next verification step.
