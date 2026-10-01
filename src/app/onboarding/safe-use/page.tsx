@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -27,6 +28,10 @@ const safetyPrinciples = [
 ];
 
 export default function SafeUsePage() {
+  const { storageScope } = useDemo();
+  return <SafeUseForm key={storageScope} />;
+}
+function SafeUseForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { resetDemo, setSafeUseAccepted, state } = useDemo();
@@ -65,6 +70,7 @@ export default function SafeUsePage() {
             <input checked={accepted} onChange={(event) => setAccepted(event.target.checked)} type="checkbox" />
             <span><strong>I understand and will use only safe, non-identifying classroom examples.</strong><small>You can review these principles anytime from your profile.</small></span>
           </label>
+          <p className="draft-note">AI practice sends your task text to the configured evaluator when you request it. Saved assistant and portfolio evidence stays in your own account. <Link href="/privacy">Read the privacy notice</Link>.</p>
           <div className="onboarding-actions align-end">
             <button className="button button-primary" disabled={!accepted} onClick={continueOnboarding} type="button">I understand, continue <Icon name="arrow-right" /></button>
           </div>

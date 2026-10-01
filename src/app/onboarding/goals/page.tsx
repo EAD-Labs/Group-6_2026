@@ -24,6 +24,10 @@ const goalOptions = [
 ];
 
 export default function GoalsPage() {
+  const { storageScope } = useDemo();
+  return <GoalsForm key={storageScope} />;
+}
+function GoalsForm() {
   const router = useRouter();
   const { saveGoals, state } = useDemo();
   const [aiFamiliarity, setAiFamiliarity] = useState(state.aiFamiliarity);
@@ -46,9 +50,9 @@ export default function GoalsPage() {
     <HydrationGate>
       <OnboardingShell currentStep={3}>
         <section className="onboarding-card wide" aria-labelledby="goals-title">
-          <span className="eyebrow">Tailor your starting point</span>
+          <span className="eyebrow">Set an intention</span>
           <h1 id="goals-title">What would make AI useful to you?</h1>
-          <p className="lead">There is no wrong starting point. Your choices shape examples and recommendations.</p>
+          <p className="lead">Choose the work you would like to practise. Every module remains available, whichever goals you choose.</p>
           <fieldset className="choice-section">
             <legend>How familiar are you with AI tools?</legend>
             <div className="familiarity-grid">
