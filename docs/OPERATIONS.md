@@ -1,6 +1,6 @@
 # PromptShala operations and recovery
 
-Updated 1 October 2026. **Runbook, not execution evidence.** Cloud migration, email recovery, live Gemini, production deployment, scheduled cleanup and backup/restore rehearsal have not been verified in this work session. Local Supabase/Gemini configuration is absent. Vercel access was restored and a protected guided review preview was deployed; production recovery origin and a sensitive cleanup secret were configured. The production Supabase hostname does not resolve and the trusted server credential is missing. Owner access is required to complete database and connected-service setup.
+Updated 2 October 2026. **Runbook; execution evidence is in [the release review](testing/RELEASE_REVIEW.md).** Production owner access is restored. Four missing migrations were applied transactionally after an encrypted application/schema backup. The trusted server credential, cleanup secret and canonical recovery origin are configured. Database RLS and privileged function grants were checked in the managed target. Connected deployment/session checks are in progress. Email recovery, live Gemini, scheduled cleanup and isolated backup/restore rehearsal remain unverified. Local app credentials remain absent.
 
 ## Ownership and environment register
 
@@ -89,7 +89,7 @@ Rehearsal procedure:
 5. Run maintenance against deliberately expired synthetic records and verify the restored permissions and cleanup function. Confirm the newly restored system does not send real recovery messages or provider requests unexpectedly.
 6. Compare the achieved recovery point/time with the agreed objectives. Record failures and corrective work. Delete the isolated rehearsal project and temporary exports according to the approved backup policy after review; preserve the non-sensitive rehearsal report.
 
-Record template: source revision; source and restore project references; backup timestamp/checksum; approved operators; start/end; counts before/after; migration/RLS/auth results; measured data loss/outage; deviations; corrective owner/date; reviewer decision. **No backup or restore result is recorded yet.**
+Record template: source revision; source and restore project references; backup timestamp/checksum; approved operators; start/end; counts before/after; migration/RLS/auth results; measured data loss/outage; deviations; corrective owner/date; reviewer decision. An encrypted pre-change application/schema catalogue backup and decryption integrity check are recorded in the release evidence. This is not a full PostgreSQL dump or isolated restore rehearsal; the procedure above remains pending.
 
 ## Monitoring, incidents and rollback
 
