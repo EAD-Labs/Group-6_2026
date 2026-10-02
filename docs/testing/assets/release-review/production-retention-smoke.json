@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-01T20:01:01.255Z",
+  "preparedAt": "2026-10-01T19:59:30.358Z",
+  "environment": "production",
+  "fixture": "Only agent-created synthetic resource and audit rows were added. Vercel Cron Jobs Run invoked the deployed endpoint.",
+  "expiredResourceHiddenBeforePurge": true,
+  "expiredResourcePurged": true,
+  "currentResourcePreserved": true,
+  "oldAuditPurged": true,
+  "currentAuditPreserved": true,
+  "repeatedFunctionDeletedResources": 0
+}
