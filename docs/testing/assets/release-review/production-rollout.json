@@ -1,0 +1,203 @@
+{
+  "reviewDate": "2026-10-02",
+  "project": "atqbligrqsderauzfrqi",
+  "preChangeBackup": {
+    "createdAt": "2026-10-01T19:05:04.940Z",
+    "project": "atqbligrqsderauzfrqi",
+    "tableCounts": {
+      "lessons": 13,
+      "quizzes": 1,
+      "quiz_answer_keys": 0,
+      "learning_modules": 4,
+      "profiles": 0,
+      "module_progress": 0,
+      "lesson_progress": 0,
+      "craft_prompt_attempts": 0,
+      "quiz_options": 0,
+      "quiz_attempts": 0,
+      "quiz_responses": 0,
+      "quiz_questions": 0
+    },
+    "authUserCount": 0,
+    "checksum": "400323ca98ffa2761af294395e1cb1170b4d53e85eadc1216ef5511289043e42",
+    "encryption": "AES-256-GCM",
+    "decryptionIntegrity": true,
+    "scope": "Application tables, schema catalogue, Auth Admin user metadata; not a full pg_dump or isolated restore rehearsal"
+  },
+  "appliedMigrations": [
+    {
+      "file": "202609250001_modules_two_three_and_staffroom.sql",
+      "sha256": "ce459129b83693542161a32067a89592e5bea13b76498600c0a163478560cc88",
+      "result": "Success. No rows returned",
+      "transactional": true
+    },
+    {
+      "file": "202609300001_module_four_source_portfolio.sql",
+      "sha256": "987a462d65729bf901d2865b6063c1cdc3075a78a4c5bc4bc52416519a7e09b6",
+      "result": "Success. No rows returned",
+      "transactional": true
+    },
+    {
+      "file": "202609300002_trusted_participant_state.sql",
+      "sha256": "d4f901eadc5a465d23533654cadfeb695be3832d5210b9bdf1d684628c938609",
+      "result": "Success. No rows returned",
+      "transactional": true
+    },
+    {
+      "file": "202609300003_platform_operations.sql",
+      "sha256": "e8f4a1699892a8d4220b232f4ba2fafb0f6d0234bee10acecfe7454d3b234b23",
+      "result": "Success. No rows returned",
+      "transactional": true
+    }
+  ],
+  "schemaVerification": {
+    "tables": 22,
+    "lessons": 29,
+    "quizzes": 4,
+    "profile_trigger": 1,
+    "private_tables_without_rls": 0,
+    "participant_can_change_role": false,
+    "participant_can_write_state": false,
+    "privileged_function_permissions": [
+      {
+        "name": "cleanup_expired_learning_data",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "consume_ai_rate_limit",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "issue_completion_certificate",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "save_participant_state",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "staff_cohort_evidence",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      },
+      {
+        "name": "staff_operation",
+        "server": true,
+        "anonymous": false,
+        "participant": false
+      }
+    ]
+  },
+  "history": "Earlier four migrations already represented in the schema; no Supabase CLI migration history exists and none was fabricated. Four missing files applied through authenticated owner SQL editor.",
+  "dns": "Local resolver failed; secure per-request lookup through Cloudflare resolved the project and REST TLS validation remained enabled.",
+  "productionSecrets": {
+    "trustedServiceKey": true,
+    "cronSecret": true,
+    "recoveryOrigin": true,
+    "liveGemini": false
+  },
+  "functionRegion": "sin1",
+  "deployment": {
+    "sourceRevision": "89fd32efbd8738e0b4cda489a8f8a6e473908faa",
+    "id": "dpl_CPVh3SH4rsmqejh25yB8iUWNfGP1",
+    "status": "READY",
+    "origin": "https://promptshala.vercel.app",
+    "deploymentUrl": "https://promptshala-2b0d0z0yz-sus-co.vercel.app",
+    "functionRegions": [
+      "sin1"
+    ],
+    "nodeMajor": 24,
+    "cloudBuildGeneratedRoutes": 74
+  },
+  "authentication": {
+    "siteUrl": "https://promptshala.vercel.app",
+    "redirects": [
+      "https://promptshala.vercel.app/auth/callback",
+      "https://promptshala.vercel.app/auth/callback?next=/reset-password"
+    ],
+    "publicSignupDisabled": true,
+    "customSmtpConfigured": false,
+    "firstRealAdministrator": "Awaiting approved identity"
+  },
+  "maintenance": {
+    "enabled": true,
+    "schedule": "0 3 * * *",
+    "timezone": "UTC",
+    "hobbyWindow": "03:00\u201304:00 UTC / 08:30\u201309:30 India time",
+    "manualCronInvocationAt": "2026-10-01T19:57:23.599Z",
+    "httpStatus": 200,
+    "retentionRehearsal": "production-retention-smoke.json",
+    "automaticDailyExecutionObserved": true,
+    "automaticExecution": {
+      "executedAt": "2026-10-02T03:35:17.160Z",
+      "localTime": "2026-10-02 09:05:17 Asia/Calcutta",
+      "userAgent": "vercel-cron/1.0",
+      "method": "GET",
+      "path": "/api/maintenance",
+      "status": 200,
+      "functionRegion": "sin1",
+      "functionDurationSeconds": 1.28,
+      "responseDurationSeconds": 2.5,
+      "deploymentId": "dpl_CPVh3SH4rsmqejh25yB8iUWNfGP1",
+      "requestId": "nz8vs-1790912117160-265559e66251"
+    }
+  },
+  "connectedVerification": {
+    "participantAndResourceChecks": 17,
+    "certificateAndGradingChecks": 8,
+    "staffChecks": 10,
+    "accountBoundaryChecks": "production-account-boundary.json",
+    "productionBrowser": "Sign-in, one lesson completion, save/reload, sign-out; root 15px Inter; no horizontal overflow at 1280px",
+    "providerAndEmail": "Not verified; approved credentials required"
+  },
+  "syntheticCleanup": {
+    "checkedAt": "2026-10-02T04:20:41.504Z",
+    "syntheticAuthUsersAbsent": 2,
+    "syntheticAuditRowsRemovedOnFinalPass": 0,
+    "remainingSyntheticRows": {
+      "profiles": 0,
+      "participant_states": 0,
+      "teacher_resources": 0,
+      "certificates": 0,
+      "content_versions": 0,
+      "cohorts": 0,
+      "audit_events": 0
+    },
+    "otherUsersDeleted": 0,
+    "browserSignedOutBeforeCleanup": true
+  },
+  "latestDeployment": {
+    "id": "dpl_418TLGKFxLwtHsiCWumWdg7qLHh2",
+    "readyState": "READY",
+    "target": "production",
+    "url": "promptshala-kl9txx83v-sus-co.vercel.app",
+    "alias": [
+      "promptshala.vercel.app",
+      "promptshala-sus-co.vercel.app"
+    ],
+    "regions": [
+      "sin1"
+    ],
+    "createdAt": 1790915163575,
+    "ready": 1790915195204,
+    "crons": [
+      {
+        "path": "/api/maintenance",
+        "schedule": "0 3 * * *"
+      }
+    ],
+    "sourceRevision": "575c942c9ecc53163e5cdd2ecbac38d0ce1a03f5",
+    "nodeVersion": "24.x",
+    "httpChecks": "final-production-http.json",
+    "browserChecks": "final-production-browser.json"
+  }
+}

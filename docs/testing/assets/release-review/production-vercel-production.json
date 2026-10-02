@@ -1,0 +1,40 @@
+{
+  "deployment": {
+    "id": "dpl_CPVh3SH4rsmqejh25yB8iUWNfGP1",
+    "readyState": "READY",
+    "regions": [
+      "sin1"
+    ],
+    "target": "production",
+    "url": "promptshala-2b0d0z0yz-sus-co.vercel.app",
+    "alias": [
+      "promptshala.vercel.app",
+      "promptshala-sus-co.vercel.app"
+    ],
+    "crons": [
+      {
+        "path": "/api/maintenance",
+        "schedule": "0 3 * * *"
+      }
+    ]
+  },
+  "project": {
+    "id": "prj_7zJzmn6d6L0VVWg4rIrK4AkmcOw9",
+    "name": "promptshala",
+    "nodeVersion": "24.x",
+    "serverlessFunctionRegion": "iad1",
+    "crons": {
+      "enabledAt": 1789988845852,
+      "disabledAt": null,
+      "updatedAt": 1790883444241,
+      "deploymentId": "dpl_CPVh3SH4rsmqejh25yB8iUWNfGP1",
+      "definitions": [
+        {
+          "host": "promptshala-2b0d0z0yz-sus-co.vercel.app",
+          "path": "/api/maintenance",
+          "schedule": "0 3 * * *"
+        }
+      ]
+    }
+  }
+}
