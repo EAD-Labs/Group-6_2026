@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-10-01T19:49:09.333Z",
+  "origin": "https://promptshala.vercel.app",
+  "fixture": "Only an agent-created synthetic identity was temporarily assigned staff permissions. No human account roles were changed. The test addendum was never published.",
+  "checks": [
+    {
+      "name": "Authorized staff API loads",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Cohort creation succeeds",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Participant enrollment succeeds",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Cohort roster is scoped",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "rosterCount": 1
+      }
+    },
+    {
+      "name": "Staff report excludes private prompts and source state",
+      "passed": true,
+      "detail": {
+        "privateContentExcluded": true
+      }
+    },
+    {
+      "name": "Versioned lesson addendum draft saves",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Staff draft archives without publication",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Test certificate revocation succeeds",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Revocation is reflected in public verification",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Production retention function executes",
+      "passed": true,
+      "detail": {
+        "deletedResources": 0
+      }
+    }
+  ]
+}
