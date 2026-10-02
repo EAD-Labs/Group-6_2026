@@ -1,0 +1,13 @@
+{
+  "executedAt": "2026-10-02T03:35:17.160Z",
+  "localTime": "2026-10-02 09:05:17 Asia/Calcutta",
+  "userAgent": "vercel-cron/1.0",
+  "method": "GET",
+  "path": "/api/maintenance",
+  "status": 200,
+  "functionRegion": "sin1",
+  "functionDurationSeconds": 1.28,
+  "responseDurationSeconds": 2.5,
+  "deploymentId": "dpl_CPVh3SH4rsmqejh25yB8iUWNfGP1",
+  "requestId": "nz8vs-1790912117160-265559e66251"
+}

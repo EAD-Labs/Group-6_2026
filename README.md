@@ -4,11 +4,11 @@ PromptShala helps beginner primary-school teachers understand AI, write classroo
 
 ## Current implementation
 
-The local review build contains four learning modules with **29 lessons**, four retryable quizzes (25 questions), CRAFT practice and prompt library, AI Staffroom and guided Source Studio. All modules are accessible from the start; assessed completion separately requires lessons, quizzes and applicable practical evidence. See the [29-lesson review matrix](docs/content/LESSON_REVIEW.md).
+The deployed application contains four learning modules with **29 lessons**, four retryable quizzes (25 questions), CRAFT practice and prompt library, AI Staffroom and guided Source Studio. All modules are accessible from the start; assessed completion separately requires lessons, quizzes and applicable practical evidence. See the [29-lesson review matrix](docs/content/LESSON_REVIEW.md).
 
 Connected-service code now includes trusted progress saving, server-validated quiz answers, account-scoped recovery, optional Gemini calls, a separate own-source text transformation workspace, private resource expiry/deletion, certificate PDF/verification, staff roles, lesson addenda, cohort reporting, account export/deletion and retention maintenance. The [participant guide](docs/PARTICIPANT_GUIDE.md) and [admin guide](docs/ADMIN_GUIDE.md) explain the workflows and limits.
 
-**Implementation is not production acceptance.** Production Supabase access is restored. Four missing migrations were applied after an encrypted application-data/schema backup; 22 tables have RLS, 29 lessons and four quizzes are published, and privileged functions are server-only. The trusted server key, cleanup secret and recovery origin are configured. The connected production deployment and synthetic-account checks are in progress. Live Gemini, email delivery, complete UAT, measured load, isolated restore rehearsal and the ten-person pilot remain unverified. [Progress and remaining work](progress.md) tracks these boundaries.
+**Implementation is not production acceptance.** Production Supabase access is restored. Four missing migrations were applied after an encrypted application-data/schema backup; 22 tables have RLS, 29 lessons and four quizzes are published, and privileged functions are server-only. The trusted server key, cleanup secret and recovery origin are configured. [The production site](https://promptshala.vercel.app) is live with Singapore functions. Synthetic production checks passed for ordinary account isolation, saved progress, server grading, certificates, staff operations and expiry cleanup. Live Gemini, email delivery, complete UAT, measured load, isolated restore rehearsal and the ten-person pilot remain unverified. Follow [the Gemini/email setup guide](docs/SERVICE_SETUP.md) for the remaining credentials and first real administrator. [Progress and remaining work](progress.md) tracks these boundaries.
 
 ## Run locally
 
@@ -32,7 +32,7 @@ The repository includes a standalone Dockerfile. Image/deployment validation is 
 
 ## Stack and contribution
 
-Next.js 16, React 19 and TypeScript; Supabase Auth/PostgreSQL with RLS; optional server-side Gemini; Vitest/Testing Library and local PGlite integration tests. GitHub is the source repository, Vercel the intended deployment platform, and Jira project `KAN` tracks delivery. Read [branching workflow](docs/BRANCHING.md) before contributing; use reviewed pull requests for merges.
+Next.js 16, React 19 and TypeScript; Supabase Auth/PostgreSQL with RLS; optional server-side Gemini; Vitest/Testing Library and local PGlite integration tests. GitHub is the source repository, Vercel the production deployment platform, and Jira project `KAN` tracks delivery. Read [branching workflow](docs/BRANCHING.md) before contributing; use reviewed pull requests for merges.
 
 Team: Ashok Chilka, Darshan Sonawane, Raghuram Gundi and Vishal Patel.
 
@@ -40,7 +40,7 @@ Team: Ashok Chilka, Darshan Sonawane, Raghuram Gundi and Vishal Patel.
 
 - [Participant guide](docs/PARTICIPANT_GUIDE.md), [administrator guide](docs/ADMIN_GUIDE.md), [operations and recovery](docs/OPERATIONS.md)
 - [HLD v1.3](docs/HLD/PromptShala_HLD_v1.3_CRAFT_Updated.pdf) and [implementation plan](docs/HLD/IMPLEMENTATION_PLAN.md)
-- [Final local release review](docs/testing/RELEASE_REVIEW.md) and [19-case UAT and ten-participant pilot plan](docs/testing/UAT_AND_PILOT.md)
+- [Local and production release review](docs/testing/RELEASE_REVIEW.md) and [19-case UAT and ten-participant pilot plan](docs/testing/UAT_AND_PILOT.md)
 - Delivery report drafts: [1 · Foundation/core](docs/testing/DELIVERY_MODULE_1_REPORT.md), [2 · AI practice/workflows](docs/testing/DELIVERY_MODULE_2_REPORT.md), [3 · Certification/admin](docs/testing/DELIVERY_MODULE_3_REPORT.md)
 - [Curriculum](docs/content/CURRICULUM.md), [lesson review/source register](docs/content/LESSON_REVIEW.md), [quiz bank](docs/content/QUIZ_BANK.md)
 - [Trusted progress and sync](docs/architecture/TRUSTED_PROGRESS_AND_SYNC.md), [AI evaluation](docs/architecture/AI_CRAFT_EVALUATION.md), [CRAFT decision](docs/PROMPT_FRAMEWORK_DECISION.md)

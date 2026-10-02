@@ -1,6 +1,6 @@
 # PromptShala — implementation and release progress
 
-Updated 2 October 2026. The four learning modules and connected workflows below are implemented. **Production acceptance remains pending.** The guided preview is verified. Owner access is restored, an encrypted pre-change application backup is recorded, and the four missing production migrations have succeeded. Connected deployment and synthetic-account checks are in progress.
+Updated 2 October 2026. The four learning modules and connected workflows below are implemented. **Production acceptance remains pending.** [The production site](https://promptshala.vercel.app) is live. Owner access is restored, an encrypted pre-change application backup is recorded, and the four missing production migrations succeeded. Synthetic production checks passed for accounts, grading, certificates, staff operations and retention.
 
 ## What is implemented
 
@@ -10,12 +10,12 @@ Updated 2 October 2026. The four learning modules and connected workflows below 
 | CRAFT and prompt library | Context, Role, Action, Format, Target feedback; revision/comparison; reusable templates; explicit live/rule-based source labels. | Configured provider, actual timing/failure and teacher task checks. |
 | AI Staffroom | Editable Passport/context/source pack, six role-aware challenges, expected/actual review, versioned repair/retest, synthetic rehearsal, handoff/reuse, export. | Approved live service, connected save/reload and observed teacher use. |
 | Guided Source Studio | Three fictional packs, passage/claim audit, five prepared artifact formats, revision/review and portfolio export. | Final browser/UAT evidence for current revision. Studio uses authored practice materials. |
-| Own-source transformation | Separate pasted-text/`.txt` workspace, six formats, local extractive scaffold, optional Gemini draft, review/export, private save/load/delete with 30-day expiry. | Managed-database isolation, actual provider calls and scheduled purge. No PDF/Word/cloud imports or generated slide/audio files. |
+| Own-source transformation | Separate pasted-text/`.txt` workspace, six formats, local extractive scaffold, optional Gemini draft, review/export, private save/load/delete with 30-day expiry. | Managed isolation and manually invoked deployed purge passed; actual provider calls remain. No PDF/Word/cloud imports or generated slide/audio files. |
 | Participant journey | Open access, onward lesson navigation, four-module missing-evidence lists, quiz review/retry, Dashboard/Progress. | Complete mobile, keyboard and screen-reader acceptance on approved deployment. |
-| Auth and trusted progress | Account-scoped recovery, sync status/retry, revision/conflict handling, server scores from quiz answers, immutable attempts and atomic saves; password recovery pages. | Remote migrations, real two-account/session/email recovery and offline/cross-device checks. |
-| Certificates | Synced eligibility, idempotent issuance, owner PDF, public valid/revoked verification, register/revocation. | Deployed eligible/ineligible flow, PDF review and privacy tests. |
-| Administration | Role checks, cohort editing/reassignment/enrollment/removal, scoped names/IDs, aggregate completion/question CSVs, lesson-addendum versions and audit. | Connected role/UAT checks. Addenda supplement code-managed lessons; planning settings do not edit quiz/pass policy. |
-| Account/privacy/operations | Account export/delete, privacy/help, retention function and authenticated daily cron, environment checker, container configuration and guides. | Scheduled execution, restore rehearsal, approved retention decisions, security and handover acceptance. |
+| Auth and trusted progress | Account-scoped recovery, sync status/retry, revision/conflict handling, server scores from quiz answers, immutable attempts and atomic saves; password recovery pages. | Managed migrations, ordinary two-account isolation and save/reload passed. Recovery email and full offline/cross-device acceptance remain. |
+| Certificates | Synced eligibility, idempotent issuance, owner PDF, public valid/revoked verification, register/revocation. | Production eligible/ineligible flow, one-page PDF, idempotence, private download and public revocation passed with synthetic evidence. Client wording/signatory approval remains. |
+| Administration | Role checks, cohort editing/reassignment/enrollment/removal, scoped names/IDs, aggregate completion/question CSVs, lesson-addendum versions and audit. | Connected staff/cohort/draft/revocation checks passed. Full role UAT remains. Addenda supplement code-managed lessons; planning settings do not edit quiz/pass policy. |
+| Account/privacy/operations | Account export/delete, privacy/help, retention function and authenticated daily cron, environment checker, container configuration and guides. | Registered daily schedule and manual deployed execution passed; restore rehearsal, approved retention decisions and handover acceptance remain. |
 
 ## Curriculum review completed
 
@@ -29,7 +29,8 @@ All 29 lessons were checked against the HLD and research syllabus. Revisions mak
 - All **29 lessons** and **18 additional routes** were checked in Chrome at 360px, 768px and 1440px. Two tablet overview overflows were fixed and rechecked. The earlier 15px root/Inter typography is restored.
 - The standalone local production server returned 200 for all **47 reviewed routes** with expected security headers. A **25-request concurrent HTTP burst** passed; this does not establish 25 authenticated users, hosted performance or render timing.
 - Vercel access was restored; the [guided review preview](https://promptshala-8aq6q4l4z-sus-co.vercel.app) reached READY. Hosted onboarding, lesson completion/onward navigation, draft restoration and source scaffolding passed with fictional data. Health returned 200, and unauthorized maintenance returned 401. Production recovery origin and a sensitive cleanup secret are configured.
-- GitHub CI passed and twenty new commits were published in four authenticated batches of five, one through each requested account.
+- GitHub CI passed and twenty new commits were published in four authenticated batches of five, one through each requested account. The original twenty were merged through PR #10; later runtime and production-evidence follow-ups preserve that history.
+- Connected production is READY on Node 24 with `sin1` functions: 17 participant/resource checks, eight certificate/grading checks and ten staff checks passed. A real browser sign-in, one lesson completion, sync/reload and sign-out passed. Vercel maintenance returned 200; expired synthetic resources and old audit rows were removed while current rows were preserved. Public signup is disabled and verified through the Auth API.
 - The local database integration suite exercises all eight migrations in a PostgreSQL-compatible harness with Supabase Auth/role shims. It is not a managed Supabase migration or deployed session test.
 - [Final release review and browser evidence](docs/testing/RELEASE_REVIEW.md) records fixes, screenshots, measurements and remaining limitations, including a browser download whose saved file was not verified.
 - Handover documents include the [participant guide](docs/PARTICIPANT_GUIDE.md), [admin guide](docs/ADMIN_GUIDE.md), [operations/restore runbook](docs/OPERATIONS.md), [19 UAT cases and pilot plan](docs/testing/UAT_AND_PILOT.md), and delivery reports [1](docs/testing/DELIVERY_MODULE_1_REPORT.md), [2](docs/testing/DELIVERY_MODULE_2_REPORT.md) and [3](docs/testing/DELIVERY_MODULE_3_REPORT.md).
@@ -46,10 +47,10 @@ Resource expiry is 30 days and audit cleanup 90 days when maintenance runs. An i
 
 ## Remaining release work
 
-1. Complete the connected production deployment and choose the first verified administrator identity. Supabase owner access, server credential, canonical auth origin and cleanup secret are configured. Gemini remains unconfigured.
-2. Verify ordinary two-account/session isolation, trusted saves and recovery email. The encrypted application/schema backup and four missing managed migrations succeeded; there were no existing Auth users, participant profiles or passed records. An isolated restore rehearsal is still required.
-3. Approve and test live AI with synthetic data; measure timing, failure/retry, rate limits and cost. Verify private-resource lifecycle and daily maintenance.
-4. Extend the recorded local checks with connected acceptance; complete the 19-case UAT, keyboard/screen-reader/current-browser/360px checks, security review and measured 25-user load. Rehearse restore and record results.
-5. Obtain content/privacy/scope/certificate wording decisions, complete three delivery-module reviews, deploy the reviewed revision and hand over ownership. Conduct the ten-participant pilot and report actual observations and limits.
+1. Complete [Gemini and email setup](docs/SERVICE_SETUP.md) and name the first verified administrator. The website and database are deployed; server credentials, canonical callbacks and cleanup secret are configured. Live Gemini and custom SMTP still require approved credentials.
+2. Test one approved recovery-email recipient and fresh/expired-link flows. Complete the live AI checks with fictional, consented inputs, including timing, retry, quotas and cost.
+3. Monitor the daily maintenance job: the registered schedule, authenticated manual invocation, automatic run at 09:05 India time, resource expiry and audit purge passed. Rehearse a full isolated backup restore; the encrypted application/schema backup has only passed decryption integrity.
+4. Complete the 19-case client UAT, screen-reader/current-browser checks, security review and measured 25-user load. Recorded synthetic checks are release smoke evidence, not participant acceptance.
+5. Obtain content/privacy/scope/certificate wording decisions, complete three delivery-module reviews and hand over ownership. Conduct the ten-participant pilot and report actual observations and limits.
 
-Managed migrations are recorded as executed. Live provider success, connected production deployment, client UAT, load results, isolated restore rehearsal, pilot participation and sign-off are **not yet claimed complete**.
+Managed migrations, connected production deployment and the recorded synthetic checks are complete. Live provider/email success, client UAT, authenticated load results, isolated restore rehearsal, pilot participation and sign-off are **not yet claimed complete**.

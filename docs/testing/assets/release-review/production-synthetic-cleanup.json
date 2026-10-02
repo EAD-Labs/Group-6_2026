@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-02T04:20:41.504Z",
+  "syntheticAuthUsersAbsent": 2,
+  "syntheticAuditRowsRemovedOnFinalPass": 0,
+  "remainingSyntheticRows": {
+    "profiles": 0,
+    "participant_states": 0,
+    "teacher_resources": 0,
+    "certificates": 0,
+    "content_versions": 0,
+    "cohorts": 0,
+    "audit_events": 0
+  },
+  "otherUsersDeleted": 0,
+  "browserSignedOutBeforeCleanup": true
+}
