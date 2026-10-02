@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-10-01T19:46:05.682Z",
+  "origin": "https://promptshala.vercel.app",
+  "fixture": "Synthetic practical records and test-bank selections. No teacher completion or client acceptance is represented.",
+  "checks": [
+    {
+      "name": "Four assessment banks graded on production server",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "banks": 4,
+        "questions": 25
+      }
+    },
+    {
+      "name": "Saved synthetic completion eligible",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "eligible": true,
+        "missing": 0
+      }
+    },
+    {
+      "name": "Eligible synthetic certificate issued",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Certificate issuance idempotent",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Owner production PDF download valid",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "bytes": 9823,
+        "pages": 1
+      }
+    },
+    {
+      "name": "Another participant cannot download test certificate",
+      "passed": true,
+      "detail": {
+        "status": 404
+      }
+    },
+    {
+      "name": "Public verification has no participant name",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Submitted answers cannot be rewritten",
+      "passed": true,
+      "detail": {
+        "status": 400
+      }
+    }
+  ]
+}
