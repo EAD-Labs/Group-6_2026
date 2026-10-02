@@ -1,0 +1,63 @@
+{
+  "checkedAt": "2026-10-02T04:27:27.889Z",
+  "origin": "https://promptshala.vercel.app",
+  "sourceRevision": "575c942c9ecc53163e5cdd2ecbac38d0ce1a03f5",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "securityHeaders": {
+        "nosniff": "nosniff",
+        "frameOptions": "DENY"
+      }
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "securityHeaders": {
+        "nosniff": "nosniff",
+        "frameOptions": "DENY"
+      },
+      "health": {
+        "aiEvaluator": "fallback",
+        "environment": "production",
+        "model": "gemini-3.5-flash",
+        "supabase": "configured"
+      }
+    },
+    {
+      "path": "/account-recovery?sent=1",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "securityHeaders": {
+        "nosniff": "nosniff",
+        "frameOptions": "DENY"
+      }
+    },
+    {
+      "path": "/api/participant-state",
+      "status": 401,
+      "expected": 401,
+      "passed": true,
+      "securityHeaders": {
+        "nosniff": "nosniff",
+        "frameOptions": "DENY"
+      }
+    },
+    {
+      "path": "/api/maintenance",
+      "status": 401,
+      "expected": 401,
+      "passed": true,
+      "securityHeaders": {
+        "nosniff": "nosniff",
+        "frameOptions": "DENY"
+      }
+    }
+  ]
+}
