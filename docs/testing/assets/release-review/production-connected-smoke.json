@@ -1,0 +1,130 @@
+{
+  "checkedAt": "2026-10-01T19:39:51.603Z",
+  "origin": "https://promptshala.vercel.app",
+  "syntheticAccounts": 2,
+  "outboundEmails": 0,
+  "checks": [
+    {
+      "name": "Connected participant read",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "mode": "supabase"
+      }
+    },
+    {
+      "name": "Separate authenticated identity",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Atomic production save",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "revision": 1
+      }
+    },
+    {
+      "name": "Production save survives fresh read",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "revision": 1
+      }
+    },
+    {
+      "name": "Stale revision conflict",
+      "passed": true,
+      "detail": {
+        "status": 409
+      }
+    },
+    {
+      "name": "Other account cannot reuse save",
+      "passed": true,
+      "detail": {
+        "status": 409
+      }
+    },
+    {
+      "name": "Participant denied staff API",
+      "passed": true,
+      "detail": {
+        "status": 403
+      }
+    },
+    {
+      "name": "Incomplete certificate denied",
+      "passed": true,
+      "detail": {
+        "status": 409
+      }
+    },
+    {
+      "name": "Private resource saved",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Resource owner can load",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Resource hidden from other account",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Managed resource RLS isolates owner",
+      "passed": true,
+      "detail": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "Owner can remove synthetic resource",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Removed resource absent",
+      "passed": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Anonymous progress denied",
+      "passed": true,
+      "detail": {
+        "status": 401
+      }
+    },
+    {
+      "name": "Unauthenticated maintenance denied",
+      "passed": true,
+      "detail": {
+        "status": 401
+      }
+    },
+    {
+      "name": "Foreign-origin save denied",
+      "passed": true,
+      "detail": {
+        "status": 403
+      }
+    }
+  ]
+}
