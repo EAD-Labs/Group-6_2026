@@ -1,3 +1,5 @@
+export const craftInputLimits = { min: 3, task: 300, prompt: 2500 } as const;
+
 export type CraftDimensionId = "context" | "role" | "action" | "format" | "target";
 
 export type CraftDimension = {
