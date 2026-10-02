@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { useScopedDraft } from "./ui/use-scoped-draft";
 
-import {
-  createRuleBasedCraftEvaluation,
-  type CraftAiEvaluation,
-} from "@/features/learning/craft-ai";
+import type { CraftAiEvaluation } from "@/features/learning/craft-ai";
 import {
   createCraftScenario,
   craftDimensions,
+  craftInputLimits,
   craftScenarios,
 } from "@/features/learning/craft";
 
@@ -40,6 +39,8 @@ function CraftPracticeWorkspace() {
   const result = latest?.prompt === draft && latest.task === task ? latest : null;
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [fallbackReason, setFallbackReason] = useState("");
+  const [requestError, setRequestError] = useState<{ message: string; code?: string } | null>(null);
+  const validInput = task.trim().length >= craftInputLimits.min && task.trim().length <= craftInputLimits.task && draft.trim().length >= craftInputLimits.min && draft.trim().length <= craftInputLimits.prompt;
   const controllerRef = useRef<AbortController | null>(null);
   const cancelledRef = useRef(false);
   useEffect(() => () => { cancelledRef.current = true; controllerRef.current?.abort(); }, []);
@@ -47,27 +48,32 @@ function CraftPracticeWorkspace() {
   function selectSuggestion(nextScenarioId: string) {
     const next = craftScenarios.find((item) => item.id === nextScenarioId) ?? craftScenarios[0];
     setPractice({ ...practice, suggestionId: next.id, task: next.task, prompt: next.startingPrompt });
-    setFallbackReason("");
+    setFallbackReason(""); setRequestError(null);
   }
   function record(evaluation: CraftAiEvaluation) {
     setPractice({ ...practice, attempts: [...attempts, { ...evaluation, number: (attempts.at(-1)?.number ?? 0) + 1, prompt: draft, task, createdAt: new Date().toISOString() }].slice(-8) });
     updateState((current) => ({ ...current, craftPracticeCount: current.craftPracticeCount + 1 }));
   }
   async function evaluateDraft() {
-    setIsEvaluating(true); setFallbackReason(""); cancelledRef.current = false;
+    if (!validInput) return;
+    setIsEvaluating(true); setFallbackReason(""); setRequestError(null); cancelledRef.current = false;
     const controller = new AbortController(); controllerRef.current = controller;
     const timeout = window.setTimeout(() => controller.abort(), 30000);
     try {
       const response = await fetch("/api/craft/evaluate", { method: "POST", headers: { "Content-Type": "application/json" }, signal: controller.signal, body: JSON.stringify({ prompt: draft, suggestionId, task }) });
-      const payload = await response.json() as { error?: string; evaluation?: CraftAiEvaluation; fallbackReason?: string };
-      if (!response.ok || !payload.evaluation) throw new Error(payload.error ?? "Evaluation unavailable.");
+      const payload = await response.json() as { error?: string; code?: string; evaluation?: CraftAiEvaluation; fallbackReason?: string };
+      if (!response.ok) {
+        if (!cancelledRef.current) setRequestError({ message: payload.error ?? "The request could not be completed. Please retry.", code: payload.code ?? (response.status === 401 ? "sign_in_required" : undefined) });
+        return;
+      }
+      if (!payload.evaluation) throw new Error("Evaluation missing.");
       if (!cancelledRef.current) { record(payload.evaluation); setFallbackReason(payload.fallbackReason ?? ""); }
     } catch {
-      if (!cancelledRef.current) { record(createRuleBasedCraftEvaluation(draft, scenario)); setFallbackReason("The AI evaluator was unavailable. This checklist checks visible CRAFT signals; it cannot judge factual accuracy or nuance. Your draft is preserved for another try."); }
+      if (!cancelledRef.current) setRequestError({ message: "The evaluation could not be received. Check your connection and try again." });
     } finally { window.clearTimeout(timeout); if (!cancelledRef.current) setIsEvaluating(false); }
   }
   function cancelEvaluation() { cancelledRef.current = true; controllerRef.current?.abort(); setIsEvaluating(false); setFallbackReason("Evaluation cancelled. Your draft is unchanged and ready to try again."); }
-  function useStrongExample() { setPractice({ ...practice, prompt: scenario.strongPrompt }); setFallbackReason(""); }
+  function useStrongExample() { setPractice({ ...practice, prompt: scenario.strongPrompt }); setFallbackReason(""); setRequestError(null); }
 
   return (
     <>
@@ -132,7 +138,7 @@ function CraftPracticeWorkspace() {
             What should this prompt help you do?
             <input
               id="craft-task"
-              maxLength={300}
+              maxLength={craftInputLimits.task}
               disabled={isEvaluating}
               onChange={(event) => setPractice({ ...practice, task: event.target.value, suggestionId: craftScenarios.some((item) => item.id === suggestionId && item.task === event.target.value) ? suggestionId : undefined })}
               placeholder="For example: Make a question bank for a revision lesson"
@@ -145,18 +151,19 @@ function CraftPracticeWorkspace() {
             Prompt to analyse
             <textarea
               id="craft-prompt"
-              maxLength={12000}
+              maxLength={craftInputLimits.prompt}
               disabled={isEvaluating}
               onChange={(event) => setPractice({ ...practice, prompt: event.target.value })}
               rows={9}
               value={draft}
             />
-            <span>{draft.length}/12,000 characters · Only your task and prompt are sent when you select Score.</span>
+            <span>{draft.length}/2,500 characters · Only your task and prompt are sent when you select Score.</span>
           </label>
+          {!validInput ? <p className="draft-note" role="status">Use 3–300 characters for the task and 3–2,500 for the prompt. Longer saved drafts are kept intact; shorten yours before scoring.</p> : null}
           <div className="craft-editor-actions">
             <button
               className="button button-primary"
-              disabled={!task.trim() || !draft.trim() || isEvaluating}
+              disabled={!validInput || isEvaluating}
               onClick={evaluateDraft}
               type="button"
             >
@@ -171,8 +178,9 @@ function CraftPracticeWorkspace() {
             {isEvaluating ? <button className="text-link" type="button" onClick={cancelEvaluation}>Cancel evaluation</button> : null}
           </div>
           <p className="draft-note" role="status">{isEvaluating ? "Reviewing the five CRAFT dimensions. This may take up to 30 seconds." : storage.persisted ? "Draft and recent feedback saved on this device for this account. Use only fictional examples." : "Device storage is unavailable. Keep this tab open to retain your draft."}</p>
+          {requestError ? <div className="feedback-box supportive" role="alert"><p>{requestError.message} Your draft is preserved; no new score was recorded.</p>{requestError.code === "consent_required" ? <Link className="text-link" href="/onboarding/safe-use">Review safe-use notice and finish setup</Link> : requestError.code === "sign_in_required" ? <Link className="text-link" href="/sign-in">Sign in again</Link> : null}</div> : null}
           {fallbackReason && !result ? <p className="feedback-box supportive" role="status">{fallbackReason}</p> : null}
-          {attempts.length ? <button className="text-link" type="button" disabled={isEvaluating} onClick={() => { setPractice(initialPractice); setFallbackReason("This device’s practice draft and feedback were cleared. Your completed practice count remains in your learning record."); }}>Clear this device’s practice draft</button> : null}
+          {attempts.length ? <button className="text-link" type="button" disabled={isEvaluating} onClick={() => { setPractice(initialPractice); setRequestError(null); setFallbackReason("This device’s practice draft and feedback were cleared. Your completed practice count remains in your learning record."); }}>Clear this device’s practice draft</button> : null}
         </section>
       </div>
 

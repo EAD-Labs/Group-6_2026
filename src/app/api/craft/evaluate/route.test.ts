@@ -16,7 +16,9 @@ describe("CRAFT endpoint authorization and recovery", () => {
   });
   it("blocks anonymous access and missing consent", async () => {
     mocks.access.mockResolvedValue({ mode: "unauthenticated" }); expect((await POST(request())).status).toBe(401);
-    mocks.access.mockResolvedValue({ mode: "consent_required" }); expect((await POST(request())).status).toBe(403);
+    mocks.access.mockResolvedValue({ mode: "consent_required" });
+    const denied = await POST(request()); expect(denied.status).toBe(403);
+    expect((await denied.json()).code).toBe("consent_required");
     expect(mocks.evaluate).not.toHaveBeenCalled();
   });
   it("preserves useful fallback on provider failure and unavailable quota service", async () => {
@@ -26,6 +28,16 @@ describe("CRAFT endpoint authorization and recovery", () => {
     mocks.evaluate.mockClear(); mocks.budget.mockRejectedValue(new Error("database offline"));
     expect((await (await POST(request())).json()).evaluation.source).toBe("rule-based");
     expect(mocks.evaluate).not.toHaveBeenCalled();
+  });
+  it("returns a service error when account access cannot be verified", async () => {
+    mocks.access.mockRejectedValue(new Error("profile unavailable"));
+    expect((await POST(request())).status).toBe(503);
+    expect(mocks.evaluate).not.toHaveBeenCalled();
+  });
+  it("rejects over-limit prompts without calling the provider", async () => {
+    mocks.access.mockResolvedValue({ mode: "authenticated", participantId: "user" });
+    const response = await POST(new Request("https://example.test/api/craft/evaluate", { method: "POST", body: JSON.stringify({ task: "Explain plants", prompt: "x".repeat(2501) }) }));
+    expect(response.status).toBe(400); expect(mocks.evaluate).not.toHaveBeenCalled();
   });
   it("enforces the shared account limit before a provider request", async () => {
     mocks.access.mockResolvedValue({ mode: "authenticated", participantId: "user" }); mocks.budget.mockResolvedValue(false);
