@@ -174,5 +174,30 @@
     },
     "otherUsersDeleted": 0,
     "browserSignedOutBeforeCleanup": true
+  },
+  "latestDeployment": {
+    "id": "dpl_418TLGKFxLwtHsiCWumWdg7qLHh2",
+    "readyState": "READY",
+    "target": "production",
+    "url": "promptshala-kl9txx83v-sus-co.vercel.app",
+    "alias": [
+      "promptshala.vercel.app",
+      "promptshala-sus-co.vercel.app"
+    ],
+    "regions": [
+      "sin1"
+    ],
+    "createdAt": 1790915163575,
+    "ready": 1790915195204,
+    "crons": [
+      {
+        "path": "/api/maintenance",
+        "schedule": "0 3 * * *"
+      }
+    ],
+    "sourceRevision": "575c942c9ecc53163e5cdd2ecbac38d0ce1a03f5",
+    "nodeVersion": "24.x",
+    "httpChecks": "final-production-http.json",
+    "browserChecks": "final-production-browser.json"
   }
 }

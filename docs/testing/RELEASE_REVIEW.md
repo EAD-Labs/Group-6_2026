@@ -108,3 +108,16 @@ The maintenance screenshot establishes a manually triggered production execution
 Both agent-created Auth accounts and their profile, progress, resource, certificate, content/cohort and audit records are absent after cleanup. No other users were deleted. [Cleanup verification](assets/release-review/production-synthetic-cleanup.json) records the zero remaining row counts. Temporary local plaintext server/test credentials were removed after these checks; the encrypted pre-change backup and its separately stored local key remain outside Git.
 
 The automatic daily job subsequently ran at **09:05:17 India time on 2 October** (03:35:17 UTC): `vercel-cron/1.0`, HTTP 200, function region `sin1`, 1.28-second function execution. This occurred independently of the earlier manual runs. [Execution details](assets/release-review/production-automatic-maintenance.json) and [log screenshot](assets/release-review/production-automatic-maintenance.png) are retained.
+
+
+## Final production publication
+
+The recovery-message update and service-setup guide were deployed from `575c942c9ecc53163e5cdd2ecbac38d0ce1a03f5` as `dpl_418TLGKFxLwtHsiCWumWdg7qLHh2`. The production alias is [promptshala.vercel.app](https://promptshala.vercel.app); the cloud build passed with Node 24 and all 74 generated routes/pages. [GitHub CI for this source](https://github.com/EAD-Labs/Group-6_2026/actions/runs/36964506766) passed in 1m15s.
+
+The final public home, health and recovery routes return 200 with expected security headers; anonymous progress and maintenance requests return 401. The browser displays the corrected recovery copy, 15px root typography and Inter without horizontal overflow. No recovery email was sent as part of this display check. The runtime still reports fallback AI because Gemini is not configured.
+
+- [Deployment identity, source and Singapore region](assets/release-review/final-production-deployment.json)
+- [Final HTTP checks](assets/release-review/final-production-http.json) and [browser measurements](assets/release-review/final-production-browser.json)
+- [Public home screenshot](assets/release-review/final-production-home.png) and [recovery screenshot](assets/release-review/final-production-recovery.png)
+
+The following evidence-only commit records this successful deployment; application and configuration files remain identical to the deployed revision. The original twenty release commits retain their five-per-account split; operational follow-up commits are additional and do not rewrite that published history.
