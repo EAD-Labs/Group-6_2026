@@ -106,5 +106,73 @@
     "liveGemini": false
   },
   "functionRegion": "sin1",
-  "deployment": "Pending connected deployment and synthetic-account smoke checks"
+  "deployment": {
+    "sourceRevision": "89fd32efbd8738e0b4cda489a8f8a6e473908faa",
+    "id": "dpl_CPVh3SH4rsmqejh25yB8iUWNfGP1",
+    "status": "READY",
+    "origin": "https://promptshala.vercel.app",
+    "deploymentUrl": "https://promptshala-2b0d0z0yz-sus-co.vercel.app",
+    "functionRegions": [
+      "sin1"
+    ],
+    "nodeMajor": 24,
+    "cloudBuildGeneratedRoutes": 74
+  },
+  "authentication": {
+    "siteUrl": "https://promptshala.vercel.app",
+    "redirects": [
+      "https://promptshala.vercel.app/auth/callback",
+      "https://promptshala.vercel.app/auth/callback?next=/reset-password"
+    ],
+    "publicSignupDisabled": true,
+    "customSmtpConfigured": false,
+    "firstRealAdministrator": "Awaiting approved identity"
+  },
+  "maintenance": {
+    "enabled": true,
+    "schedule": "0 3 * * *",
+    "timezone": "UTC",
+    "hobbyWindow": "03:00\u201304:00 UTC / 08:30\u201309:30 India time",
+    "manualCronInvocationAt": "2026-10-01T19:57:23.599Z",
+    "httpStatus": 200,
+    "retentionRehearsal": "production-retention-smoke.json",
+    "automaticDailyExecutionObserved": true,
+    "automaticExecution": {
+      "executedAt": "2026-10-02T03:35:17.160Z",
+      "localTime": "2026-10-02 09:05:17 Asia/Calcutta",
+      "userAgent": "vercel-cron/1.0",
+      "method": "GET",
+      "path": "/api/maintenance",
+      "status": 200,
+      "functionRegion": "sin1",
+      "functionDurationSeconds": 1.28,
+      "responseDurationSeconds": 2.5,
+      "deploymentId": "dpl_CPVh3SH4rsmqejh25yB8iUWNfGP1",
+      "requestId": "nz8vs-1790912117160-265559e66251"
+    }
+  },
+  "connectedVerification": {
+    "participantAndResourceChecks": 17,
+    "certificateAndGradingChecks": 8,
+    "staffChecks": 10,
+    "accountBoundaryChecks": "production-account-boundary.json",
+    "productionBrowser": "Sign-in, one lesson completion, save/reload, sign-out; root 15px Inter; no horizontal overflow at 1280px",
+    "providerAndEmail": "Not verified; approved credentials required"
+  },
+  "syntheticCleanup": {
+    "checkedAt": "2026-10-02T04:20:41.504Z",
+    "syntheticAuthUsersAbsent": 2,
+    "syntheticAuditRowsRemovedOnFinalPass": 0,
+    "remainingSyntheticRows": {
+      "profiles": 0,
+      "participant_states": 0,
+      "teacher_resources": 0,
+      "certificates": 0,
+      "content_versions": 0,
+      "cohorts": 0,
+      "audit_events": 0
+    },
+    "otherUsersDeleted": 0,
+    "browserSignedOutBeforeCleanup": true
+  }
 }
