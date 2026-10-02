@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-10-01T19:37:22.328Z",
+  "syntheticAccounts": 2,
+  "outboundEmails": 0,
+  "checks": [
+    {
+      "ownProfileOnly": true,
+      "roleMetadataCannotPromote": true,
+      "otherProfileHidden": true,
+      "privilegedRpcDenied": true
+    },
+    {
+      "ownProfileOnly": true,
+      "roleMetadataCannotPromote": true,
+      "otherProfileHidden": true,
+      "privilegedRpcDenied": true
+    }
+  ]
+}
