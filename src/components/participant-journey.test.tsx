@@ -6,6 +6,8 @@ import { initialDemoState, type AssistantSpec } from "@/features/demo/demo-state
 import { moduleOneLessons, moduleOneQuizQuestions } from "@/features/learning/catalog";
 import { ModuleQuiz } from "./module-quiz";
 import { CraftPractice } from "./craft-practice";
+import { createRuleBasedCraftEvaluation } from "@/features/learning/craft-ai";
+import { createCraftScenario } from "@/features/learning/craft";
 import { getLearningPlan } from "./learning-plan";
 import { ModuleLessonExperience } from "./module-lesson-experience";
 import { moduleTwoLessons } from "@/features/learning/module-two-content";
@@ -59,7 +61,10 @@ describe("participant learning continuity", () => {
   });
 
   it("retains the CRAFT input on provider failure and compares the actual revisions", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("Provider unavailable")));
+    vi.stubGlobal("fetch", vi.fn().mockImplementation(async (_url, options) => {
+      const { prompt, task, suggestionId } = JSON.parse(options.body);
+      return { ok: true, json: async () => ({ evaluation: createRuleBasedCraftEvaluation(prompt, createCraftScenario(task, suggestionId)), fallbackReason: "Live AI is unavailable, so PromptShala used its transparent CRAFT checklist." }) };
+    }));
     const first = render(<CraftPractice />);
     const original = "Act as a teacher. Create three questions for class 7 evaporation, in a numbered list.";
     fireEvent.change(screen.getByRole("textbox", { name: /Prompt to analyse/ }), { target: { value: original } });
