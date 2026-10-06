@@ -1,3 +1,11 @@
+## Open pilot bank — 6 October 2026
+
+The current canonical banks live in `src/features/learning/catalog.ts` and the three module content files. They contain **75 questions**: Module 1: **14**, Module 2: **19**, Module 3: **23**, Module 4: **19**. All 29 lessons have two or three questions, with extra coverage for longer practical lessons and the foundation safety review. These banks power both the chapter understanding checks and retryable module knowledge checks. Each question has a stable ID, lesson mapping, valid answer set and explanatory feedback. Trusted submissions retain the assessment version and fingerprint; historical scores are preserved. The pass threshold remains 70% (10/14, 14/19, 17/23, 14/19).
+
+`pilot-question-bank.test.ts` verifies every chapter’s coverage, unique IDs/prompts and option validity. The content has implementation review and automated checks; live teacher pilot feedback remains the next validation step.
+
+The earlier bank register below describes the historical release.
+
 # PromptShala knowledge-check bank
 
 Reviewed against the implemented curriculum on 30 September 2026. The application arrays in `src/features/learning` are the source of truth. This register contains the same 25 module questions; lesson concept checks are additional formative practice.
