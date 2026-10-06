@@ -25,13 +25,15 @@ export function validateEvents(value: unknown, now = Date.now()): LearningEvent[
       event.target = raw.target;
     }
     if (raw.kind.startsWith("question_") || raw.kind === "quiz_submit") {
-      if (!Number.isInteger(raw.module) || raw.module < 1 || raw.module > 4 || !uuidPattern.test(raw.attemptId) || raw.path !== `/learn/module-${raw.module}/quiz`) throw new Error("Invalid quiz activity.");
+      if (!Number.isInteger(raw.module) || raw.module < 1 || raw.module > 4 || !uuidPattern.test(raw.attemptId)) throw new Error("Invalid quiz activity.");
       event.module = raw.module; event.attemptId = raw.attemptId;
       const questions = Object.values(assessmentBanks)[raw.module - 1];
       event.contentVersion = `${assessmentVersion}:${createHash("sha256").update(JSON.stringify(questions)).digest("hex").slice(0, 16)}`;
+      if (raw.kind === "quiz_submit" && raw.path !== `/learn/module-${raw.module}/quiz`) throw new Error("Invalid quiz page.");
       if (raw.kind !== "quiz_submit") {
         const question = questions.find(q => q.id === raw.questionId);
         if (!question) throw new Error("Unknown question.");
+        if (raw.path !== `/learn/module-${raw.module}/quiz` && raw.path !== `/learn/module-${raw.module}/lessons/${question.lessonSlug}`) throw new Error("Invalid question page.");
         event.questionId = question.id;
         if (raw.kind === "question_answer") {
           if (!Array.isArray(raw.selectedOptions) || !raw.selectedOptions.length || new Set(raw.selectedOptions).size !== raw.selectedOptions.length ||
