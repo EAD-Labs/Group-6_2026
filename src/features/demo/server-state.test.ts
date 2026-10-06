@@ -4,6 +4,10 @@ import { sanitizeDemoState } from "./server-state";
 import { readyPortfolio } from "@/test/fixtures/source-portfolio";
 
 describe("authenticated participant state validation", () => {
+  it("retains correct-answer totals for expanded pilot question banks", () => {
+    const state = sanitizeDemoState({ moduleThreeQuizAttempts: [{ correctAnswers: 23, scorePercent: 100 }] });
+    expect(state.moduleThreeQuizAttempts[0].correctAnswers).toBe(23);
+  });
   it("preserves Module 4 evidence and rejects unknown lesson IDs", () => {
     const state = sanitizeDemoState({ moduleFourCompletedLessonIds: ["citation-detective", "unknown"],
       moduleFourQuizAttempts: [{ scorePercent: 80, correctAnswers: 4 }],
