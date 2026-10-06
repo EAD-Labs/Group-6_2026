@@ -40,6 +40,11 @@ describe("calculateQuizResult", () => {
     });
   });
 
+  it("requires seventeen correct answers on the expanded twenty-three-question check", () => {
+    expect(calculateQuizResult(16, 23)).toMatchObject({ passed: false, scorePercent: 69 });
+    expect(calculateQuizResult(17, 23)).toMatchObject({ passed: true, scorePercent: 73 });
+  });
+
   it("supports a reviewed module-specific threshold", () => {
     expect(calculateQuizResult(3, 4, 75)).toMatchObject({
       passed: true,
@@ -58,14 +63,14 @@ describe("calculateQuizResult", () => {
 });
 
 describe("module progression", () => {
-  it("keeps a module locked until the previous module passes", () => {
+  it("opens every pilot module before the previous module passes", () => {
     expect(
       deriveModuleStatus({
         passedAt: null,
         previousModulePassed: false,
         startedAt: null,
       }),
-    ).toBe("locked");
+    ).toBe("available");
   });
 
   it("makes the first eligible module available", () => {
@@ -88,13 +93,13 @@ describe("module progression", () => {
     ).toBe("passed");
   });
 
-  it("unlocks the quiz only after every required lesson", () => {
-    expect(canStartQuiz(3, 2)).toBe(false);
+  it("allows a pilot quiz before completing lessons", () => {
+    expect(canStartQuiz(3, 2)).toBe(true);
     expect(canStartQuiz(3, 3)).toBe(true);
   });
 
-  it("unlocks the next module only after a pass", () => {
-    expect(canUnlockNextModule(false)).toBe(false);
+  it("opens the next pilot module without requiring a pass", () => {
+    expect(canUnlockNextModule(false)).toBe(true);
     expect(canUnlockNextModule(true)).toBe(true);
   });
 

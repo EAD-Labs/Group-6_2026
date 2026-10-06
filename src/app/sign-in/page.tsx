@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/icon";
 
 import { getSafePostAuthPath } from "@/features/auth/authorization";
 
-import { signIn, startPresentationDemo } from "./actions";
+import { signIn } from "./actions";
 
 export const metadata: Metadata = {
   title: "Sign in",
@@ -16,7 +16,8 @@ export const metadata: Metadata = {
 const errorMessages: Record<string, string> = {
   callback: "The sign-in link could not be verified. Please try again.",
   configuration:
-    "Live pilot authentication is not configured in this environment. Use the presentation demo below.",
+    "Account services are temporarily unavailable. Please try again shortly.",
+  unconfirmed: "Confirm your email using the link sent when you registered, then sign in.",
   invalid: "The email or password was not recognised.",
   missing: "Enter both your email and password.",
 };
@@ -33,7 +34,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
     <div className="auth-page paper-grid">
       <header className="auth-header">
         <Brand />
-        <span className="secure-label"><Icon name="shield" /> Invitation-only pilot</span>
+        <span className="secure-label"><Icon name="shield" /> Teacher pilot</span>
       </header>
       <main className="auth-layout" id="main-content">
         <section className="auth-story" aria-labelledby="sign-in-title">
@@ -48,7 +49,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
         <section className="auth-card" aria-label="Participant sign in">
           <div className="auth-card-heading">
             <span className="brand-mark" aria-hidden="true">प</span>
-            <div><h2>Continue learning</h2><p>Use the account provided by your facilitator.</p></div>
+            <div><h2>Continue learning</h2><p>Sign in with your email and password.</p></div>
           </div>
           {passwordUpdated === "1" ? <p className="platform-message" role="status">Password updated. Sign in with your new password.</p> : deleted === "1" ? <p className="platform-message" role="status">Your account and learning data have been deleted.</p> : null}
           {errorMessage ? <p id="sign-in-error" className="error-message" role="alert"><Icon name="info" />{errorMessage}</p> : null}
@@ -59,11 +60,8 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             <PendingSubmit pendingLabel="Signing in…">Sign in</PendingSubmit>
           </form>
           <Link className="text-link" href="/account-recovery">Forgot your password?</Link>
-          <div className="auth-divider"><span>Client presentation</span></div>
-          <form action={startPresentationDemo}>
-            <PendingSubmit className="button button-demo button-full" pendingLabel="Opening demo…" icon="play">Open guided demo</PendingSubmit>
-          </form>
-          <p className="form-note"><Icon name="shield" />Public registration is disabled. The guided demo stores sample progress only on this device.</p>
+          <p>New here? <Link className="text-link" href="/sign-up">Create your account</Link></p>
+          <p className="form-note"><Icon name="shield" />Your progress is saved to your own account. Every module is open for the pilot.</p>
         </section>
       </main>
       <footer className="auth-footer"><Link href="/privacy">Privacy and safe use</Link><Link href="/help">Need help?</Link><span>© 2026 PromptShala</span></footer>

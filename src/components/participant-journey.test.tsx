@@ -10,8 +10,8 @@ import { createRuleBasedCraftEvaluation } from "@/features/learning/craft-ai";
 import { createCraftScenario } from "@/features/learning/craft";
 import { getLearningPlan } from "./learning-plan";
 import { ModuleLessonExperience } from "./module-lesson-experience";
-import { moduleTwoLessons } from "@/features/learning/module-two-content";
-import { moduleThreeLessons } from "@/features/learning/module-three-content";
+import { moduleTwoLessons, moduleTwoQuizQuestions } from "@/features/learning/module-two-content";
+import { moduleThreeLessons, moduleThreeQuizQuestions } from "@/features/learning/module-three-content";
 import { LessonExperience } from "./lesson-experience";
 
 vi.mock("@/features/demo/demo-provider", () => ({ useDemo: vi.fn() }));
@@ -46,7 +46,7 @@ describe("participant learning continuity", () => {
   it("cannot submit skipped questions and keeps quiz success separate from module completion", () => {
     render(<ModuleQuiz module={1} />);
     fireEvent.click(screen.getByRole("button", { name: "Start knowledge check" }));
-    fireEvent.click(screen.getByRole("button", { name: "Question 5, not answered" }));
+    fireEvent.click(screen.getByRole("button", { name: `Question ${moduleOneQuizQuestions.length}, not answered` }));
     expect(screen.getByRole("button", { name: "Submit answers" })).toBeDisabled();
     moduleOneQuizQuestions.forEach((question, index) => {
       fireEvent.click(screen.getByRole("button", { name: `Question ${index + 1}, not answered` }));
@@ -87,8 +87,13 @@ describe("participant learning continuity", () => {
     context = { ...context, state: { ...context.state, lessonEvidence: { [lesson.id]: "I revised the classroom prompt to include an objective and a check." } } };
     render(<ModuleLessonExperience module={2} slug={lesson.id} />);
     expect(screen.getByRole("button", { name: "Complete lesson" })).toBeDisabled();
-    const correct = screen.getByRole("radio", { name: lesson.check.answer });
-    fireEvent.click(correct);
+    const questions = moduleTwoQuizQuestions.filter(q => q.lessonSlug === lesson.id);
+    questions.forEach((question, i) => {
+      fireEvent.click(screen.getByRole("button", { name: `Lesson question ${i + 1}` }));
+      question.options.filter(o => question.correctOptionIds.includes(o.id)).forEach(o => fireEvent.click(screen.getByRole(question.kind === "single" ? "radio" : "checkbox", { name: o.label })));
+      fireEvent.click(screen.getByRole("button", { name: "Check answer" }));
+      if (i < questions.length - 1) expect(screen.getByRole("button", { name: "Complete lesson" })).toBeDisabled();
+    });
     expect(screen.getByRole("button", { name: "Complete lesson" })).toBeEnabled();
   });
 
@@ -102,8 +107,8 @@ describe("participant learning continuity", () => {
 
   it("uses a native, mutually exclusive radio group for the Module 1 concept check", () => {
     render(<LessonExperience lesson={moduleOneLessons[0]} />);
-    const generation = screen.getByRole("radio", { name: "Generative AI" });
-    const search = screen.getByRole("radio", { name: "Search" });
+    const generation = screen.getByRole("radio", { name: moduleOneQuizQuestions[0].options[1].label });
+    const search = screen.getByRole("radio", { name: moduleOneQuizQuestions[0].options[0].label });
     fireEvent.click(generation);
     expect(generation).toBeChecked();
     fireEvent.click(search);
@@ -119,7 +124,11 @@ describe("participant learning continuity", () => {
       assistants: [{ id: "practice", tests: [{ id: "prepared", evidenceMode: "prepared", caseId: "T3", input: "Date missing from source", expected: "Ask for source", output: "Invented date", review: "The date is absent", verdict: "fail", createdAt: "2026-10-01" }] } as AssistantSpec],
     } };
     render(<ModuleLessonExperience module={3} slug={lesson.id} />);
-    fireEvent.click(screen.getByRole("radio", { name: lesson.check.answer }));
+    moduleThreeQuizQuestions.filter(q => q.lessonSlug === lesson.id).forEach((question, i) => {
+      fireEvent.click(screen.getByRole("button", { name: `Lesson question ${i + 1}` }));
+      question.options.filter(o => question.correctOptionIds.includes(o.id)).forEach(o => fireEvent.click(screen.getByRole(question.kind === "single" ? "radio" : "checkbox", { name: o.label })));
+      fireEvent.click(screen.getByRole("button", { name: "Check answer" }));
+    });
     expect(screen.getByRole("button", { name: "Complete lesson" })).toBeEnabled();
     expect(screen.queryByText(/Complete the linked AI Staffroom activity first/)).not.toBeInTheDocument();
   });

@@ -10,7 +10,7 @@ export class RequestError extends Error {
 }
 
 export async function requireParticipant() {
-  if (!hasPublicSupabaseEnvironment()) throw new RequestError(503, "Account services are not connected. Your guided practice remains available.");
+  if (!hasPublicSupabaseEnvironment()) throw new RequestError(503, "Account services are temporarily unavailable. Please try again shortly.");
   const client = await createClient();
   const { data, error } = await client.auth.getUser();
   if (error || !data.user) throw new RequestError(401, "Sign in to your participant account to continue.");

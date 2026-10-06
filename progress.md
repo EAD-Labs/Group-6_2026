@@ -1,12 +1,12 @@
 # PromptShala — implementation and release progress
 
-Updated 2 October 2026. The four learning modules and connected workflows below are implemented. **Production acceptance remains pending.** [The production site](https://promptshala.vercel.app) is live. Owner access is restored, an encrypted pre-change application backup is recorded, and the four missing production migrations succeeded. Synthetic production checks passed for accounts, grading, certificates, staff operations and retention.
+Updated 6 October 2026. The open pilot is deployed: public signup with immediate login, 75 questions, administrator learning analytics, removal of guided demo access and open module/chapter navigation. See [the pilot release record](docs/PILOT_RELEASE_2026-10-06.md) for the current deployment and checks. The explicitly selected first administrator has been assigned the production admin role and the managed reporting functions verified. The four learning modules and connected workflows below are implemented. **Production acceptance remains pending.** [The production site](https://promptshala.vercel.app) is live. Owner access is restored, an encrypted pre-change application backup is recorded, and the four missing production migrations succeeded. Synthetic production checks passed for accounts, grading, certificates, staff operations and retention.
 
 ## What is implemented
 
 | Area | Current code | Verification still required |
 | --- | --- | --- |
-| Learning content | 29 reviewed lessons: six foundations, seven prompting, eight assistant, eight source lessons. Original examples, concept checks, practical criteria/reflection; four retryable quizzes with 25 questions. | Client content approval, full video/caption review and teacher pilot. |
+| Learning content | 29 reviewed lessons: six foundations, seven prompting, eight assistant, eight source lessons. Original examples, concept checks, practical criteria/reflection; four retryable quizzes with 75 questions and two or three checks per chapter. | Client content approval, full video/caption review and teacher pilot. |
 | CRAFT and prompt library | Context, Role, Action, Format, Target feedback; revision/comparison; reusable templates; explicit live/rule-based source labels. | Configured provider, actual timing/failure and teacher task checks. |
 | AI Staffroom | Editable Passport/context/source pack, six role-aware challenges, expected/actual review, versioned repair/retest, synthetic rehearsal, handoff/reuse, export. | Approved live service, connected save/reload and observed teacher use. |
 | Guided Source Studio | Three fictional packs, passage/claim audit, five prepared artifact formats, revision/review and portfolio export. | Final browser/UAT evidence for current revision. Studio uses authored practice materials. |
@@ -21,9 +21,11 @@ Updated 2 October 2026. The four learning modules and connected workflows below 
 
 All 29 lessons were checked against the HLD and research syllabus. Revisions make the teacher's decision visible: what a model does, what an instruction supplies, which source supports a claim, what to revise and how to judge a classroom draft. Worked examples include fraction reasoning, evidence-based science explanations and story inference. These examples are fictional; no learner outcomes or time savings are invented.
 
-[The lesson matrix](docs/content/LESSON_REVIEW.md) records every lesson's changes and source references. Provider/education references were opened and checked. This does not claim every video was watched or an external account flow executed. [The quiz bank](docs/content/QUIZ_BANK.md) reflects the current 25 questions.
+[The lesson matrix](docs/content/LESSON_REVIEW.md) records every lesson's changes and source references. Provider/education references were opened and checked. This does not claim every video was watched or an external account flow executed. [The quiz bank](docs/content/QUIZ_BANK.md) reflects the current 75 questions.
 
 ## Evidence recorded in this work
+
+- The 6 October pilot passed lint, TypeScript, 264 tests across 41 files and the production build. Nineteen ordinary-session production checks passed. Public signup is now enabled with immediate login as explicitly approved by the client. The earlier evidence below records the previous release and its previous signup policy.
 
 - Final `pnpm check` passed: lint, TypeScript and **221 tests in 33 files**. Final production build passed with **74 generated pages/routes** in the build output. Production dependency audit reported no known vulnerabilities.
 - All **29 lessons** and **18 additional routes** were checked in Chrome at 360px, 768px and 1440px. Two tablet overview overflows were fixed and rechecked. The earlier 15px root/Inter typography is restored.
@@ -47,7 +49,7 @@ Resource expiry is 30 days and audit cleanup 90 days when maintenance runs. An i
 
 ## Remaining release work
 
-1. Complete [Gemini and email setup](docs/SERVICE_SETUP.md) and name the first verified administrator. The website and database are deployed; server credentials, canonical callbacks and cleanup secret are configured. Live Gemini and custom SMTP still require approved credentials.
+1. Complete [Gemini and email setup](docs/SERVICE_SETUP.md) and verify a fresh administrator login. The website and database are deployed; server credentials, canonical callbacks and cleanup secret are configured. The Gemini environment is configured; an observed live provider acceptance check and custom SMTP still remain.
 2. Test one approved recovery-email recipient and fresh/expired-link flows. Complete the live AI checks with fictional, consented inputs, including timing, retry, quotas and cost.
 3. Monitor the daily maintenance job: the registered schedule, authenticated manual invocation, automatic run at 09:05 India time, resource expiry and audit purge passed. Rehearse a full isolated backup restore; the encrypted application/schema backup has only passed decryption integrity.
 4. Complete the 19-case client UAT, screen-reader/current-browser checks, security review and measured 25-user load. Recorded synthetic checks are release smoke evidence, not participant acceptance.
