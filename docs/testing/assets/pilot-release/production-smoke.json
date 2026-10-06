@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-06T14:10:51.471Z",
+  "origin": "https://promptshala.vercel.app",
+  "checks": [
+    "Public signup page is available",
+    "Guided demo entry is removed",
+    "Website registration creates an immediate session",
+    "Supabase public signup is immediate",
+    "Signup metadata cannot grant admin access",
+    "Participant cannot read admin analytics",
+    "Participant progress saves in production database",
+    "Progress survives a new login session",
+    "Another user has separate progress",
+    "Cross-account progress write is rejected",
+    "Module four opens without prior completion",
+    "Page click and question timing events persist",
+    "Replayed event IDs do not duplicate analytics",
+    "Answer correctness is graded by the server",
+    "Other accounts cannot query individual activity",
+    "Browser credentials cannot call the privileged roster RPC",
+    "Cross-account telemetry writes are rejected",
+    "Cross-origin telemetry writes are rejected",
+    "Old demo cookie cannot bypass authentication"
+  ],
+  "cleanup": [
+    {
+      "deleted": true
+    },
+    {
+      "deleted": true
+    }
+  ],
+  "browser": {
+    "verifiedAt": "2026-10-06T14:15:29.226Z",
+    "passwordLogin": true,
+    "allModulesOpen": true,
+    "moduleFourQuestions": 19,
+    "chapterQuestions": 2,
+    "wrongFeedback": true,
+    "correctRetry": true,
+    "allChapterChecksComplete": true,
+    "realTrackerChecks": 3,
+    "realWrongThenCorrect": true,
+    "realSecondQuestionCorrect": true,
+    "pageViews": 1,
+    "pageActiveMs": 53275
+  }
+}

@@ -1,3 +1,5 @@
+> **6 October open pilot:** Create your own account at `/sign-up` using your email and a password of at least 12 characters. Immediate login is enabled for this pilot. Every module, chapter and knowledge check is open; completion requirements are shown separately. Each chapter has two or three practice questions. Administrators can review scores, progress, page activity and question attempts as explained in `/privacy`. Guided demo login has been removed.
+
 # PromptShala participant guide
 
 Updated 1 October 2026. This guide describes the current code. Connected accounts, live AI and certificates require the configured release environment; they have not yet been accepted in a participant pilot.

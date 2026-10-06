@@ -1,6 +1,6 @@
 # PromptShala operations and recovery
 
-Updated 2 October 2026. **Runbook; execution evidence is in [the release review](testing/RELEASE_REVIEW.md).** Production owner access is restored. Four missing migrations were applied transactionally after an encrypted application/schema backup. The trusted server credential, cleanup secret and canonical recovery origin are configured. Database RLS and privileged function grants were checked in the managed target. Production is live at https://promptshala.vercel.app with Singapore functions. Ordinary synthetic sessions verified isolation, save/reload, grading, certificates and staff operations. The registered daily maintenance job returned HTTP 200 when invoked manually; an expiry rehearsal passed. The automatic daily job also returned 200 at 09:05 India time on 2 October. Email recovery, live Gemini, isolated backup/restore rehearsal remain unverified. See [service setup](SERVICE_SETUP.md). Local app credentials remain absent.
+Updated 6 October 2026. The [open pilot release](PILOT_RELEASE_2026-10-06.md) adds public immediate-login signup and administrator learning telemetry; earlier release evidence below records the previous revision. **Runbook; execution evidence is in [the release review](testing/RELEASE_REVIEW.md).** Production owner access is restored. Four missing migrations were applied transactionally after an encrypted application/schema backup. The trusted server credential, cleanup secret and canonical recovery origin are configured. Database RLS and privileged function grants were checked in the managed target. Production is live at https://promptshala.vercel.app with Singapore functions. Ordinary synthetic sessions verified isolation, save/reload, grading, certificates and staff operations. The registered daily maintenance job returned HTTP 200 when invoked manually; an expiry rehearsal passed. The automatic daily job also returned 200 at 09:05 India time on 2 October. Email recovery, live Gemini, isolated backup/restore rehearsal remain unverified. See [service setup](SERVICE_SETUP.md). Local app credentials remain absent.
 
 ## Ownership and environment register
 
@@ -19,7 +19,7 @@ node scripts/check-environment.mjs
 pnpm dev --port 3005
 ```
 
-Fill `.env.local` through the approved local secret mechanism. Demo reading and practice work without connected credentials. For a connected release, set:
+Fill `.env.local` through the approved local secret mechanism. Connected credentials are required for participant login and account progress. The guided demo entry point and authentication bypass have been removed. For a connected release, set:
 
 | Variable | Purpose and boundary |
 | --- | --- |
@@ -42,14 +42,14 @@ Run `pnpm check` and `pnpm build` for release validation. Record command, source
 2. Record a recoverable pre-change backup and rehearse the relevant restore path in an isolated project. Keep the app version compatible with the schema during rollout.
 3. Apply pending migrations to staging first. The latest trusted-progress migration removes reliance on client-claimed quiz passes; legacy score-only attempts require retaking the quiz. Notify any affected test or real participants before enabling it. The platform migration adds cohorts, addenda, certificates, audit events, resource retention and privileged functions.
 4. Confirm RLS and grants on all participant/staff tables, owner-only resource reads, service-only privileged functions, and the auth profile-creation trigger. Do not substitute a service-role client for participant tests: doing so bypasses the boundary being tested.
-5. Provision the first approved operator through Supabase Authentication → Users. Public signup is disabled; use the programme’s invitation flow once SMTP and the recipient are approved. The authorised Supabase owner verifies its identity and UUID, then assigns `admin` in `public.profiles` through the secure database administration channel. Record who authorised and performed this bootstrap; it occurs outside the app audit flow. Verify the profile trigger prevents self-assigned role metadata from promoting other new users.
+5. Provision the first approved operator through Supabase Authentication → Users. The open pilot enables public email/password signup with immediate login; email format is validated but mailbox ownership is not confirmed. The authorised Supabase owner verifies its identity and UUID, then assigns `admin` in `public.profiles` through the secure database administration channel. Record who authorised and performed this bootstrap; it occurs outside the app audit flow. Verify the profile trigger prevents self-assigned role metadata from promoting other new users.
 6. Test two participants and each staff role through ordinary authenticated sessions. Verify the missing-service, expired-session and forbidden-role cases. Only after staging acceptance should the owner repeat the controlled production rollout.
 
 Do not use `db reset` on a live project. Do not repair migration history or remove policies merely to make a failing deployment proceed. Investigate the mismatch and retain the failure evidence.
 
 ## Authentication and deployment
 
-Set the Supabase Auth site URL and allowed redirect URLs to the intended origins and callback route. Configure the approved email provider/templates and test approved invitations, sign-in, sign-out, expired links and recovery on staging. Keep public signup disabled for the invitation-only pilot. `/account-recovery` intentionally gives a uniform email response; this does not confirm email delivery. The callback returns to `/reset-password`; a valid session and matching 12–128 character password are required. Successful reset signs the account out for a fresh sign-in.
+Set the Supabase Auth site URL and allowed redirect URLs to the intended origins and callback route. Configure the approved email provider/templates and test approved invitations, sign-in, sign-out, expired links and recovery on staging. For the 6 October open pilot, allow public signup and disable email confirmation, as approved by the client. Password recovery still requires custom SMTP for general recipients. `/account-recovery` intentionally gives a uniform email response; this does not confirm email delivery. The callback returns to `/reset-password`; a valid session and matching 12–128 character password are required. Successful reset signs the account out for a fresh sign-in.
 
 Set Vercel variables in the correct Development, Preview or Production environment and redeploy for changed variables to take effect. Public variables are build-time values. Verify the deployed origin and callback configuration after each domain change. See [Vercel environment variables](https://vercel.com/docs/environment-variables).
 
@@ -61,6 +61,7 @@ For each deployment record the revision and migration state, run health and real
 | --- | --- | --- |
 | Privately saved teacher sources/drafts | `expires_at` is 30 days from creation; updates do not renew it. Owner queries exclude expired rows. Cleanup physically deletes expired rows. | Verify daily job, deleted-row evidence and backup retention. |
 | Own-source browser draft | Account-scoped local draft expires after 30 days; participant can clear it. | Explain shared-device and exported-copy limits. |
+| Learning activity | Cleanup deletes events older than 90 days; account deletion cascades events. | Review approximate timing and verify daily retention runs. |
 | Audit events | Cleanup deletes events older than 90 days. | Verify execution and approved incident/archive needs. |
 | Accounts, progress and assistant records | Kept until account deletion or an authorised future policy; account deletion cascades dependent records. | HLD proposal of 12 months after inactivity has no automated job. Approve and implement before promising it. |
 | Certificates | Connected register supports issuance/revocation; account deletion can remove its certificate records. | HLD three-year retention is not implemented as a separate archive; resolve its interaction with deletion. |
