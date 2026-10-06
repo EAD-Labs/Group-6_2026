@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   if (!hasSameOrigin(request)) return NextResponse.json({ error: "The request origin is not allowed." }, { status: 403 });
   try {
     const access = await getAiAccess();
-    if (access.mode === "unauthenticated") return NextResponse.json({ code: "sign_in_required", error: "Sign in or open the guided demo to practise." }, { status: 401 });
+    if (access.mode === "unauthenticated") return NextResponse.json({ code: "sign_in_required", error: "Sign in to your account to practise." }, { status: 401 });
     if (access.mode === "consent_required") return NextResponse.json({ code: "consent_required", error: "Review and accept the safe-use notice, then wait for Progress synced before trying live AI practice." }, { status: 403 });
     const payload = await readJsonBody(request, 16_000);
     const prompt = typeof payload.prompt === "string" ? payload.prompt.trim() : "";

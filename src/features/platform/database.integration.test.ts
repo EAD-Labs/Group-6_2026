@@ -32,7 +32,7 @@ beforeAll(async () => {
     create role authenticated nologin;
     create role service_role nologin bypassrls;
     create schema auth;
-    create table auth.users(id uuid primary key, email text, raw_user_meta_data jsonb default '{}'::jsonb);
+    create table auth.users(id uuid primary key, email text, created_at timestamptz default now(), last_sign_in_at timestamptz, raw_user_meta_data jsonb default '{}'::jsonb);
     create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
     grant usage on schema public,auth to anon,authenticated,service_role;
     grant execute on function auth.uid() to anon,authenticated,service_role;
@@ -201,4 +201,40 @@ describe("migrated PostgreSQL permissions and transaction behavior", () => {
     expect(audit.rows.map(row=>row.action)).toEqual(["update_cohort","unenrol"]);
   });
 
+});
+
+
+describe("pilot learning activity boundaries", () => {
+  const eventId = "90000000-0000-4000-8000-000000000001";
+  const event = { id: eventId, sessionId: "90000000-0000-4000-8000-000000000002", kind: "page_time", path: "/dashboard", activeMs: 2500, occurredAt: new Date().toISOString() };
+  it("allows only service writes, deduplicates retries and isolates owner reads", async () => {
+    const write = () => asRole("service_role", "", () => db.query<{ n: number }>("select public.record_learning_events($1,$2::jsonb) as n", [ids.alice, JSON.stringify([event])]));
+    expect((await write()).rows[0].n).toBe(1); expect((await write()).rows[0].n).toBe(0);
+    await expect(asRole("authenticated", ids.alice, () => db.query("select public.record_learning_events($1,$2::jsonb)", [ids.alice, JSON.stringify([event])]))).rejects.toThrow(/permission denied/);
+    expect((await asRole("authenticated", ids.alice, () => db.query("select id from public.learning_events"))).rows).toHaveLength(1);
+    expect((await asRole("authenticated", ids.bob, () => db.query("select id from public.learning_events"))).rows).toHaveLength(0);
+    expect((await asRole("authenticated", ids.admin, () => db.query("select id from public.learning_events"))).rows).toHaveLength(0);
+  });
+  it("projects every registered user only for administrators, including users without cohort membership", async () => {
+    const query = (actor: string) => asRole("service_role", "", () => db.query<{ value: { total: number; people: { email: string; activeMs: number }[] } }>("select public.admin_learning_roster($1,'alice',0) as value", [actor]));
+    await expect(query(ids.facilitator)).rejects.toThrow(/Administrator/);
+    const report = (await query(ids.admin)).rows[0].value;
+    expect(report.total).toBe(1); expect(report.people[0].email).toBe("alice@example.test"); expect(report.people[0].activeMs).toBe(2500);
+    expect(JSON.stringify(report)).not.toContain("private");
+  });
+  it("aggregates wrong checks and active time until first correct, preserving a paginated timeline separately", async () => {
+    const sessionId = "90000000-0000-4000-8000-000000000002";
+    const base = { sessionId, attemptId: sessionId, module: 1, questionId: "m1-q1", path: "/learn/module-1/quiz", contentVersion: "test-version" };
+    const events = [
+      { ...base, id: "90000000-0000-4000-8000-000000000003", kind: "question_view", activeMs: 0, occurredAt: "2026-10-06T10:00:00Z" },
+      { ...base, id: "90000000-0000-4000-8000-000000000004", kind: "question_answer", correct: false, selectedOptions: ["a"], activeMs: 5000, occurredAt: "2026-10-06T10:00:05Z" },
+      { ...base, id: "90000000-0000-4000-8000-000000000005", kind: "question_answer", correct: true, selectedOptions: ["b"], activeMs: 3000, occurredAt: "2026-10-06T10:01:00Z" },
+      { ...base, id: "90000000-0000-4000-8000-000000000006", kind: "question_answer", correct: false, selectedOptions: ["a"], activeMs: 2000, occurredAt: "2026-10-06T10:02:00Z" },
+    ];
+    await asRole("service_role", "", () => db.query("select public.record_learning_events($1,$2::jsonb)", [ids.alice, JSON.stringify(events)]));
+    const read = (actor: string) => asRole("service_role", "", () => db.query<{ value: { questions: { wrongChecks: number; checks: number; activeToCorrectMs: number; elapsedToCorrectMs: number }[] } }>("select public.admin_learning_detail($1,$2) as value", [actor, ids.alice]));
+    await expect(read(ids.bob)).rejects.toThrow(/Administrator/);
+    const detail = (await read(ids.admin)).rows[0].value;
+    expect(detail.questions[0]).toMatchObject({ wrongChecks: 1, checks: 3, activeToCorrectMs: 8000, elapsedToCorrectMs: 60000 });
+  });
 });

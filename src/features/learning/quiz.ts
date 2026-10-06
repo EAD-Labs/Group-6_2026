@@ -9,6 +9,15 @@ export type QuizEvaluation = {
   totalQuestions: number;
 };
 
+// A saved result belongs to the question bank used at submission time.
+export function reviewSavedAttempt(questions: QuizQuestion[], attempt: {
+  answers: Record<string, string[]>; correctAnswers: number; passed: boolean; scorePercent: number;
+}): QuizEvaluation {
+  const submittedQuestions = questions.filter(question => Object.hasOwn(attempt.answers, question.id));
+  return { ...evaluateQuiz(submittedQuestions, attempt.answers), correctAnswers: attempt.correctAnswers,
+    passed: attempt.passed, scorePercent: attempt.scorePercent, totalQuestions: Object.keys(attempt.answers).length };
+}
+
 function normalizedSelection(selection: string[]) {
   return [...new Set(selection)].sort();
 }
@@ -29,7 +38,7 @@ export function evaluateQuiz(
     .map((question) => question.id);
   const correctAnswers = correctQuestionIds.length;
   const scorePercent = questions.length
-    ? Math.round((correctAnswers / questions.length) * 100)
+    ? Math.floor((correctAnswers / questions.length) * 100)
     : 0;
 
   return {

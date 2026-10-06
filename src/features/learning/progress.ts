@@ -28,7 +28,7 @@ export function calculateQuizResult(
     throw new RangeError("Pass threshold must be between 0 and 100.");
   }
 
-  const scorePercent = Math.round((correctAnswers / totalQuestions) * 100);
+  const scorePercent = Math.floor((correctAnswers / totalQuestions) * 100);
 
   return {
     correctAnswers,

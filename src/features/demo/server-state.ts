@@ -85,7 +85,7 @@ function cleanQuizAttempts(value: unknown): QuizAttempt[] {
             : new Date().toISOString(),
         correctAnswers: Math.max(
           0,
-          Math.min(10, Math.round(Number(attempt.correctAnswers) || 0)),
+          Math.min(1000, Math.round(Number(attempt.correctAnswers) || 0)),
         ),
         passed: scorePercent >= 70,
         scorePercent,

@@ -40,6 +40,11 @@ describe("calculateQuizResult", () => {
     });
   });
 
+  it("requires seventeen correct answers on the expanded twenty-three-question check", () => {
+    expect(calculateQuizResult(16, 23)).toMatchObject({ passed: false, scorePercent: 69 });
+    expect(calculateQuizResult(17, 23)).toMatchObject({ passed: true, scorePercent: 73 });
+  });
+
   it("supports a reviewed module-specific threshold", () => {
     expect(calculateQuizResult(3, 4, 75)).toMatchObject({
       passed: true,
