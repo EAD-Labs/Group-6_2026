@@ -1,11 +1,9 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { sanitizeDemoState } from "@/features/demo/server-state";
 import { assessParticipantState, assessmentBanks, AssessmentValidationError } from "@/features/demo/server-assessment";
 import { getParticipantState } from "@/features/demo/participant-persistence";
 import { getPathwayStatus } from "@/features/learning/pathway";
 import { hasPublicSupabaseEnvironment } from "@/lib/env";
-import { presentationDemoCookie } from "@/lib/supabase/proxy";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hasSameOrigin, readJsonBody, RequestValidationError } from "@/lib/server/request";
@@ -13,7 +11,6 @@ import { hasSameOrigin, readJsonBody, RequestValidationError } from "@/lib/serve
 const json = (body: unknown, status = 200) => NextResponse.json(body, { status, headers: { "Cache-Control": "private, no-store" } });
 
 async function getMode() {
-  if ((await cookies()).get(presentationDemoCookie)?.value === "active") return "demo";
   return hasPublicSupabaseEnvironment() ? "supabase" : "unavailable";
 }
 
@@ -34,7 +31,7 @@ export async function GET() {
 export async function PUT(request: Request) {
   if (!hasSameOrigin(request)) return json({ error: "The request origin is not allowed." }, 403);
   const mode = await getMode();
-  if (mode !== "supabase") return json({ mode }, mode === "demo" ? 200 : 503);
+  if (mode !== "supabase") return json({ mode }, 503);
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) return json({ mode: "unauthenticated" }, 401);

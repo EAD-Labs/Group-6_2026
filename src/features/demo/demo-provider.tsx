@@ -77,7 +77,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         setSyncStatus("demo"); setSyncError(null); cache(); return;
       }
       if (payload.mode !== "supabase" || typeof payload.participantId !== "string" || !payload.state || !Number.isSafeInteger(payload.revision)) {
-        clearIdentity(); throw new Error("Connected progress is unavailable. Sign in or open the guided demo.");
+        clearIdentity(); throw new Error("Connected progress is unavailable. Please sign in again.");
       }
       const nextScope = `participant:${payload.participantId}`;
       let cached: Pick<CachedParticipantState, "state" | "baseline" | "pending" | "conflicts"> | null = scope.current === nextScope ? { state: current.current, baseline: baseline.current, pending: pending.current, conflicts: conflicts.current } : null;
