@@ -40,26 +40,23 @@ export function calculateQuizResult(
 
 export function deriveModuleStatus({
   passedAt,
-  previousModulePassed,
   startedAt,
 }: ModuleProgressInput): ModuleStatus {
   if (passedAt) {
     return "passed";
   }
 
-  if (!previousModulePassed) {
-    return "locked";
-  }
-
   return startedAt ? "in_progress" : "available";
 }
 
-export function canStartQuiz(requiredLessons: number, completedLessons: number) {
-  return requiredLessons > 0 && completedLessons >= requiredLessons;
+export function canStartQuiz(requiredLessons?: number, completedLessons?: number) {
+  void requiredLessons; void completedLessons;
+  return true;
 }
 
-export function canUnlockNextModule(currentModulePassed: boolean) {
-  return currentModulePassed;
+export function canUnlockNextModule(currentModulePassed?: boolean) {
+  void currentModulePassed;
+  return true;
 }
 
 export function getNextAttemptNumber(previousAttemptCount: number) {
