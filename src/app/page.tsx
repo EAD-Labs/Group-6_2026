@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Icon } from "@/components/ui/icon";
-import { PendingSubmit } from "@/components/ui/pending-submit";
-import { startPresentationDemo } from "./sign-in/actions";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -28,12 +26,10 @@ export default function HomePage() {
             <h1 id="home-title">Your next lesson,<br /><em>with a little AI.</em></h1>
             <p className={styles.description}>Practical skills. Thoughtful teaching.<br />A little practice to bring the two together.</p>
             <div className={styles.actions}>
-              <Link className={styles.primary} href="/sign-in">Start learning <Icon name="arrow-right" /></Link>
-              <form action={startPresentationDemo}>
-                <PendingSubmit className={styles.demo} pendingLabel="Opening demo…">Try the demo</PendingSubmit>
-              </form>
+              <Link className={styles.primary} href="/sign-up">Start learning <Icon name="arrow-right" /></Link>
+              <Link className={styles.demo} href="/sign-in">I have an account</Link>
             </div>
-            <p className={styles.accessNote}>No account needed for the demo.</p>
+            <p className={styles.accessNote}>Create your account. All modules are open.</p>
             <ul className={styles.courseFacts} aria-label="Course at a glance">
               <li>4 modules</li>
               <li>29 lessons</li>
