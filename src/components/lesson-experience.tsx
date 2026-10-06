@@ -10,56 +10,16 @@ import { HydrationGate } from "@/components/ui/hydration-gate";
 import { Icon } from "@/components/ui/icon";
 import { PublishedContent } from "./published-content";
 import { SyncStatus } from "./sync-status";
+import { LessonKnowledgeChecks } from "./lesson-knowledge-checks";
 import { useDemo } from "@/features/demo/demo-provider";
-import { getNextLesson, moduleOneLessons, type LessonDetail } from "@/features/learning/catalog";
-
-const conceptChecks: Record<string, { answer: string; explanation: string; options: string[]; prompt: string }> = {
-  "meet-generative-ai": {
-    answer: "Generative AI",
-    explanation: "It creates new wording from your instruction. A teacher still checks scientific accuracy and suitability.",
-    options: ["Generative AI", "Search", "Rule-based automation"],
-    prompt: "A tool writes three different analogies to explain evaporation to Class 5. What is it?",
-  },
-  "review-before-use": {
-    answer: "Use a fictional learner profile without identifying details",
-    explanation: "Generalised examples protect privacy while still letting you practise the teaching task.",
-    options: ["Include a learner’s name and marks", "Use a fictional learner profile without identifying details", "Upload counselling notes"],
-    prompt: "Which request is safest to enter into a public AI tool?",
-  },
-  "useful-teacher-tasks": {
-    answer: "Draft three quiz variations for teacher review",
-    explanation: "Drafting a low-risk resource can support preparation while the teacher retains final review and classroom responsibility.",
-    options: ["Make a final disciplinary decision", "Draft three quiz variations for teacher review", "Store confidential learner records"],
-    prompt: "Which task is an appropriate first use of AI?",
-  },
-  "verify-ai-claims": {
-    answer: "Check the claim against the cited source itself",
-    explanation: "Independent verification means inspecting the source or using another reliable method, not asking the same model to reassure you.",
-    options: ["Ask the same AI whether it is sure", "Check the claim against the cited source itself", "Trust it because a citation is present"],
-    prompt: "An AI response includes a confident claim and a citation. What should you do?",
-  },
-  "choose-the-right-tool": {
-    answer: "A calculator or spreadsheet",
-    explanation: "Exact arithmetic is better handled by a deterministic calculation tool, while AI can help explain the result after it is checked.",
-    options: ["A general AI chat", "A reusable writing assistant", "A calculator or spreadsheet"],
-    prompt: "Which tool should you use first to check an exact numerical total?",
-  },
-  "responsible-use-challenge": {
-    answer: "Record the checks, edits and rejected suggestions",
-    explanation: "A responsible-use record makes the teacher's review and final judgment visible alongside the AI contribution.",
-    options: ["Keep only the polished output", "Record the checks, edits and rejected suggestions", "Upload real learner records for realism"],
-    prompt: "What evidence best demonstrates responsible classroom use?",
-  },
-};
+import { getNextLesson, moduleOneLessons, moduleOneQuizQuestions, type LessonDetail } from "@/features/learning/catalog";
 
 export function LessonExperience({ lesson }: { lesson: LessonDetail }) {
   const router = useRouter();
-  const { completeLesson, state } = useDemo();
-  const [selectedAnswer, setSelectedAnswer] = useState("");
-  const conceptCheck = conceptChecks[lesson.slug];
+  const { completeLesson, state, storageScope } = useDemo();
+  const [selectedIsCorrect, setChecksReady] = useState(false);
   const nextLesson = getNextLesson(lesson.slug);
   const completed = state.completedLessonSlugs.includes(lesson.slug);
-  const selectedIsCorrect = selectedAnswer === conceptCheck.answer;
 
   function completeAndContinue() {
     completeLesson(lesson.slug);
@@ -77,9 +37,9 @@ export function LessonExperience({ lesson }: { lesson: LessonDetail }) {
             <section id="lesson-reading" className="text-lesson" aria-labelledby="text-lesson-title"><div className="section-heading compact"><div><span className="eyebrow">Text lesson</span><h2 id="text-lesson-title">Learn the idea</h2></div><span>{lesson.durationMinutes} min read + practice</span></div><div className="text-lesson-body">{lesson.transcript.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div></section>
             <section id="lesson-key-ideas" className="lesson-sections" aria-labelledby="key-ideas-title"><span className="eyebrow">Pause and reflect</span><h2 id="key-ideas-title">Key ideas to carry forward</h2>{lesson.sections.map((section, index) => <article key={section.heading}><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{section.heading}</h3><p>{section.body}</p>{section.highlight ? <strong className="lesson-highlight">{section.highlight}</strong> : null}</div></article>)}</section>
             <section id="lesson-resources" className="lesson-resources" aria-labelledby="lesson-resources-title"><div className="section-heading compact"><div><span className="eyebrow">Watch and read</span><h2 id="lesson-resources-title">Curated resources</h2></div><span>{lesson.resources.length} selected</span></div><LearningResources resources={lesson.resources} /></section>
-            <section id="lesson-check" className="concept-check" aria-labelledby="concept-check-title"><div className="concept-check-heading"><span className="concept-icon"><Icon name="target" /></span><div><span className="eyebrow">Try it now</span><h2 id="concept-check-title">Quick concept check</h2></div></div><p>{conceptCheck.prompt}</p><fieldset className="answer-list concept-radio-group"><legend className="visually-hidden">{conceptCheck.prompt}</legend>{conceptCheck.options.map((option) => <label className={selectedAnswer === option ? "answer-option selected" : "answer-option"} key={option}><input type="radio" name={`concept-${lesson.slug}`} checked={selectedAnswer === option} onChange={() => setSelectedAnswer(option)} value={option} /><span>{option}</span></label>)}</fieldset>{selectedAnswer ? <div className={selectedIsCorrect ? "feedback-box correct" : "feedback-box supportive"} aria-live="polite"><Icon name={selectedIsCorrect ? "check" : "info"} /><div><strong>{selectedIsCorrect ? "Exactly right" : "Good attempt—look again"}</strong><p>{selectedIsCorrect ? conceptCheck.explanation : `The stronger choice is “${conceptCheck.answer}”. ${conceptCheck.explanation}`}</p></div></div> : null}</section>
+            <LessonKnowledgeChecks key={`${storageScope}:${lesson.slug}`} module={1} questions={moduleOneQuizQuestions.filter(q => q.lessonSlug === lesson.slug)} onReady={setChecksReady} />
             <PublishedContent module={1} lessonSlug={lesson.slug} />
-            <p className="lesson-completion-note" id="lesson-completion-help">{completed ? "This lesson is recorded as complete. Revisit the explanation or continue when you are ready." : selectedIsCorrect ? "Your understanding check is complete. Continue when you are ready." : "Choose the correct answer above before completing this lesson. The explanation will help you review."}</p>
+            <p className="lesson-completion-note" id="lesson-completion-help">{completed ? "This lesson is recorded as complete. Revisit the explanation or continue when you are ready." : selectedIsCorrect ? "Your understanding check is complete. Continue when you are ready." : "Complete every understanding check above before recording this lesson. The explanation will help you review."}</p>
             <div className="lesson-footer-actions"><SyncStatus /><button className="button button-primary" aria-describedby="lesson-completion-help" disabled={!completed && !selectedIsCorrect} onClick={completeAndContinue} type="button">{completed ? "Continue learning" : nextLesson ? "Complete and continue" : "Complete lesson"}<Icon name="arrow-right" /></button></div>
             <nav className="lesson-bottom-nav" aria-label="Adjacent lessons"><Link className="text-link" href="/learn/module-1"><Icon name="arrow-left" />Module overview</Link><Link className="text-link" href="/learn/module-1/quiz">Open knowledge check<Icon name="arrow-right" /></Link></nav>
           </article>
