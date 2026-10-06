@@ -1,0 +1,12 @@
+{
+  "verifiedOn": "2026-10-06",
+  "identityExplicitlySelectedByUser": true,
+  "existingAccountMatched": true,
+  "roleAfterAssignment": "admin",
+  "managedRosterSucceeded": true,
+  "rosterAccounts": 4,
+  "managedDetailSucceeded": true,
+  "pageAndQuestionReportsReturned": true,
+  "passwordChanged": false,
+  "ordinaryAdminLoginTested": false
+}

@@ -153,3 +153,14 @@
 .sync-detailed:has(.sync-conflicts) { flex-wrap: wrap; }
 .sync-conflicts section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); }
 .sync-conflicts dd { margin: 0.4rem 0 1rem; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 12rem; overflow-y: auto; }
+
+.analytics-search { display: flex; align-items: end; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; }
+.analytics-search label { display: grid; gap: .5rem; flex: 1; max-width: 32rem; }
+.analytics-search input { padding: .8rem; border: 1px solid var(--line); border-radius: .5rem; }
+.analytics-score { display: block; white-space: nowrap; }
+.analytics-modules { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 1rem; }
+.analytics-modules > div { padding: 1rem; background: var(--paper); border: 1px solid var(--line); border-radius: .6rem; }
+.analytics-modules ul { padding-left: 1rem; line-height: 1.8; }
+.analytics-detail h4 { margin: 2rem 0 1rem; font-size: 1.15rem; }
+.learning-analytics .platform-table small { font-weight: normal; overflow-wrap: anywhere; }
+.learning-analytics .platform-actions { align-items: center; }

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 import { getSafePostAuthPath } from "@/features/auth/authorization";
 import { createClient } from "@/lib/supabase/server";
-import { presentationDemoCookie } from "@/lib/supabase/proxy";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -15,7 +14,7 @@ export async function GET(request: Request) {
 
     if (!error) {
       const response = NextResponse.redirect(new URL(nextPath, url.origin));
-      response.cookies.delete(presentationDemoCookie);
+      response.cookies.delete("promptshala_presentation_demo");
       return response;
     }
   }

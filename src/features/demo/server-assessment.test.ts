@@ -33,7 +33,7 @@ describe("trusted server assessment", () => {
       state[key] = [attempt(Object.fromEntries(assessmentBanks[key].map((question) => [question.id, question.correctOptionIds])))];
     }
     const graded = assessParticipantState(state);
-    expect(graded.moduleThreeQuizAttempts[0].correctAnswers).toBe(10);
+    expect(graded.moduleThreeQuizAttempts[0].correctAnswers).toBe(assessmentBanks.moduleThreeQuizAttempts.length);
     expect(graded.moduleFourQuizAttempts[0].scorePercent).toBe(100);
   });
   it("preserves verified historical answers and content versions after a question is retired", () => {

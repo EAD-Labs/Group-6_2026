@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-10-06",
+  "project": "atqbligrqsderauzfrqi",
+  "migrationTransactionSucceeded": true,
+  "learningEventsRls": true,
+  "anonymousRead": false,
+  "authenticatedInsert": false,
+  "authenticatedAdminRosterExecute": false,
+  "serviceAdminDetailExecute": true,
+  "source": "Managed Supabase SQL editor results"
+}

@@ -63,10 +63,12 @@ describe("source-grounded practice evidence", () => {
     expect(exported).toContain("not a certificate");
   });
 
-  it("passes the curriculum knowledge check with four correct answers and gives explanations", () => {
+  it("grades the expanded source knowledge check with the same threshold", () => {
     const answers = Object.fromEntries(moduleFourQuizQuestions.map((question) => [question.id, question.correctOptionIds]));
     const oneWrong = { ...answers, [moduleFourQuizQuestions[0].id]: ["c"] };
-    expect(evaluateQuiz(moduleFourQuizQuestions, oneWrong)).toMatchObject({ scorePercent: 80, passed: true });
-    expect(evaluateQuiz(moduleFourQuizQuestions, { ...oneWrong, [moduleFourQuizQuestions[1].id]: ["a"] })).toMatchObject({ scorePercent: 60, passed: false });
+    expect(evaluateQuiz(moduleFourQuizQuestions, oneWrong)).toMatchObject({ scorePercent: 94, passed: true });
+    const failed = { ...answers };
+    moduleFourQuizQuestions.slice(0, 6).forEach(question => { failed[question.id] = []; });
+    expect(evaluateQuiz(moduleFourQuizQuestions, failed)).toMatchObject({ scorePercent: 68, passed: false });
   });
 });

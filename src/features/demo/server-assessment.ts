@@ -6,7 +6,7 @@ import { moduleThreeQuizQuestions } from "@/features/learning/module-three-conte
 import { moduleFourQuizQuestions } from "@/features/learning/module-four-content";
 import { evaluateQuiz } from "@/features/learning/quiz";
 
-export const assessmentVersion = "2026-09-30-v1";
+export const assessmentVersion = "2026-10-06-pilot-v2";
 export const assessmentBanks = {
   quizAttempts: moduleOneQuizQuestions,
   moduleTwoQuizAttempts: moduleTwoQuizQuestions,
