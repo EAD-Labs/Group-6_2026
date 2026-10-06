@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { ActivityTracker } from "@/components/activity-tracker";
 import { DemoProvider } from "@/features/demo/demo-provider";
 
 import "./globals.css";
@@ -22,7 +23,7 @@ export default function RootLayout({
         <a className="skip-link" href="#main-content">
           Skip to main content
         </a>
-        <DemoProvider>{children}</DemoProvider>
+        <DemoProvider><ActivityTracker />{children}</DemoProvider>
       </body>
     </html>
   );
