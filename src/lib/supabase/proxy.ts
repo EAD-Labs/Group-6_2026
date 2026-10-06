@@ -7,24 +7,9 @@ import {
   hasPublicSupabaseEnvironment,
 } from "@/lib/env";
 
-export const presentationDemoCookie = "promptshala_presentation_demo";
-
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
   const isProtectedRoute = requiresAuthentication(request.nextUrl.pathname);
-  const hasPresentationSession =
-    request.cookies.get(presentationDemoCookie)?.value === "active";
-
-  if (hasPresentationSession) {
-    if (isPathWithin(request.nextUrl.pathname, "/admin") || isPathWithin(request.nextUrl.pathname, "/staff")) {
-      const accessUrl = request.nextUrl.clone();
-      accessUrl.pathname = "/access-denied";
-      accessUrl.search = "";
-      return NextResponse.redirect(accessUrl);
-    }
-    return response;
-  }
-
   if (!hasPublicSupabaseEnvironment()) {
     if (!isProtectedRoute) {
       return response;

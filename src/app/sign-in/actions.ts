@@ -6,21 +6,8 @@ import type { Route } from "next";
 
 import { hasPublicSupabaseEnvironment } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
-import { presentationDemoCookie } from "@/lib/supabase/proxy";
+
 import { getSafePostAuthPath } from "@/features/auth/authorization";
-
-export async function startPresentationDemo() {
-  const cookieStore = await cookies();
-  cookieStore.set(presentationDemoCookie, "active", {
-    httpOnly: true,
-    maxAge: 60 * 60 * 8,
-    path: "/",
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-  });
-
-  redirect("/onboarding/safe-use?fresh=1");
-}
 
 export async function signIn(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim();
@@ -35,20 +22,22 @@ export async function signIn(formData: FormData) {
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    redirect("/sign-in?error=invalid");
+    redirect(error.code === "email_not_confirmed" ? "/sign-in?error=unconfirmed" : "/sign-in?error=invalid");
   }
 
-  (await cookies()).delete(presentationDemoCookie);
+  (await cookies()).delete("promptshala_presentation_demo");
 
-  redirect(getSafePostAuthPath(String(formData.get("next") ?? "")) as Route);
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", data.user.id).maybeSingle();
+  const destination = String(formData.get("next") ?? "");
+  redirect((destination === "/dashboard" && profile?.role === "admin" ? "/admin" : getSafePostAuthPath(destination)) as Route);
 }
 
 export async function signOut() {
   const cookieStore = await cookies();
-  cookieStore.delete(presentationDemoCookie);
+  cookieStore.delete("promptshala_presentation_demo");
 
   if (hasPublicSupabaseEnvironment()) {
     const supabase = await createClient();

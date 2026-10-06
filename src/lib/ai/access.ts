@@ -1,11 +1,8 @@
-import { cookies } from "next/headers";
 import { hasPublicSupabaseEnvironment } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { presentationDemoCookie } from "@/lib/supabase/proxy";
 
 export async function getAiAccess(): Promise<{ mode: "demo" | "unauthenticated" | "consent_required" | "authenticated"; participantId?: string }> {
-  if ((await cookies()).get(presentationDemoCookie)?.value === "active") return { mode: "demo" };
   if (!hasPublicSupabaseEnvironment()) return { mode: "unauthenticated" };
   const client = await createClient();
   const { data, error } = await client.auth.getUser();
