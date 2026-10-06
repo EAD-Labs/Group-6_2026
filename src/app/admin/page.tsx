@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { AdminLearningAnalytics } from "@/components/admin-learning-analytics";
 import { useCallback,useEffect,useState,type FormEvent } from "react";
 import { HydrationGate } from "@/components/ui/hydration-gate";
 import { useDemo } from "@/features/demo/demo-provider";
@@ -17,7 +18,7 @@ type Content={id:string;module_number:number;lesson_slug:string;title:string;bod
 type StaffData={role:string;name:string;cohorts:Cohort[];profiles:Person[];content:Content[];certificates:{id:string;participant_name:string;issued_at:string;revoked_at:string|null}[];audit:{id:number;action:string;resource_id:string|null;created_at:string}[];modules:{id:string;title:string;estimated_minutes:number;position:number}[]};
 const lessons=[moduleOneLessons.map(l=>({id:l.slug,title:l.title})),moduleTwoLessons,moduleThreeLessons,moduleFourLessons];
 const emptyContent={module:1,lessonSlug:lessons[0][0].id,title:"",body:""};
-type Section="overview"|"content"|"cohorts"|"people"|"certificates"|"audit"|"settings";
+type Section="analytics"|"overview"|"content"|"cohorts"|"people"|"certificates"|"audit"|"settings";
 
 function download(name:string,text:string,type="text/csv") {const url=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 
@@ -26,19 +27,21 @@ export default function AdminPage() {
   return <HydrationGate><AdminWorkspace key={storageScope} /></HydrationGate>;
 }
 function AdminWorkspace() {
-  const [data,setData]=useState<StaffData|null>(null),[section,setSection]=useState<Section>("overview"),[busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");
+  const { role } = useDemo();
+  const [data,setData]=useState<StaffData|null>(null),[section,setSection]=useState<Section>(role === "admin" ? "analytics" : "overview"),[busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");
   const [draft,setDraft]=useState(emptyContent),[preview,setPreview]=useState(false);
   const load=useCallback(async()=>{const r=await fetch("/api/admin",{cache:"no-store"});const p=await r.json();if(!r.ok)throw new Error(p.error);setData(p);},[]);
   useEffect(()=>{const controller=new AbortController();fetch("/api/admin",{cache:"no-store",signal:controller.signal}).then(async response=>{const payload=await response.json();if(!response.ok)throw new Error(payload.error??"The staff workspace is unavailable.");setData(payload);}).catch(error=>{if(error.name!=="AbortError")setError(error.message);});return()=>controller.abort();},[]);
   async function act(action:string,payload:Record<string,unknown>,success:string) {setBusy(true);setError("");setMessage("");try{const r=await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,payload})});const p=await r.json();if(!r.ok)throw new Error(p.error);await load();setMessage(success);}catch(e){setError(e instanceof Error?e.message:"Please try again.");}finally{setBusy(false);}}
   function form(event:FormEvent<HTMLFormElement>,action:string,success:string) {event.preventDefault();void act(action,Object.fromEntries(new FormData(event.currentTarget)),success);}
   const admin=data?.role==="admin";
-  const sections: {id:Section;label:string}[]=[{id:"overview",label:"Cohort insights"},{id:"content",label:"Content studio"},...(admin?[{id:"cohorts" as const,label:"Cohorts"},{id:"people" as const,label:"People & roles"},{id:"certificates" as const,label:"Certificates"},{id:"audit" as const,label:"Activity log"},{id:"settings" as const,label:"Course settings"}]:[])];
-  return <AppShell active="staff"><div className="platform-page" aria-busy={busy}><header className="page-heading"><div><span className="eyebrow">Programme workspace</span><h1>Good teaching needs good support.</h1><p>{data?`Welcome, ${data.name}. Manage the course and see where your cohort needs a hand.`:"Checking your staff access…"}</p></div></header>
+  const sections: {id:Section;label:string}[]=[...(admin?[{id:"analytics" as const,label:"All users & activity"}]:[]),{id:"overview",label:"Cohort insights"},{id:"content",label:"Content studio"},...(admin?[{id:"cohorts" as const,label:"Cohorts"},{id:"people" as const,label:"People & roles"},{id:"certificates" as const,label:"Certificates"},{id:"audit" as const,label:"Activity log"},{id:"settings" as const,label:"Course settings"}]:[])];
+  return <AppShell active="staff"><div className="platform-page" aria-busy={busy}><header className="page-heading"><div><span className="eyebrow">Programme workspace</span><h1>Good teaching needs good support.</h1><p>{data?`Welcome, ${data.name}. Review learning progress and support your participants.`:"Checking your staff access…"}</p></div></header>
     {error?<div className="platform-message error" role="alert"><p>{error}</p><button className="button button-secondary" onClick={()=>{setError("");load().catch(e=>setError(e.message));}} disabled={busy}>Try again</button> <Link className="text-link" href="/sign-in">Sign in with a staff account</Link></div>:null}
     {message?<p className="platform-message" role="status">{message}</p>:null}
     {!data&&!error?<div className="platform-skeleton" role="status" aria-label="Loading staff workspace"><span className="visually-hidden">Loading staff workspace…</span></div>:null}
     {data?<><nav className="platform-tabs" aria-label="Programme sections">{sections.map(s=><button key={s.id} aria-current={section===s.id?"page":undefined} onClick={()=>setSection(s.id)}>{s.label}</button>)}</nav>
+    {section==="analytics"?(admin?<AdminLearningAnalytics />:data.role!=="admin"?<p>Select a staff section to begin.</p>:null):null}
     {section==="overview"?<section><div className="section-heading"><div><h2>Cohort insights</h2><p>Learning totals and question patterns for your assigned cohorts. Rosters show names and account IDs; private prompts, sources and individual quiz answers are never shown here.</p></div></div>{data.cohorts.length?data.cohorts.map(c=><article className="platform-panel" key={c.id}>
       <div className="section-heading"><div><span className="eyebrow">{c.status}</span><h3>{c.title}</h3><p>{c.report.participants} participants · {c.report.completed} completed the whole course</p></div><button className="button button-secondary" onClick={()=>download(`PromptShala-cohort-${c.id}.csv`,reportCsv(c.title,c.report))}>Export summary</button></div>
       <div className="table-scroll"><table className="platform-table"><caption>Module completion for {c.title}</caption><thead><tr><th>Module</th><th>Passed</th><th>Started</th><th>Mean best quiz score</th></tr></thead><tbody>{c.report.modules.map(m=><tr key={m.module}><th scope="row">Module {m.module}</th><td>{m.passed} / {c.report.participants}</td><td>{m.started}</td><td>{m.meanScore===null?"No attempts":`${m.meanScore}%`}</td></tr>)}</tbody></table></div>
