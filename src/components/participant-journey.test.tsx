@@ -67,19 +67,19 @@ describe("participant learning continuity", () => {
     }));
     const first = render(<CraftPractice />);
     const original = "Act as a teacher. Create three questions for class 7 evaporation, in a numbered list.";
-    fireEvent.change(screen.getByRole("textbox", { name: /Prompt to analyse/ }), { target: { value: original } });
-    fireEvent.click(screen.getByRole("button", { name: /Score my CRAFT prompt/ }));
+    fireEvent.change(screen.getByRole("textbox", { name: /Your instructions for AI/ }), { target: { value: original } });
+    fireEvent.click(screen.getByRole("button", { name: /Check my prompt/ }));
     await waitFor(() => expect(context.updateState).toHaveBeenCalledTimes(1));
-    expect(screen.getByRole("textbox", { name: /Prompt to analyse/ })).toHaveValue(original);
+    expect(screen.getByRole("textbox", { name: /Your instructions for AI/ })).toHaveValue(original);
     const revised = `${original} Include an answer key and check the science against approved notes.`;
-    fireEvent.change(screen.getByRole("textbox", { name: /Prompt to analyse/ }), { target: { value: revised } });
-    fireEvent.click(screen.getByRole("button", { name: /Score my CRAFT prompt/ }));
+    fireEvent.change(screen.getByRole("textbox", { name: /Your instructions for AI/ }), { target: { value: revised } });
+    fireEvent.click(screen.getByRole("button", { name: /Check my prompt/ }));
     await waitFor(() => expect(screen.getByRole("heading", { name: "Your two latest attempts" })).toBeVisible());
     expect(screen.getByText(original)).toBeVisible();
     expect(screen.getByText(revised, { selector: "pre" })).toBeVisible();
     first.unmount();
     render(<CraftPractice />);
-    expect(screen.getByRole("textbox", { name: /Prompt to analyse/ })).toHaveValue(revised);
+    expect(screen.getByRole("textbox", { name: /Your instructions for AI/ })).toHaveValue(revised);
   });
 
   it("requires Module 2 understanding checks even when a reflection is already saved", () => {

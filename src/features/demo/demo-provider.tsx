@@ -5,9 +5,10 @@ import { type AiFamiliarity, type DemoState, initialDemoState, loadDemoState, ty
 import { mergeParticipantStates, readScopedState, writeScopedState, resolveAssistantConflict, type AssistantMergeConflict, type CachedParticipantState } from "./scoped-state";
 import type { AppRole } from "@/features/auth/authorization";
 import { usePathname } from "next/navigation";
+import type { AiExperience } from "./ai-experience";
 
 type ProfileInput = { displayName: string; institution: string; primarySubject: string; teachingLevel: TeachingLevel; yearsTeaching: string };
-type GoalsInput = { aiFamiliarity: AiFamiliarity; goals: string[] };
+type GoalsInput = AiExperience & { aiFamiliarity: AiFamiliarity; goals: string[] };
 export type SyncStatus = "checking" | "saved" | "saving" | "offline" | "error" | "demo" | "unauthenticated" | "conflict";
 type DemoContextValue = {
   hydrated: boolean; isPresentationDemo: boolean; state: DemoState;

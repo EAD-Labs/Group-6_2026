@@ -15,6 +15,9 @@ describe("presentation demo state", () => {
     expect(state.moduleFourCompletedLessonIds).toEqual([]);
     expect(state.moduleFourQuizAttempts).toEqual([]);
     expect(state.sourcePortfolio).toEqual(initialDemoState.sourcePortfolio);
+    expect(state.aiToolsUsed).toEqual([]);
+    expect(state.aiUseFrequency).toBe("Prefer not to say");
+    expect(state.currentAiUse).toBe("");
   });
   it("returns a safe initial state when storage is empty", () => {
     expect(loadDemoState({ getItem: () => null })).toEqual(initialDemoState);

@@ -1,28 +1,20 @@
 import type { Metadata } from "next";
+import { AppShell } from "@/components/app-shell";
+import { HydrationGate } from "@/components/ui/hydration-gate";
+import { GeminiConnection } from "@/components/gemini-connection";
 
 export const metadata: Metadata = {
-  title: "AI evaluation",
+  title: "Gemini connection",
 };
 
 export default function ApiKeyPage() {
   return (
-    <main className="page-shell narrow-shell">
-      <span className="eyebrow">AI practice privacy</span>
-      <h1>Your browser never receives the evaluator key</h1>
-      <p>
-        Module 1 does not need AI. The CRAFT practice sends a prompt to a
-        restricted server-side evaluator only after the participant selects
-        Score my CRAFT prompt.
-      </p>
-      <div className="privacy-notice" role="note">
-        <strong>Current pilot safeguards</strong>
-        <p>
-          The CRAFT evaluation service does not store raw prompt text. Your browser keeps a private account-scoped draft and recent comparison feedback; clear these in Profile. The server records only a one-way
-          fingerprint, rubric scores, evaluator source and safety flags for an
-          authenticated participant. A transparent local CRAFT check remains
-          available if the evaluator is unavailable.
-        </p>
-      </div>
-    </main>
+    <HydrationGate><AppShell active="profile"><div className="page-shell narrow-shell">
+      <span className="eyebrow">Optional setting</span>
+      <h1>Your Gemini connection</h1>
+      <p>Choose how you connect to AI for prompt feedback, assistant tests and classroom drafts.</p>
+      <GeminiConnection />
+      <div className="privacy-notice" role="note"><strong>What happens when you check a prompt?</strong><p>Your task, prompt and feedback are saved privately to your account so you can return to them. Live AI requests send only the material needed for that task to Gemini. Always use fictional examples and review the result before classroom use.</p></div>
+    </div></AppShell></HydrationGate>
   );
 }

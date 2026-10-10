@@ -1,9 +1,10 @@
 import { emptySourcePortfolio, sanitizeSourcePortfolio, type SourcePortfolio } from "@/features/learning/source-studio";
+import { emptyAiExperience, sanitizeAiExperience, type AiExperience } from "./ai-experience";
 
 export const demoStorageKey = "promptshala:presentation-state:v1";
 
 export type TeachingLevel = "Classes 5–7" | "Classes 8–10" | "Both";
-export type AiFamiliarity = "New to AI" | "Tried it a few times" | "Use it sometimes";
+export type AiFamiliarity = "New to AI" | "Tried it a few times" | "Use it sometimes" | "Use it regularly";
 
 export type QuizAttempt = {
   id?: string;
@@ -78,7 +79,7 @@ export type PromptTemplate = {
   transferNote: string;
 };
 
-export type DemoState = {
+export type DemoState = AiExperience & {
   assistants: AssistantSpec[];
   craftPracticeCount: number;
   promptLibrary: PromptTemplate[];
@@ -108,6 +109,7 @@ export type DemoState = {
 };
 
 export const initialDemoState: DemoState = {
+  ...emptyAiExperience,
   assistants: [],
   craftPracticeCount: 0,
   promptLibrary: [],
@@ -148,6 +150,7 @@ export function loadDemoState(storage: Pick<Storage, "getItem">): DemoState {
     return {
       ...initialDemoState,
       ...parsedValue,
+      ...sanitizeAiExperience(parsedValue),
       assistants: Array.isArray(parsedValue.assistants) ? parsedValue.assistants : [],
       craftPracticeCount: Math.max(0, Math.min(1000, Number(parsedValue.craftPracticeCount) || 0)),
       promptLibrary: Array.isArray(parsedValue.promptLibrary) ? parsedValue.promptLibrary : [],

@@ -4,7 +4,7 @@ PromptShala helps beginner primary-school teachers understand AI, write classroo
 
 ## Current implementation
 
-The deployed application contains four learning modules with **29 lessons**, four retryable quizzes (75 questions), with two or three understanding checks in each chapter, CRAFT practice and prompt library, AI Staffroom and guided Source Studio. All modules are accessible from the start; assessed completion separately requires lessons, quizzes and applicable practical evidence. Administrator reports include every account’s progress, scores, page activity and question retry timing. The guided demo login has been removed. See the [pilot release record](docs/PILOT_RELEASE_2026-10-06.md) and the [29-lesson review matrix](docs/content/LESSON_REVIEW.md).
+The deployed application contains four learning modules with **29 lessons**, four retryable quizzes (75 questions), with two or three understanding checks in each chapter, CRAFT practice and prompt library, guided teaching helpers in the AI Staffroom and guided Source Studio. All modules are accessible from the start; assessed completion separately requires lessons, quizzes and applicable practical evidence. Administrator reports include every account’s progress, scores, page activity and question retry timing. The guided demo login has been removed. See the [pilot release record](docs/PILOT_RELEASE_2026-10-06.md) and the [29-lesson review matrix](docs/content/LESSON_REVIEW.md).
 
 Connected-service code now includes trusted progress saving, server-validated quiz answers, account-scoped recovery, optional Gemini calls, a separate own-source text transformation workspace, private resource expiry/deletion, certificate PDF/verification, staff roles, lesson addenda, cohort reporting, account export/deletion and retention maintenance. The [participant guide](docs/PARTICIPANT_GUIDE.md) and [admin guide](docs/ADMIN_GUIDE.md) explain the workflows and limits.
 
@@ -21,7 +21,7 @@ node scripts/check-environment.mjs
 pnpm dev --port 3005
 ```
 
-Public email/password signup is available for the open pilot; accounts require connected Supabase services. For connected accounts, configure the public Supabase URL/publishable key and server-only service key, apply migrations to the intended environment and verify isolation. Live AI additionally requires an approved server-side Gemini configuration. Never commit secrets. The environment checker tests presence only; `--strict` fails when required settings are missing.
+Public email/password signup is available for the open pilot; accounts require connected Supabase services. For connected accounts, configure the public Supabase URL/publishable key and server-only service key, apply migrations to the intended environment and verify isolation. Live AI can use the course’s server-side Gemini configuration or an optional participant key held only in the open tab. The latest migrations add AI-use onboarding answers and private CRAFT task/prompt/feedback history; apply them before releasing these features. Never commit secrets. The environment checker tests presence only; `--strict` fails when required settings are missing.
 
 ```sh
 pnpm check
