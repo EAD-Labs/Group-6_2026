@@ -29,7 +29,7 @@
 - participant A cannot read or modify participant B records;
 - participants cannot read `quiz_answer_keys`;
 - profile insert and update cannot set the `role`;
-- authenticated prompt-attempt history excludes raw prompt text; and
+- authenticated prompt-attempt history saves submitted text privately, excludes other participants/staff, and is included in account export/deletion; and
 - administrators receive only the approved elevated access.
 
 ## AI integration tests

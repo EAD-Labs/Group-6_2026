@@ -33,7 +33,7 @@ describe("participant access without prerequisites", () => {
 
   it("opens CRAFT practice for a participant with no completed lessons", () => {
     render(<CraftPracticePage />);
-    expect(screen.getByRole("heading", { level: 1, name: "CRAFT practice lab" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "Ask AI more clearly" })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /What should this prompt help you do/ })).toBeEnabled();
     expect(screen.queryByText("Complete Module 1 first")).toBeNull();
   });
@@ -43,8 +43,8 @@ describe("participant access without prerequisites", () => {
     expect(overview.container.querySelector('a[href="/learn/module-4/lessons/source-to-classroom-capstone"]')).not.toBeNull();
     overview.unmount();
     render(<SourceStudio />);
-    expect(screen.getByRole("heading", { level: 1, name: "Source Studio" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Check claim 1" })).toBeEnabled();
+    expect(screen.getByRole("heading", { level: 1, name: "Turn trusted notes into a teaching resource." })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Next: check the facts" })).toBeEnabled();
   });
 
   it.each([2, 3, 4] as const)("opens a later Module %s chapter directly", (module) => {
