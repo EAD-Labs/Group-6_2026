@@ -1,40 +1,32 @@
 # AI Credential and Prompt Data Handling
 
-## Current decision
+## Optional personal Gemini connection
 
-Module 1 does not need AI. Module 2 prompt practice uses one restricted server-side Gemini credential for the controlled prototype. Participants do not enter, view or store an API key.
+Participants can add their own Gemini API key at `/settings/api-key`. The course's `GEMINI_API_KEY` remains the default when configured. Module 1 and the checklist/source-based fallbacks do not require an AI key.
 
-The server reads `GEMINI_API_KEY` only from the deployment environment. The variable must never use a `NEXT_PUBLIC_` prefix and must never appear in source control, screenshots, Jira, logs or support messages.
+A personal key stays in React memory in the current open tab. It is never written to localStorage, sessionStorage, cookies, the participant state or Supabase. Refreshing, signing out, or changing the signed-in participant removes it. The input is masked and clears immediately after connecting. The setting means the key is ready for the next request, not that Google has validated it.
 
-## Prompt data flow
+CRAFT checks, assistant tests and optional source transformations send the personal key in the `x-promptshala-gemini-key` request header. The same-origin server route verifies the signed-in identity, saved safe-use acknowledgement, input limits and shared account rate budget before forwarding the credential to Google's fixed Gemini endpoint. A supplied personal key takes precedence over the deployment key. Provider errors use generic user-facing recovery text and never include the key or Google's private error payload.
 
-1. The browser sends the selected scenario and prompt text only after the participant selects **Score my CRAFT prompt**.
-2. The server validates the scenario, prompt length and request rate.
-3. Gemini returns a structured evaluation with five 0–3 dimension scores.
-4. PromptShala validates the response and calculates the total itself.
-5. If the evaluator fails, PromptShala returns the deterministic CRAFT fallback.
-6. For an authenticated participant, Supabase receives only a SHA-256 prompt fingerprint, scores, model/source and safety flags. Raw prompt text is not persisted.
+The deployment credential reads `GEMINI_API_KEY` only on the server and must never have a `NEXT_PUBLIC_` prefix. Neither credential belongs in source control, screenshots, logs, support messages, or analytics. Google's account limits and any usage charges apply to a participant's personal key.
 
-## Required communication
+## Submitted CRAFT prompts
 
-Display these points before live AI practice:
+1. The browser sends a task and prompt only when the participant chooses **Check my prompt**.
+2. The server validates both fields and chooses live Gemini feedback when an AI connection is available; otherwise it uses the course's transparent CRAFT checklist.
+3. The validated task text, prompt text and feedback are saved to `craft_prompt_attempts`, together with fingerprints, scores, source/model and safety flags, under the authenticated participant's ID.
+4. The response reports `saved: true` only when the database confirms the write. When saving fails, feedback remains usable and the interface says that the prompt was not saved to the account.
+5. `/api/craft/history` returns the account's 20 most recent saved prompts for viewing and reuse. Owner-only row-level security excludes other participants and staff. Only the trusted server can insert checked records.
+6. Account export includes every saved CRAFT record, and account deletion removes these records through the existing foreign-key cascade. Device drafts remain separately clearable in the profile.
 
-> Do not enter student names, marks, contact details or confidential school information. Your prompt is sent for evaluation only when you select Score. PromptShala does not store the raw prompt. Always review AI-assisted feedback and classroom drafts.
+Old fingerprint-only history retains null text. The new migration does not recreate previously submitted prompts.
 
-## Security controls
+## Privacy communication
 
-- Keep provider calls in server-only code.
-- Limit prompts to 2,500 characters and throttle repeated requests.
-- Validate model output against the expected CRAFT structure.
-- Calculate totals in application code rather than trusting a model-supplied total.
-- Keep the fallback available when the provider times out or returns invalid output.
-- Store no raw prompt, generated answer or evaluator credential in Supabase.
-- Rotate the pilot credential if it appears outside the approved environment.
+Before a check, participants see that the task, prompt and feedback will be saved privately. They must use fictional examples and keep student names, marks, contact details and confidential school information out of the tools. Every AI-assisted classroom result needs teacher review. Saved learning-record retention beyond the pilot remains governed by the programme's declared policy; resources and activity events keep their existing expiry schedules.
 
-## Before external pilot use
+## Service setup and validation
 
-- move the in-memory rate limit to shared infrastructure;
-- verify prompt-retention settings and provider terms;
-- execute two-participant RLS isolation tests;
-- add production monitoring that excludes prompt text; and
-- approve privacy and acceptable-use wording with the client.
+Apply `202610100002_private_craft_prompts.sql` before enabling the updated prompt practice against a live database. No production migration is executed by the redesign task. Without that schema, a check still returns feedback and clearly reports that account saving failed; history/export report service unavailability.
+
+The existing shared `consume_ai_rate_limit` service remains enforced for both course keys and personal keys. Automated tests cover in-memory key removal, key overriding and validation, database save failure reporting, owner/staff isolation, server-only writes, retrieval/export and account-deletion cascades. Verify the deployed TLS connection, provider retention policy, database migration and two-account behavior before inviting a cohort.

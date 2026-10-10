@@ -39,8 +39,8 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
       <main className="auth-layout" id="main-content">
         <section className="auth-story" aria-labelledby="sign-in-title">
           <span className="eyebrow">Welcome back</span>
-          <h1 id="sign-in-title">A practical place to learn AI for teaching.</h1>
-          <p>Short activities. Classroom examples. Clear feedback. Your professional judgment stays in control.</p>
+          <h1 id="sign-in-title">A little more confidence. A little less preparation.</h1>
+          <p>Learn to plan lessons, make quizzes, and explain topics with AI. Pick up where you left off.</p>
           <blockquote>
             “I want to save preparation time without sending unverified content to my learners.”
             <cite>A fictional teacher scenario used in this course</cite>
@@ -49,14 +49,14 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
         <section className="auth-card" aria-label="Participant sign in">
           <div className="auth-card-heading">
             <span className="brand-mark" aria-hidden="true">प</span>
-            <div><h2>Continue learning</h2><p>Sign in with your email and password.</p></div>
+            <div><h2>Welcome back</h2><p>Sign in with your email and password.</p></div>
           </div>
           {passwordUpdated === "1" ? <p className="platform-message" role="status">Password updated. Sign in with your new password.</p> : deleted === "1" ? <p className="platform-message" role="status">Your account and learning data have been deleted.</p> : null}
           {errorMessage ? <p id="sign-in-error" className="error-message" role="alert"><Icon name="info" />{errorMessage}</p> : null}
           <form action={signIn} className="form-stack" aria-describedby={errorMessage ? "sign-in-error" : undefined}>
             <input type="hidden" name="next" value={getSafePostAuthPath(next ?? null)} />
-            <label>Email address<input autoComplete="email" name="email" placeholder="teacher@school.edu" required type="email" /></label>
-            <label>Password<input autoComplete="current-password" minLength={8} name="password" placeholder="At least 8 characters" required type="password" /></label>
+            <label>Email address<input autoComplete="email" name="email" placeholder="you@example.com" required type="email" /></label>
+            <label>Password<input autoComplete="current-password" minLength={8} name="password" placeholder="Your password" required type="password" /></label>
             <PendingSubmit pendingLabel="Signing in…">Sign in</PendingSubmit>
           </form>
           <Link className="text-link" href="/account-recovery">Forgot your password?</Link>

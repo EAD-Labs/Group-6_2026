@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ access: vi.fn(), budget: vi.fn() }));
+const mocks = vi.hoisted(() => ({ access: vi.fn(), budget: vi.fn(), configured: true }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/ai/access", () => ({ getAiAccess: mocks.access, consumeAiBudget: mocks.budget }));
-vi.mock("@/lib/env", () => ({ getGeminiEnvironment: () => ({ apiKey: "test-only", model: "test-model" }), hasGeminiEnvironment: () => true, hasPublicSupabaseEnvironment: () => true }));
+vi.mock("@/lib/env", () => ({ getGeminiEnvironment: (key?: string) => ({ apiKey: key ?? "test-only", model: "test-model" }), hasGeminiEnvironment: () => mocks.configured, hasPublicSupabaseEnvironment: () => true }));
 import { POST } from "./route";
 const input = { title: "Fictional science notes", audience: "Class 6", objective: "Explain how evaporation changes water.", source: "Water can change from liquid into water vapour. This fictional teacher-authored passage supports a simple classroom observation and invites careful comparison.", format: "summary", permission: "own", safe: true };
 const request = (body: Record<string, unknown>) => new Request("https://example.test/api/transform", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...input, ...body }) });
 const provider = vi.fn();
-beforeEach(() => { vi.clearAllMocks(); vi.stubGlobal("fetch", provider); mocks.budget.mockResolvedValue(true); });
+beforeEach(() => { vi.clearAllMocks(); mocks.configured = true; vi.stubGlobal("fetch", provider); mocks.budget.mockResolvedValue(true); });
 afterEach(() => vi.unstubAllGlobals());
 describe("source transformation privacy and recovery", () => {
   it.each(["demo", "consent_required"])("never sends a source for %s sessions, even if live AI is requested", async (mode) => {
@@ -34,5 +34,13 @@ describe("source transformation privacy and recovery", () => {
     mocks.access.mockResolvedValue({ mode: "authenticated", participantId: "alice" });
     provider.mockResolvedValue(new Response(JSON.stringify({ steps: [{ type: "model_output", content: [{ type: "text", text: "An invented claim [S999]." }] }] }), { status: 200 }));
     expect((await (await POST(request({ useAi: true }))).json()).source).toBe("extractive");
+  });
+  it("uses a personal key for an explicit live request while preserving the account quota", async () => {
+    mocks.configured = false; mocks.access.mockResolvedValue({ mode: "authenticated", participantId: "alice" });
+    const submitted = request({ useAi: true }); submitted.headers.set("x-promptshala-gemini-key", "private_gemini_key_for_testing");
+    provider.mockResolvedValue(new Response(JSON.stringify({ steps: [{ type: "model_output", content: [{ type: "text", text: "Water may become vapour [S1]." }] }] }), { status: 200 }));
+    expect((await (await POST(submitted)).json()).source).toBe("gemini");
+    expect(provider).toHaveBeenCalledWith("https://generativelanguage.googleapis.com/v1beta/interactions", expect.objectContaining({ headers: expect.objectContaining({ "x-goog-api-key": "private_gemini_key_for_testing" }) }));
+    expect(mocks.budget).toHaveBeenCalledWith("alice", "transform");
   });
 });

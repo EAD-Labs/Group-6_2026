@@ -46,3 +46,9 @@ Supabase's default SMTP only sends to project-team addresses and is intended for
 Provide the intended administrator's email address, without a password. The intended administrator creates their own account at `/sign-up`; the authorised Supabase owner verifies that specifically approved email and UUID. Only then should the owner assign the `admin` role through the trusted database administration channel and test ordinary sign-in. Sending an invitation requires approval for that recipient. User-supplied profile metadata cannot grant staff permissions.
 
 The website is deployed and its synthetic account checks passed. An observed live Gemini acceptance check, external email delivery and the first real administrator remain separate setup steps. Client content approval, complete UAT, the isolated restore rehearsal and the teacher pilot remain in [the release plan](../progress.md).
+
+## October 10 redesign: saved CRAFT prompts
+
+Apply `202610100002_private_craft_prompts.sql` with the other migrations before running the updated UI against Supabase. It adds private submitted task/prompt/feedback fields and restricts CRAFT reads to the owner and writes to the trusted server. Old attempts retain null text. Account exports include CRAFT history; deleting an account cascades to its CRAFT records.
+
+The optional Gemini connection setting accepts a personal key in the current tab only; it is never saved to database or browser storage. `GEMINI_API_KEY` remains the optional course default. Both connection types use the existing consent checks and shared account request limits.

@@ -155,6 +155,20 @@ describe("migrated PostgreSQL permissions and transaction behavior", () => {
     expect((await take(ids.bob)).rows[0].allowed).toBe(true);
     await expect(asRole("authenticated", ids.alice, () => db.query("select public.consume_ai_rate_limit($1,'assistant',1000)", [ids.alice]))).rejects.toThrow(/permission denied/);
   });
+  it("stores checked CRAFT text privately, blocks forged feedback, and cascades account deletion", async () => {
+    const participant = "10000000-0000-4000-8000-000000000098";
+    await db.query("insert into auth.users(id,email) values($1,'craft-owner@example.test')", [participant]);
+    const insert = (owner: string) => db.query<{ id: string }>(
+      "insert into public.craft_prompt_attempts(participant_id,scenario_id,task_source,task_fingerprint,prompt_fingerprint,task_text,prompt_text,evaluation,dimension_scores,overall_score,score_percent,evaluation_source,model) values($1,'custom','custom',repeat('a',64),repeat('b',64),'Plan a fictional lesson','Write a lesson plan for Class 6.', '{\"summary\":\"Private feedback\"}', '{}',10,67,'rule-based','checklist') returning id", [owner]);
+    const record = (await asRole("service_role", "", () => insert(participant))).rows[0];
+    const read = (owner: string) => asRole("authenticated", owner, () => db.query<{ task_text: string; prompt_text: string }>("select task_text,prompt_text from public.craft_prompt_attempts where id=$1", [record.id]));
+    expect((await read(participant)).rows).toEqual([{ task_text: "Plan a fictional lesson", prompt_text: "Write a lesson plan for Class 6." }]);
+    for (const other of [ids.alice, ids.bob, ids.admin, ids.facilitator]) expect((await read(other)).rows).toHaveLength(0);
+    await expect(asRole("authenticated", participant, () => insert(participant))).rejects.toThrow(/permission denied/);
+    await expect(asRole("anon", "", () => db.query("select * from public.craft_prompt_attempts"))).rejects.toThrow(/permission denied/);
+    await db.query("delete from auth.users where id=$1", [participant]);
+    expect((await db.query("select id from public.craft_prompt_attempts where id=$1", [record.id])).rows).toHaveLength(0);
+  });
   it("removes owned resources, progress and private snapshots when an account is deleted", async () => {
     const temporary = "10000000-0000-4000-8000-000000000099";
     await db.query("insert into auth.users(id,email) values($1,'temporary@example.test')", [temporary]);
