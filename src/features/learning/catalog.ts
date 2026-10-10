@@ -39,39 +39,39 @@ export type QuizQuestion = {
 export const learningModules: LearningModule[] = [
   {
     description:
-      "Understand what generative AI can do and use a safe teacher-review process.",
+      "Discover what AI can help with, spot mistakes, and check its work before using it.",
     estimatedMinutes: 180,
     id: "00000000-0000-4000-8000-000000000001",
     position: 1,
     slug: "module-1",
-    title: "AI Foundations and Responsible Use",
+    title: "Understand AI",
   },
   {
     description:
-      "Turn classroom needs into clear prompts using the CRAFT framework.",
+      "Practise asking AI for lesson plans, quizzes, and explanations. Get feedback and save useful requests.",
     estimatedMinutes: 240,
     id: "00000000-0000-4000-8000-000000000002",
     position: 2,
     slug: "module-2",
-    title: "Classroom Prompt Writing",
+    title: "Write better AI requests",
   },
   {
     description:
-      "Convert a strong prompt into a reusable assistant for recurring teacher tasks.",
+      "Save instructions for teaching tasks you do often. Try them, improve them, and use them again.",
     estimatedMinutes: 360,
     id: "00000000-0000-4000-8000-000000000003",
     position: 3,
     slug: "module-3",
-    title: "Reusable Teacher Assistants",
+    title: "Create a teaching helper",
   },
   {
     description:
-      "Use teacher-owned sources to build grounded worksheets, quizzes and slide outlines.",
+      "Use your lesson notes to make worksheets and quizzes, then check each draft before class.",
     estimatedMinutes: 260,
     id: "00000000-0000-4000-8000-000000000004",
     position: 4,
     slug: "module-4",
-    title: "Working with Teacher-Owned Sources",
+    title: "Make resources from your material",
   },
 ];
 

@@ -11,19 +11,19 @@ import { useDemo } from "@/features/demo/demo-provider";
 
 const safetyPrinciples = [
   {
-    description: "Use fictional or general examples—never names, marks, health information or contact details.",
+    description: "Use made-up examples. Leave out student names, marks, phone numbers and other personal details.",
     icon: "shield" as const,
-    title: "Protect student privacy",
+    title: "Keep student details private",
   },
   {
-    description: "AI can sound certain while being wrong. Verify important claims with trusted curriculum sources.",
+    description: "AI can make mistakes. Check facts and answers against your textbook before using them in class.",
     icon: "info" as const,
-    title: "Check facts and context",
+    title: "Check what AI writes",
   },
   {
-    description: "You review, adapt and decide what reaches learners. AI remains a drafting assistant.",
+    description: "Use AI to get a first draft. Read it, make changes and decide what is right for your students.",
     icon: "user" as const,
-    title: "Keep the teacher in control",
+    title: "You make the final decision",
   },
 ];
 
@@ -55,9 +55,9 @@ function SafeUseForm() {
     <HydrationGate>
       <OnboardingShell currentStep={1}>
         <section className="onboarding-card" aria-labelledby="safe-use-title">
-          <span className="eyebrow">Start safely</span>
-          <h1 id="safe-use-title">Welcome to PromptShala</h1>
-          <p className="lead">Before we practise, agree on three simple habits for responsible classroom use.</p>
+          <span className="eyebrow">A safe start</span>
+          <h1 id="safe-use-title">A little help. You’re still the teacher.</h1>
+          <p className="lead">AI can help you write lesson plans, worksheets and explanations. Keep these three simple habits in mind as you try it.</p>
           <div className="principle-list">
             {safetyPrinciples.map((principle, index) => (
               <article key={principle.title}>
@@ -68,9 +68,9 @@ function SafeUseForm() {
           </div>
           <label className="consent-check">
             <input checked={accepted} onChange={(event) => setAccepted(event.target.checked)} type="checkbox" />
-            <span><strong>I understand and will use only safe, non-identifying classroom examples.</strong><small>You can review these principles anytime from your profile.</small></span>
+            <span><strong>I’ll keep student details private and check AI’s work.</strong><small>You can read these reminders again in your profile.</small></span>
           </label>
-          <p className="draft-note">AI practice sends your task text to the configured evaluator when you request it. Saved assistant and portfolio evidence stays in your own account. <Link href="/privacy">Read the privacy notice</Link>.</p>
+          <p className="draft-note">When you ask AI for help, the text you enter is sent to the AI service. Your saved work belongs to your account. <Link href="/privacy">How we use your information</Link>.</p>
           <div className="onboarding-actions align-end">
             <button className="button button-primary" disabled={!accepted} onClick={continueOnboarding} type="button">I understand, continue <Icon name="arrow-right" /></button>
           </div>

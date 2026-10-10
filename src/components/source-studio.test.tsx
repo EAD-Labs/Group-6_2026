@@ -20,42 +20,52 @@ describe("source studio review integrity", () => {
 
   it("invalidates teacher approval after a draft is edited", () => {
     render(<SourceStudio />);
-    expect(screen.getByText("Your required portfolio evidence is recorded.")).toBeInTheDocument();
+    expect(screen.getByText("Practice complete")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "4 Review & save" }));
     const privacy = screen.getByRole("checkbox", { name: /package contains no identifiable/ });
     expect(privacy).toBeChecked();
-    fireEvent.change(screen.getByLabelText("Your classroom artifact"), { target: { value: "An edited classroom draft needs a fresh review even when the earlier draft had passed every check." } });
-    expect(privacy).not.toBeChecked();
-    expect(screen.queryByText("Your required portfolio evidence is recorded.")).toBeNull();
-    expect(screen.getByRole("button", { name: /Export draft portfolio/ })).toBeEnabled();
+    fireEvent.click(screen.getByRole("button", { name: "3 Make a resource" }));
+    fireEvent.change(screen.getByLabelText("Your classroom resource"), { target: { value: "An edited classroom draft needs a fresh review even when the earlier draft had passed every check." } });
+    fireEvent.click(screen.getByRole("button", { name: "4 Review & save" }));
+    expect(screen.getByRole("checkbox", { name: /package contains no identifiable/ })).not.toBeChecked();
+    expect(screen.queryByText("Practice complete")).toBeNull();
+    expect(screen.getByRole("button", { name: /Download work so far/ })).toBeEnabled();
   });
 
   it("keeps the current portfolio until the learner explicitly starts another case", () => {
     render(<SourceStudio />);
-    fireEvent.change(screen.getByLabelText("Practice pack"), { target: { value: "seed-enquiry" } });
-    expect(screen.getByText("Your required portfolio evidence is recorded.")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Start selected case" }));
+    fireEvent.change(screen.getByLabelText("Practice text"), { target: { value: "seed-enquiry" } });
+    expect(screen.getByText("Practice complete")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Start with this text" }));
     expect(screen.getByRole("heading", { name: "Two pots, one careful conclusion" })).toBeInTheDocument();
-    expect(screen.getByLabelText("Your classroom artifact")).toHaveValue("");
-    expect(screen.getByLabelText("Your verdict", { selector: "#verdict-c1" })).toHaveValue("");
-    expect(screen.queryByText("Your required portfolio evidence is recorded.")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "3 Make a resource" }));
+    expect(screen.getByLabelText("Your classroom resource")).toHaveValue("");
+    fireEvent.click(screen.getByRole("button", { name: "2 Check the facts" }));
+    expect(screen.getByLabelText("How does it match the notes?", { selector: "#verdict-c1" })).toHaveValue("");
+    expect(screen.queryByText("Practice complete")).toBeNull();
   });
 
   it("preserves a draft and its review while a format change is pending or cancelled", () => {
     render(<SourceStudio />);
     const original = readyPortfolio();
-    const format = screen.getByLabelText("Artifact format");
+    fireEvent.click(screen.getByRole("button", { name: "3 Make a resource" }));
+    let format = screen.getByLabelText("What would you like to make?");
     fireEvent.change(format, { target: { value: "slides" } });
-    expect(screen.getByLabelText("Your classroom artifact")).toHaveValue(original.draft);
+    expect(screen.getByLabelText("Your classroom resource")).toHaveValue(original.draft);
     expect(screen.getByLabelText("What did you change, and why?")).toHaveValue(original.revisionNote);
+    fireEvent.click(screen.getByRole("button", { name: "4 Review & save" }));
     expect(screen.getByRole("checkbox", { name: /package contains no identifiable/ })).toBeChecked();
+    fireEvent.click(screen.getByRole("button", { name: "3 Make a resource" }));
+    format = screen.getByLabelText("What would you like to make?");
     fireEvent.click(screen.getByRole("button", { name: "Keep current draft" }));
     expect(format).toHaveValue(original.artifactType);
-    expect(screen.getByLabelText("Your classroom artifact")).toHaveValue(original.draft);
+    expect(screen.getByLabelText("Your classroom resource")).toHaveValue(original.draft);
     fireEvent.change(format, { target: { value: "slides" } });
     fireEvent.click(screen.getByRole("button", { name: "Change format and clear draft" }));
     expect(format).toHaveValue("slides");
-    expect(screen.getByLabelText("Your classroom artifact")).toHaveValue("");
+    expect(screen.getByLabelText("Your classroom resource")).toHaveValue("");
     expect(screen.getByLabelText("What did you change, and why?")).toHaveValue("");
+    fireEvent.click(screen.getByRole("button", { name: "4 Review & save" }));
     expect(screen.getByRole("checkbox", { name: /package contains no identifiable/ })).not.toBeChecked();
   });
 });
