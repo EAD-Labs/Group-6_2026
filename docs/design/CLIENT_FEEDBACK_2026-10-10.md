@@ -27,7 +27,7 @@ Apply these migrations in order before releasing this version:
 
 The first adds profile fields synchronized atomically with participant-state saves. The second adds CRAFT text/feedback fields, owner-only read access, and server-only writes. Existing PostgreSQL integration tests cover constraints, transaction rollback, owner isolation, staff exclusion, and account deletion.
 
-No production migrations or deployment were performed in this work. Live personal-key Gemini calls were tested with controlled mocked provider responses; an actual Google request still requires a valid key and connected release environment.
+Both migrations were applied to the production project on 10 October 2026 after an approved encrypted backup of the affected application tables and an isolated local restore/migration rehearsal. Production schema verification confirmed owner-only CRAFT reads, server-only inserts, and unchanged existing row counts. Deployment and live acceptance results are recorded in the release pull request. A successful personal-key Google generation still requires a valid client-owned key; local provider success tests use controlled mocked responses.
 
 ## Review evidence
 

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     default: "PromptShala",
     template: "%s | PromptShala",
   },
-  description: "Practical AI literacy for educators",
+  description: "Learn to use AI for everyday teaching, one clear step at a time. No AI experience or coding needed.",
 };
 
 export default function RootLayout({
