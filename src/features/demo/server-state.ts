@@ -13,6 +13,7 @@ import { moduleTwoLessons } from "@/features/learning/module-two-content";
 import { moduleFourLessons } from "@/features/learning/module-four-content";
 import { sanitizeSourcePortfolio } from "@/features/learning/source-studio";
 import { moduleThreeLessons } from "@/features/learning/module-three-content";
+import { sanitizeAiExperience } from "./ai-experience";
 
 const templateCategories = ["planning", "assessment", "adaptation"] as const;
 
@@ -38,6 +39,7 @@ const allowedAiFamiliarity: AiFamiliarity[] = [
   "New to AI",
   "Tried it a few times",
   "Use it sometimes",
+  "Use it regularly",
 ];
 const allowedLessonSlugs = [
   "meet-generative-ai",
@@ -203,8 +205,10 @@ export function sanitizeDemoState(value: unknown): DemoState {
   )
     ? (input.aiFamiliarity as AiFamiliarity)
     : initialDemoState.aiFamiliarity;
+  const aiExperience = sanitizeAiExperience(input);
 
   return {
+    ...aiExperience,
     assistants: cleanAssistants(input.assistants),
     craftPracticeCount: Math.max(0, Math.min(1000, Math.floor(Number(input.craftPracticeCount) || 0))),
     promptLibrary: cleanPromptLibrary(input.promptLibrary),
@@ -212,7 +216,7 @@ export function sanitizeDemoState(value: unknown): DemoState {
       ? Object.fromEntries(Object.entries(input.lessonEvidence)
         .filter(([id, value]) => [...moduleTwoLessons.map((lesson) => lesson.id), ...moduleThreeLessons.map((lesson) => lesson.id), ...moduleFourLessons.map((lesson) => lesson.id)].includes(id) && typeof value === "string")
         .map(([id, value]) => [id, cleanString(value, "", 1200)])) : {},
-    aiFamiliarity,
+    aiFamiliarity: aiExperience.aiToolsUsed.includes("None yet") ? "New to AI" : aiFamiliarity,
     captionsEnabled: input.captionsEnabled !== false,
     completedLessonSlugs: Array.isArray(input.completedLessonSlugs)
       ? input.completedLessonSlugs.filter(

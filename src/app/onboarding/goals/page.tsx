@@ -6,21 +6,15 @@ import { useState } from "react";
 import { OnboardingShell } from "@/components/onboarding-shell";
 import { HydrationGate } from "@/components/ui/hydration-gate";
 import { Icon } from "@/components/ui/icon";
+import { AiExperienceFields, type AiExperienceAnswers } from "@/components/ai-experience-fields";
 import { useDemo } from "@/features/demo/demo-provider";
-import type { AiFamiliarity } from "@/features/demo/demo-state";
-
-const familiarityOptions: { description: string; icon: string; label: AiFamiliarity }[] = [
-  { description: "I’m ready to learn from the beginning.", icon: "○", label: "New to AI" },
-  { description: "I have tried chat tools once or twice.", icon: "◐", label: "Tried it a few times" },
-  { description: "I use AI occasionally for simple tasks.", icon: "●", label: "Use it sometimes" },
-];
 
 const goalOptions = [
-  "Explain difficult concepts",
-  "Create quizzes and assessments",
-  "Plan lessons and resources",
-  "Communicate with parents",
-  "Create worksheets and slide outlines",
+  { value: "Explain difficult concepts", label: "Explain a topic simply" },
+  { value: "Create quizzes and assessments", label: "Make quizzes and worksheets" },
+  { value: "Plan lessons and resources", label: "Find ideas for my lessons" },
+  { value: "Communicate with parents", label: "Write messages to parents" },
+  { value: "Create worksheets and slide outlines", label: "Prepare lesson notes and slides" },
 ];
 
 export default function GoalsPage() {
@@ -29,20 +23,29 @@ export default function GoalsPage() {
 }
 function GoalsForm() {
   const router = useRouter();
-  const { saveGoals, state } = useDemo();
-  const [aiFamiliarity, setAiFamiliarity] = useState(state.aiFamiliarity);
+  const { saveGoals, state, updateState } = useDemo();
+  const [experience, setExperience] = useState<AiExperienceAnswers>({
+    aiFamiliarity: state.aiFamiliarity,
+    aiToolsUsed: state.aiToolsUsed,
+    aiToolOther: state.aiToolOther,
+    currentAiUse: state.currentAiUse,
+    aiUseFrequency: state.aiUseFrequency,
+  });
   const [goals, setGoals] = useState(state.goals);
 
   function toggleGoal(goal: string) {
-    setGoals((currentGoals) =>
-      currentGoals.includes(goal)
-        ? currentGoals.filter((currentGoal) => currentGoal !== goal)
-        : [...currentGoals, goal],
-    );
+    const nextGoals = goals.includes(goal) ? goals.filter((currentGoal) => currentGoal !== goal) : [...goals, goal];
+    setGoals(nextGoals);
+    updateState((current) => ({ ...current, goals: nextGoals }));
+  }
+
+  function updateExperience(changes: Partial<AiExperienceAnswers>) {
+    setExperience((current) => ({ ...current, ...changes }));
+    updateState((current) => ({ ...current, ...changes }));
   }
 
   function finishOnboarding() {
-    saveGoals({ aiFamiliarity, goals });
+    saveGoals({ ...experience, goals });
     router.push("/dashboard");
   }
 
@@ -50,37 +53,24 @@ function GoalsForm() {
     <HydrationGate>
       <OnboardingShell currentStep={3}>
         <section className="onboarding-card wide" aria-labelledby="goals-title">
-          <span className="eyebrow">Set an intention</span>
-          <h1 id="goals-title">What would make AI useful to you?</h1>
-          <p className="lead">Choose the work you would like to practise. Every module remains available, whichever goals you choose.</p>
-          <fieldset className="choice-section">
-            <legend>How familiar are you with AI tools?</legend>
-            <div className="familiarity-grid">
-              {familiarityOptions.map((option) => (
-                <label className="choice-card" key={option.label}>
-                  <input checked={aiFamiliarity === option.label} name="familiarity" onChange={() => setAiFamiliarity(option.label)} type="radio" />
-                  <span className="choice-card-content">
-                    <span className="choice-symbol" aria-hidden="true">{option.icon}</span>
-                    <strong>{option.label}</strong>
-                    <small>{option.description}</small>
-                  </span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-          <fieldset className="choice-section">
-            <legend>What are your main goals? <small>Select all that apply</small></legend>
+          <span className="eyebrow">Your starting point</span>
+          <h1 id="goals-title">Let’s make this useful for you.</h1>
+          <p className="lead">Tell us a little about your experience with AI, then choose what you’d like help with. There are no right or wrong answers.</p>
+          <p className="onboarding-optional-note">These questions are optional. You can change your answers in your profile anytime.</p>
+          <AiExperienceFields value={experience} onChange={updateExperience} />
+          <fieldset className="choice-section onboarding-goals">
+            <legend>What would you like AI to help you with? <small>Choose any that interest you</small></legend>
             <div className="goal-grid">
               {goalOptions.map((goal) => (
-                <label className="goal-card" key={goal}>
-                  <input checked={goals.includes(goal)} onChange={() => toggleGoal(goal)} type="checkbox" />
-                  <span><Icon name={goals.includes(goal) ? "check" : "target"} /></span>
-                  <strong>{goal}</strong>
+                <label className="goal-card" key={goal.value}>
+                  <input checked={goals.includes(goal.value)} onChange={() => toggleGoal(goal.value)} type="checkbox" />
+                  <span><Icon name={goals.includes(goal.value) ? "check" : "target"} /></span>
+                  <strong>{goal.label}</strong>
                 </label>
               ))}
             </div>
           </fieldset>
-          <div className="onboarding-actions"><button className="button button-secondary" onClick={() => router.push("/onboarding/profile")} type="button"><Icon name="arrow-left" />Back</button><button className="button button-primary" onClick={finishOnboarding} type="button">Open my dashboard <Icon name="arrow-right" /></button></div>
+          <div className="onboarding-actions"><button className="button button-secondary" onClick={() => router.push("/onboarding/profile")} type="button"><Icon name="arrow-left" />Back</button><button className="button button-primary" onClick={finishOnboarding} type="button">Start learning <Icon name="arrow-right" /></button></div>
         </section>
       </OnboardingShell>
     </HydrationGate>
