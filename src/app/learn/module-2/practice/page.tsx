@@ -11,10 +11,10 @@ export default function CraftPracticePage() {
   return (
     <HydrationGate>
       <AppShell active="learn" contentClassName="learning-reading-scale">
-        <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/learn/module-2">Module 2</Link><Icon name="chevron-right" /><span>CRAFT practice lab</span></nav>
+        <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/learn/module-2">Module 2</Link><Icon name="chevron-right" /><span>Prompt practice</span></nav>
         <header className="page-heading craft-page-heading">
-          <div><span className="eyebrow">Module 2 · Prompt laboratory</span><h1>CRAFT practice lab</h1><p>State the teaching task, test the prompt and use specific feedback to improve the result.</p></div>
-          <span className="preview-badge"><Icon name="sparkles" /> Guided AI feedback</span>
+          <div><span className="eyebrow">Module 2 · Try it yourself</span><h1>Ask AI more clearly</h1><p>Choose a classroom task, write your instructions and get simple suggestions to improve them.</p></div>
+          <span className="preview-badge"><Icon name="sparkles" /> Five simple checks</span>
         </header>
         <CraftPractice />
       </AppShell>
