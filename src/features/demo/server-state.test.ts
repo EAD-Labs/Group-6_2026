@@ -4,6 +4,12 @@ import { sanitizeDemoState } from "./server-state";
 import { readyPortfolio } from "@/test/fixtures/source-portfolio";
 
 describe("authenticated participant state validation", () => {
+  it("retains optional AI experience answers and removes unsupported tool choices", () => {
+    const state = sanitizeDemoState({ aiToolsUsed: ["Gemini", "ChatGPT", "unsupported", "Gemini"], aiFamiliarity: "Use it regularly", aiUseFrequency: "Every week", currentAiUse: " Make quiz questions ", aiToolOther: "Ignored unless Other is selected" });
+    expect(state).toMatchObject({ aiToolsUsed: ["Gemini", "ChatGPT"], aiFamiliarity: "Use it regularly", aiUseFrequency: "Every week", currentAiUse: "Make quiz questions", aiToolOther: "" });
+    expect(sanitizeDemoState({ aiToolsUsed: ["None yet"], aiFamiliarity: "Use it regularly", aiUseFrequency: "Most days", currentAiUse: "Contradictory old answer" }))
+      .toMatchObject({ aiToolsUsed: ["None yet"], aiFamiliarity: "New to AI", aiUseFrequency: "Not yet", currentAiUse: "" });
+  });
   it("retains correct-answer totals for expanded pilot question banks", () => {
     const state = sanitizeDemoState({ moduleThreeQuizAttempts: [{ correctAnswers: 23, scorePercent: 100 }] });
     expect(state.moduleThreeQuizAttempts[0].correctAnswers).toBe(23);

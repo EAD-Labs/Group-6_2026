@@ -51,9 +51,9 @@ Never reuse a Supabase project or secret across these environments.
 - Three of five answers fails; four of five passes.
 - A failed attempt can be retried and remains in attempt history.
 - All four learning modules are accessible from the start. Completion records require their lessons, passed quiz and required practice evidence; retries retain the best score.
-- The evaluator key stays on the server and never appears in the browser, screenshots or response payloads.
+- The course's evaluator key stays on the server and never appears in the browser or response payloads. An optional personal key stays in the open tab's memory, is forwarded server-side only for explicit AI requests, and clears on refresh, sign-out and account change.
 - The CRAFT endpoint returns five 0–3 scores, a total out of 15 and a safe deterministic fallback.
-- Authenticated attempts store a one-way prompt fingerprint, scores, evaluator source and safety flags without raw prompt text.
+- Checked CRAFT attempts save the task, prompt text and feedback privately under the signed-in account, together with fingerprints and scores. Apply `202610100002_private_craft_prompts.sql`; verify owner-only reads, server-only writes, account export and account-deletion cascades.
 - Keyboard navigation, visible focus, zoom, and screen-reader feedback are checked.
 - Drafts remain scoped to the signed-in account; offline changes retry visibly and concurrent saves do not silently overwrite reviewed evidence.
 - Recovery emails return to the correct environment, expired links fail safely, and account export/deletion affect only the authenticated participant.

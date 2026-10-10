@@ -4,7 +4,7 @@ import { Brand } from "./ui/brand";
 import { Icon } from "./ui/icon";
 import { SyncStatus } from "./sync-status";
 
-const steps = ["Safe use", "Teacher profile", "Goals"];
+const steps = ["A safe start", "Your classroom", "Your AI experience"];
 
 export function OnboardingShell({
   children,
@@ -17,11 +17,11 @@ export function OnboardingShell({
     <div className="onboarding-page">
       <header className="onboarding-header">
         <Brand compact />
-        <span>About 3 minutes</span>
+        <span>3 simple steps · About 3 minutes</span>
       </header>
       <div className="onboarding-layout">
         <aside className="onboarding-rail" aria-label="Onboarding progress">
-          <p className="overline">Getting started</p>
+          <p className="overline">Welcome to PromptShala</p>
           <p className="onboarding-step-count">Step {currentStep} of 3</p>
           <ol>
             {steps.map((step, index) => {
@@ -29,7 +29,7 @@ export function OnboardingShell({
               const complete = number < currentStep;
               const active = number === currentStep;
               return (
-                <li className={active ? "active" : complete ? "complete" : ""} key={step}>
+                <li aria-current={active ? "step" : undefined} className={active ? "active" : complete ? "complete" : ""} key={step}>
                   <span aria-hidden="true">
                     {complete ? <Icon name="check" /> : number}
                   </span>
@@ -38,6 +38,7 @@ export function OnboardingShell({
               );
             })}
           </ol>
+          <p className="onboarding-rail-message">A little help for your everyday teaching. We’ll guide you, one step at a time.</p>
           <div className="rail-note">
             <SyncStatus />
           </div>
@@ -48,6 +49,7 @@ export function OnboardingShell({
               <span className={index + 1 <= currentStep ? "active" : ""} key={step} />
             ))}
           </div>
+          <p className="onboarding-mobile-progress">Step {currentStep} of 3 · {steps[currentStep - 1]}</p>
           {children}
         </main>
       </div>

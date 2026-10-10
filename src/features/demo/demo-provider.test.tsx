@@ -9,12 +9,26 @@ const fetchMock = vi.fn();
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
 const record = (id: string, name = id) => ({ mode: "supabase", participantId: id, role: "participant", revision: 1, state: { ...initialDemoState, displayName: name } });
 function Probe() {
-  const { state, syncStatus, storageScope, updateState, retrySync, hydrated, syncConflicts, resolveSyncConflict } = useDemo();
-  return <><p>{hydrated ? state.displayName : "Loading"}</p><p data-testid="status">{syncStatus}</p><p data-testid="scope">{storageScope}</p><button onClick={() => updateState((value) => ({ ...value, displayName: "Edited" }))}>Edit</button><button onClick={retrySync}>Retry</button><p>{state.assistants[0]?.purpose}</p><button disabled={!syncConflicts.length} onClick={() => resolveSyncConflict(syncConflicts[0].id, "remote")}>Use remote</button></>;
+  const { state, syncStatus, storageScope, updateState, retrySync, hydrated, syncConflicts, resolveSyncConflict, saveGoals } = useDemo();
+  return <><p>{hydrated ? state.displayName : "Loading"}</p><p data-testid="status">{syncStatus}</p><p data-testid="scope">{storageScope}</p><button onClick={() => updateState((value) => ({ ...value, displayName: "Edited" }))}>Edit</button><button onClick={retrySync}>Retry</button><p>{state.assistants[0]?.purpose}</p><button disabled={!syncConflicts.length} onClick={() => resolveSyncConflict(syncConflicts[0].id, "remote")}>Use remote</button><button onClick={() => saveGoals({ aiFamiliarity: "Use it regularly", aiToolsUsed: ["Gemini", "Other"], aiToolOther: "School helper", aiUseFrequency: "Every week", currentAiUse: "Writing quiz questions", goals: ["Make quizzes and worksheets"] })}>Save AI experience</button></>;
 }
 beforeEach(() => { window.localStorage.clear(); fetchMock.mockReset(); vi.stubGlobal("fetch", fetchMock); });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 describe("participant synchronization", () => {
+  it("sends onboarding AI experience to the verified account and retains it in its cache", async () => {
+    fetchMock.mockImplementation((_url, options) => options?.method === "PUT"
+      ? Promise.resolve(response({ saved: true, state: JSON.parse(options.body).state, revision: 2 }))
+      : Promise.resolve(response(record("alice"))));
+    render(<DemoProvider><Probe /></DemoProvider>);
+    await screen.findByText("alice");
+    fireEvent.click(screen.getByRole("button", { name: "Save AI experience" }));
+    await waitFor(() => expect(screen.getByTestId("status")).toHaveTextContent("saved"));
+    const writes = fetchMock.mock.calls.filter((call) => call[1]?.method === "PUT");
+    expect(writes).toHaveLength(1);
+    expect(JSON.parse(writes[0][1].body).state).toMatchObject({ aiToolsUsed: ["Gemini", "Other"], aiUseFrequency: "Every week", currentAiUse: "Writing quiz questions", onboardingCompleted: true });
+    expect(readScopedState(window.localStorage, "participant:alice")?.state.aiToolOther).toBe("School helper");
+    expect(readScopedState(window.localStorage, "participant:bob")).toBeNull();
+  });
   it("does not display a previous account cache before or after identity resolution", async () => {
     writeScopedState(window.localStorage, "participant:alice", { state: { ...initialDemoState, displayName: "Alice private" }, baseline: initialDemoState, revision: 1, pending: true });
     let resolve!: (value: Response) => void;

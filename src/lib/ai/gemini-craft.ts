@@ -37,8 +37,9 @@ export function validateCraftModelResponse(value: unknown) {
 export async function evaluateCraftPromptWithGemini(
   prompt: string,
   scenario: CraftScenario,
+  participantKey?: string,
 ): Promise<CraftAiEvaluation> {
-  const { apiKey, model } = getGeminiEnvironment();
+  const { apiKey, model } = getGeminiEnvironment(participantKey);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 25_000);
 

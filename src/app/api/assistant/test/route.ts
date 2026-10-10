@@ -2,15 +2,17 @@ import { NextResponse } from "next/server";
 import { getGeminiEnvironment, hasGeminiEnvironment } from "@/lib/env";
 import { consumeAiBudget, getAiAccess } from "@/lib/ai/access";
 import { hasSameOrigin, readJsonBody, RequestValidationError } from "@/lib/server/request";
+import { readParticipantGeminiKey } from "@/lib/ai/gemini-key";
 
 export async function POST(request: Request) {
   if (!hasSameOrigin(request)) return NextResponse.json({ error: "The request origin is not allowed." }, { status: 403 });
   try {
     const access = await getAiAccess();
-    if (access.mode === "unauthenticated") return NextResponse.json({ error: "Sign in to test an assistant." }, { status: 401 });
-    if (access.mode === "demo") return NextResponse.json({ error: "Guided demo keeps AI testing local. Paste a reviewed practice output to test your Passport; no input is sent to a provider." }, { status: 503 });
-    if (access.mode === "consent_required") return NextResponse.json({ error: "Accept and synchronize the safe-use notice before live testing." }, { status: 403 });
-    if (!hasGeminiEnvironment()) return NextResponse.json({ error: "Live AI testing is not configured. Record a reviewed output from an approved tool instead." }, { status: 503 });
+    if (access.mode === "unauthenticated") return NextResponse.json({ error: "Sign in to try your teaching helper with AI." }, { status: 401 });
+    if (access.mode === "demo") return NextResponse.json({ error: "Sign in to try this helper with AI. For practice, paste a result from an approved AI tool." }, { status: 503 });
+    if (access.mode === "consent_required") return NextResponse.json({ error: "Read and accept the safe-use reminders. Wait until they are saved, then try your helper again." }, { status: 403 });
+    const participantKey = readParticipantGeminiKey(request);
+    if (!participantKey && !hasGeminiEnvironment()) return NextResponse.json({ error: "The course’s AI connection is unavailable. Add your Gemini key in connection settings, or paste a result from an approved AI tool." }, { status: 503 });
     if (!await consumeAiBudget(access.participantId!, "assistant")) return NextResponse.json({ error: "Please wait a minute before another test." }, { status: 429, headers: { "Retry-After": "60" } });
     const body = await readJsonBody(request, 64_000);
   const fields = ["purpose", "persona", "task", "context", "format", "boundaries", "reviewChecks"] as const;
@@ -23,10 +25,10 @@ export async function POST(request: Request) {
   const stopRule = typeof body?.stopRule === "string" ? body.stopRule.trim().slice(0, 1000) : "Stop on safety or source conflicts.";
   const input = typeof body?.input === "string" ? body.input.trim() : "";
   if (fields.some((field) => spec[field].length < 3 || spec[field].length > 2000) || input.length < 3 || input.length > 2500) {
-    return NextResponse.json({ error: "Complete every Passport field and enter a classroom input under 2,500 characters." }, { status: 400 });
+    return NextResponse.json({ error: "Add a few words to each helper instruction and your classroom example. Keep each instruction under 2,000 characters and the example under 2,500." }, { status: 400 });
   }
 
-  const { apiKey, model } = getGeminiEnvironment();
+  const { apiKey, model } = getGeminiEnvironment(participantKey);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 25_000);
   try {
@@ -41,7 +43,7 @@ export async function POST(request: Request) {
     if (!output) throw new Error("AI provider returned no output.");
     return NextResponse.json({ output: output.slice(0, 6000) });
   } catch {
-    return NextResponse.json({ error: "Live test could not finish. Your input is preserved; you can paste a reviewed output from an approved tool." }, { status: 503 });
+    return NextResponse.json({ error: participantKey ? "Gemini could not complete this test with your key. Check your key or its usage limit, then try again. Your input is still here." : "The AI test could not finish. Your input is still here; try again or paste a result from an approved AI tool." }, { status: 503 });
   } finally { clearTimeout(timeout); }
   } catch (error) {
     return NextResponse.json({ error: error instanceof RequestValidationError ? error.message : "Live testing is unavailable. Your input is preserved; use a reviewed practice output or retry." }, { status: error instanceof RequestValidationError ? error.status : 503 });

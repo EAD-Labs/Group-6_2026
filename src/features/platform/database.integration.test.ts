@@ -53,6 +53,24 @@ beforeAll(async () => {
 }, 30_000);
 afterAll(async () => { await db?.close(); });
 
+it("saves optional AI experience atomically and only exposes it to its owner", async () => {
+  const participantId = "10000000-0000-4000-8000-000000000007";
+  await db.query("insert into auth.users(id,email) values($1,'experience@example.test')", [participantId]);
+  const state: DemoState = { ...initialDemoState, aiFamiliarity: "Use it regularly", aiToolsUsed: ["Gemini", "Other"], aiToolOther: "School helper", aiUseFrequency: "Every week", currentAiUse: "Make quiz questions" };
+  await save(participantId, 0, state);
+  const fields = "ai_tools_used,ai_tool_other,ai_use_frequency,current_ai_use,ai_familiarity";
+  const own = await asRole("authenticated", participantId, () => db.query(`select ${fields} from public.profiles where id=$1`, [participantId]));
+  expect(own.rows).toEqual([{ ai_tools_used: ["Gemini", "Other"], ai_tool_other: "School helper", ai_use_frequency: "Every week", current_ai_use: "Make quiz questions", ai_familiarity: "Use it regularly" }]);
+  const snapshot = await asRole("authenticated", participantId, () => db.query<{ state: DemoState }>("select state from public.participant_states where participant_id=$1", [participantId]));
+  expect(snapshot.rows[0].state.currentAiUse).toBe("Make quiz questions");
+  const other = await asRole("authenticated", ids.bob, () => db.query(`select ${fields} from public.profiles where id=$1`, [participantId]));
+  expect(other.rows).toEqual([]);
+  await expect(asRole("authenticated", participantId, () => db.query("update public.profiles set current_ai_use='Direct edit' where id=$1", [participantId]))).rejects.toThrow(/permission denied/);
+  await expect(save(participantId, 0, { ...state, currentAiUse: "Must not replace my answer" })).rejects.toThrow(/revision_conflict/);
+  const retained = await db.query<{ current_ai_use: string }>("select current_ai_use from public.profiles where id=$1", [participantId]);
+  expect(retained.rows[0].current_ai_use).toBe("Make quiz questions");
+});
+
 describe("migrated PostgreSQL permissions and transaction behavior", () => {
   it("applies every migration and isolates private state for two participants and staff", async () => {
     await save(ids.alice, 0, { ...initialDemoState, displayName: "Alice private" });
@@ -154,6 +172,20 @@ describe("migrated PostgreSQL permissions and transaction behavior", () => {
     expect((await take(ids.alice)).rows[0].allowed).toBe(false);
     expect((await take(ids.bob)).rows[0].allowed).toBe(true);
     await expect(asRole("authenticated", ids.alice, () => db.query("select public.consume_ai_rate_limit($1,'assistant',1000)", [ids.alice]))).rejects.toThrow(/permission denied/);
+  });
+  it("stores checked CRAFT text privately, blocks forged feedback, and cascades account deletion", async () => {
+    const participant = "10000000-0000-4000-8000-000000000098";
+    await db.query("insert into auth.users(id,email) values($1,'craft-owner@example.test')", [participant]);
+    const insert = (owner: string) => db.query<{ id: string }>(
+      "insert into public.craft_prompt_attempts(participant_id,scenario_id,task_source,task_fingerprint,prompt_fingerprint,task_text,prompt_text,evaluation,dimension_scores,overall_score,score_percent,evaluation_source,model) values($1,'custom','custom',repeat('a',64),repeat('b',64),'Plan a fictional lesson','Write a lesson plan for Class 6.', '{\"summary\":\"Private feedback\"}', '{}',10,67,'rule-based','checklist') returning id", [owner]);
+    const record = (await asRole("service_role", "", () => insert(participant))).rows[0];
+    const read = (owner: string) => asRole("authenticated", owner, () => db.query<{ task_text: string; prompt_text: string }>("select task_text,prompt_text from public.craft_prompt_attempts where id=$1", [record.id]));
+    expect((await read(participant)).rows).toEqual([{ task_text: "Plan a fictional lesson", prompt_text: "Write a lesson plan for Class 6." }]);
+    for (const other of [ids.alice, ids.bob, ids.admin, ids.facilitator]) expect((await read(other)).rows).toHaveLength(0);
+    await expect(asRole("authenticated", participant, () => insert(participant))).rejects.toThrow(/permission denied/);
+    await expect(asRole("anon", "", () => db.query("select * from public.craft_prompt_attempts"))).rejects.toThrow(/permission denied/);
+    await db.query("delete from auth.users where id=$1", [participant]);
+    expect((await db.query("select id from public.craft_prompt_attempts where id=$1", [record.id])).rows).toHaveLength(0);
   });
   it("removes owned resources, progress and private snapshots when an account is deleted", async () => {
     const temporary = "10000000-0000-4000-8000-000000000099";
