@@ -53,6 +53,24 @@ beforeAll(async () => {
 }, 30_000);
 afterAll(async () => { await db?.close(); });
 
+it("saves optional AI experience atomically and only exposes it to its owner", async () => {
+  const participantId = "10000000-0000-4000-8000-000000000007";
+  await db.query("insert into auth.users(id,email) values($1,'experience@example.test')", [participantId]);
+  const state: DemoState = { ...initialDemoState, aiFamiliarity: "Use it regularly", aiToolsUsed: ["Gemini", "Other"], aiToolOther: "School helper", aiUseFrequency: "Every week", currentAiUse: "Make quiz questions" };
+  await save(participantId, 0, state);
+  const fields = "ai_tools_used,ai_tool_other,ai_use_frequency,current_ai_use,ai_familiarity";
+  const own = await asRole("authenticated", participantId, () => db.query(`select ${fields} from public.profiles where id=$1`, [participantId]));
+  expect(own.rows).toEqual([{ ai_tools_used: ["Gemini", "Other"], ai_tool_other: "School helper", ai_use_frequency: "Every week", current_ai_use: "Make quiz questions", ai_familiarity: "Use it regularly" }]);
+  const snapshot = await asRole("authenticated", participantId, () => db.query<{ state: DemoState }>("select state from public.participant_states where participant_id=$1", [participantId]));
+  expect(snapshot.rows[0].state.currentAiUse).toBe("Make quiz questions");
+  const other = await asRole("authenticated", ids.bob, () => db.query(`select ${fields} from public.profiles where id=$1`, [participantId]));
+  expect(other.rows).toEqual([]);
+  await expect(asRole("authenticated", participantId, () => db.query("update public.profiles set current_ai_use='Direct edit' where id=$1", [participantId]))).rejects.toThrow(/permission denied/);
+  await expect(save(participantId, 0, { ...state, currentAiUse: "Must not replace my answer" })).rejects.toThrow(/revision_conflict/);
+  const retained = await db.query<{ current_ai_use: string }>("select current_ai_use from public.profiles where id=$1", [participantId]);
+  expect(retained.rows[0].current_ai_use).toBe("Make quiz questions");
+});
+
 describe("migrated PostgreSQL permissions and transaction behavior", () => {
   it("applies every migration and isolates private state for two participants and staff", async () => {
     await save(ids.alice, 0, { ...initialDemoState, displayName: "Alice private" });
