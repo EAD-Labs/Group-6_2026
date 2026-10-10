@@ -34,8 +34,8 @@ export function hasGeminiEnvironment() {
   return Boolean(process.env.GEMINI_API_KEY);
 }
 
-export function getGeminiEnvironment(): GeminiEnvironment {
-  const apiKey = process.env.GEMINI_API_KEY;
+export function getGeminiEnvironment(participantKey?: string): GeminiEnvironment {
+  const apiKey = participantKey ?? process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
     throw new Error("Missing GEMINI_API_KEY.");

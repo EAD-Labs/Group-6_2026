@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ActivityTracker } from "@/components/activity-tracker";
+import { GeminiKeyProvider } from "@/components/gemini-key-provider";
 import { DemoProvider } from "@/features/demo/demo-provider";
 
 import "./globals.css";
@@ -23,7 +24,7 @@ export default function RootLayout({
         <a className="skip-link" href="#main-content">
           Skip to main content
         </a>
-        <DemoProvider><ActivityTracker />{children}</DemoProvider>
+        <DemoProvider><GeminiKeyProvider><ActivityTracker />{children}</GeminiKeyProvider></DemoProvider>
       </body>
     </html>
   );

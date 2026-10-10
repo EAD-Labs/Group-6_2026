@@ -18,8 +18,8 @@ The rubric evaluates prompt quality and completeness. It does not certify the fa
 ## Safeguards
 
 - The evaluator key stays on the server.
-- PromptShala does not store raw prompt text.
-- Authenticated history stores a one-way fingerprint, rubric scores, source and safety flags.
+- Checked task, prompt text and feedback are saved privately to the signed-in account for reuse, export and deletion.
+- Authenticated history also stores fingerprints, rubric scores, source and safety flags. Historical attempts created before the October 10 migration retain fingerprint-only data.
 - Teachers must verify facts, curriculum fit, privacy, copyright and learner suitability.
 
 ## Client review focus

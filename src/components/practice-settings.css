@@ -1,0 +1,43 @@
+.gemini-connection-card,
+.saved-craft-prompts {
+  margin-block: 2rem;
+  padding: clamp(1.3rem, 4vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: 1.5rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.gemini-connection-card h2,
+.saved-craft-prompts h2 { margin-block: 1rem .65rem; letter-spacing: -.025em; }
+.gemini-connection-card p,
+.saved-craft-prompts p { line-height: 1.65; }
+.gemini-connection-card form { margin-block: 1.7rem; }
+.gemini-connection-card label { display: block; margin-bottom: .65rem; font-weight: 650; }
+.gemini-connection-card input { width: 100%; min-height: 3.25rem; padding: .85rem 1rem; border: 1px solid var(--line-strong); border-radius: .8rem; color: var(--ink); background: var(--surface); }
+.gemini-connection-card input[aria-invalid="true"] { border-color: var(--coral-edge); }
+.gemini-connection-card .draft-note { margin-top: .65rem; }
+.gemini-connection-card .privacy-mini { margin-top: 1.5rem; }
+.gemini-connection-status { display: inline-flex; align-items: center; gap: .55rem; padding: .5rem .75rem; border-radius: 999px; color: var(--ink-soft); background: var(--surface-soft); font-size: .82rem; font-weight: 600; }
+.connection-dot { width: .45rem; height: .45rem; border-radius: 50%; background: var(--muted); }
+.connection-dot.connected { background: #24804b; }
+.saved-craft-prompts .section-heading { align-items: center; gap: 1.5rem; }
+.saved-craft-prompts .section-heading p { margin-bottom: 0; color: var(--muted); }
+.saved-craft-list { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.saved-craft-list article { padding: 1.3rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface-soft); }
+.saved-craft-list h3 { margin-block: .7rem .5rem; font-size: 1.05rem; letter-spacing: -.015em; }
+.saved-craft-list p { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink-soft); }
+.saved-craft-list summary,
+.gemini-key-help summary { min-height: 2.75rem; padding-block: .6rem; color: var(--forest); font-weight: 600; cursor: pointer; }
+.saved-craft-list details p { margin-top: .75rem; }
+.saved-craft-list ul { padding-left: 1.25rem; color: var(--ink-soft); line-height: 1.65; }
+.saved-craft-list li + li { margin-top: .6rem; }
+.gemini-connection-card .button:active,
+.saved-craft-prompts .button:active { transform: scale(.97); transition: transform 80ms ease-out; }
+@media (max-width: 600px) {
+  .saved-craft-prompts .section-heading { display: grid; }
+  .gemini-connection-card .platform-actions { display: grid; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gemini-connection-card .button:active,
+  .saved-craft-prompts .button:active { transform: none; }
+}
