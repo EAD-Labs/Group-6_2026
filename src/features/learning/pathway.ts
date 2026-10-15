@@ -8,7 +8,7 @@ import { staffroomChallenges } from "./staffroom-challenges";
 import { promptLibraryReady } from "./prompt-library";
 
 export function hasPassed(attempts: QuizAttempt[]) {
-  return attempts.some((attempt) => attempt.scorePercent >= 70);
+  return attempts.some((attempt) => attempt.scorePercent >= (attempt.passThresholdPercent ?? 70));
 }
 
 export function completedCount(ids: string[], requiredIds: string[]) {

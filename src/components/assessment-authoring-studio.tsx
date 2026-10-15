@@ -1,0 +1,47 @@
+"use client";
+import { useState } from "react";
+import { assessmentFields, baseAssessmentBanks, validateAssessmentDraft, type AssessmentDraft, type AssessmentRelease } from "@/features/content-authoring/assessment-release";
+import { authoringLessons } from "@/features/content-authoring/lesson-package";
+import type { QuizQuestion } from "@/features/learning/catalog";
+import "./content-authoring-studio.css";
+
+const initialDraft = (number = 1): AssessmentDraft => ({ module: number, title: `Module ${number} knowledge check`, passThresholdPercent: 70, questions: structuredClone(baseAssessmentBanks[number - 1]) });
+export function AssessmentAuthoringStudio({ releases, administrator, busy, act }: { releases: AssessmentRelease[]; administrator: boolean; busy: boolean; act: (action: string, payload: Record<string, unknown>, message: string) => Promise<void> }) {
+  const [draft, setDraft] = useState(initialDraft), [error, setError] = useState("");
+  function change(index: number, values: Partial<QuizQuestion>) { setDraft(current => ({ ...current, questions: current.questions.map((question, position) => position === index ? { ...question, ...values } : question) })); }
+  return <section className="platform-columns content-authoring-studio"><div className="platform-panel">
+    <span className="eyebrow">Knowledge check studio</span><h2>Make questions worth thinking about.</h2>
+    <p>Draft clear classroom questions and explain the answers. Publishing changes the next knowledge check for everyone in that module. Earlier verified passes keep their original passing score.</p>
+    <p className="platform-fineprint">Lessons, practical work, source checks and safe-use acknowledgement remain required. Access stays open. A new passing score can range from 70% to 100%.</p>
+    {error ? <p className="platform-message error" role="alert">{error}</p> : null}
+    <form className="platform-form" onInvalid={event => { (event.target as HTMLElement).closest("details")?.setAttribute("open", ""); }} onSubmit={event => { event.preventDefault(); setError(""); try { const validated = validateAssessmentDraft(draft as unknown as Record<string, unknown>); void act("save_assessment_release", validated as unknown as Record<string, unknown>, "Knowledge check draft saved. Review its questions and passing score before publication."); } catch (cause) { setError(cause instanceof Error ? cause.message : "Check the questions before saving."); } }}>
+      <label>Module<select value={draft.module} onChange={event => setDraft(initialDraft(Number(event.target.value)))}>{assessmentFields.map((_, index) => <option key={index} value={index + 1}>Module {index + 1}</option>)}</select></label>
+      <label>Knowledge check title<input value={draft.title} minLength={3} maxLength={180} required onChange={event => setDraft({ ...draft, title: event.target.value })} /></label>
+      <label>Passing score (%)<input type="number" min={70} max={100} step={1} required value={draft.passThresholdPercent} onChange={event => setDraft({ ...draft, passThresholdPercent: Number(event.target.value) })} /></label>
+      <p><strong>{draft.questions.length} questions</strong> · {Math.ceil(draft.questions.length * draft.passThresholdPercent / 100)} correct answers needed to pass this draft.</p>
+      {draft.questions.map((question, index) => <details key={question.id}><summary>Question {index + 1}: {question.prompt || "New classroom question"}</summary><fieldset><legend>Question {index + 1}</legend>
+        <label>Question text<textarea rows={3} minLength={10} maxLength={2500} required value={question.prompt} onChange={event => change(index, { prompt: event.target.value })} /></label>
+        <label>Concept<input minLength={3} maxLength={200} required value={question.concept} onChange={event => change(index, { concept: event.target.value })} /></label>
+        <label>Lesson to revisit<select value={question.lessonSlug} onChange={event => change(index, { lessonSlug: event.target.value })}>{authoringLessons[draft.module - 1].map(lesson => <option key={lesson.id} value={lesson.id}>{lesson.title}</option>)}</select></label>
+        <label>Answer type<select value={question.kind} onChange={event => change(index, { kind: event.target.value as QuizQuestion["kind"], correctOptionIds: event.target.value === "single" ? question.correctOptionIds.slice(0, 1) : question.correctOptionIds })}><option value="single">Choose one answer</option><option value="multiple">Select every correct answer</option></select></label>
+        {question.options.map((option, optionIndex) => <div key={option.id}><label>Answer choice {optionIndex + 1}<textarea rows={2} maxLength={1500} required value={option.label} onChange={event => change(index, { options: question.options.map(item => item.id === option.id ? { ...item, label: event.target.value } : item) })} /></label>
+          <label className="platform-check"><input type={question.kind === "single" ? "radio" : "checkbox"} name={`correct-${question.id}`} checked={question.correctOptionIds.includes(option.id)} onChange={() => change(index, { correctOptionIds: question.kind === "single" ? [option.id] : question.correctOptionIds.includes(option.id) ? question.correctOptionIds.filter(id => id !== option.id) : [...question.correctOptionIds, option.id] })} />This is a correct answer</label>
+          <button type="button" className="button button-secondary" disabled={question.options.length <= 2} onClick={() => change(index, { options: question.options.filter(item => item.id !== option.id), correctOptionIds: question.correctOptionIds.filter(id => id !== option.id) })}>Remove answer choice {optionIndex + 1}</button>
+        </div>)}
+        <button type="button" className="button button-secondary" disabled={question.options.length >= 6} onClick={() => change(index, { options: [...question.options, { id: `option_${crypto.randomUUID().replaceAll("-", "")}`, label: "" }] })}>Add answer choice</button>
+        <label>Explain the answer<textarea rows={3} minLength={10} maxLength={3000} required value={question.explanation} onChange={event => change(index, { explanation: event.target.value })} /></label>
+        <p className="platform-fineprint">Question reference: {question.id}. Saving a revision preserves the earlier question and its results.</p>
+        <button type="button" className="button button-secondary" disabled={draft.questions.length <= 5} onClick={() => setDraft({ ...draft, questions: draft.questions.filter((_, position) => position !== index) })}>Remove question {index + 1} from this draft</button>
+      </fieldset></details>)}
+      <div className="platform-actions"><button type="button" className="button button-secondary" disabled={draft.questions.length >= 40} onClick={() => setDraft({ ...draft, questions: [...draft.questions, { id: `question_${crypto.randomUUID().replaceAll("-", "")}`, kind: "single", concept: "", prompt: "", explanation: "", lessonSlug: authoringLessons[draft.module - 1][0].id, options: [{ id: "a", label: "" }, { id: "b", label: "" }], correctOptionIds: [] }] })}>Add a question</button><button className="button button-primary" disabled={busy}>{busy ? "Saving…" : "Save new knowledge check draft"}</button></div>
+    </form>
+  </div><div><h2>Release history</h2><p>Most recent 100 accessible releases. Publishing replaces the current check for that module; archived question text stays available with its original results.</p>
+    {releases.length ? releases.map(release => <article key={release.id} className="platform-panel"><span className="eyebrow">Module {release.module_number} · Version {release.version} · {release.status}</span><h3>{release.title}</h3><p>{release.questions.length} questions · {release.pass_threshold}% passing score</p>
+      <details><summary>Review questions and answers</summary>{release.questions.map((question, index) => <article key={question.id}><h4>{index + 1}. {question.prompt}</h4><ul>{question.options.map(option => <li key={option.id}>{option.label}{question.correctOptionIds.includes(option.id) ? " ✓ Correct" : ""}</li>)}</ul><p>{question.explanation}</p></article>)}</details>
+      <div className="platform-actions"><button type="button" className="button button-secondary" disabled={busy} onClick={() => { setDraft({ module: release.module_number, title: release.title, questions: structuredClone(release.questions), passThresholdPercent: release.pass_threshold }); setError(""); }}>Revise as a new draft</button>
+        {administrator && release.status !== "published" ? <button className="button button-primary" disabled={busy} onClick={() => void act("publish_assessment_release", { id: release.id }, "Knowledge check published. New attempts use its questions and passing score. Earlier passes remain valid.")}>Publish knowledge check version {release.version}</button> : null}
+        {administrator && release.status !== "archived" ? <button className="button button-secondary" disabled={busy} onClick={() => void act("archive_assessment_release", { id: release.id }, "Knowledge check archived. If no release remains published, new attempts use the original course check.")}>{release.status === "published" ? "Unpublish knowledge check" : "Archive knowledge check draft"}</button> : null}
+      </div>
+    </article>) : <p className="platform-empty">The original course checks are active. Draft a release when the course needs a change.</p>}
+  </div></section>;
+}

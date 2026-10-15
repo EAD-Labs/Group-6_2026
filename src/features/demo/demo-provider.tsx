@@ -6,6 +6,7 @@ import { mergeParticipantStates, readScopedState, writeScopedState, resolveAssis
 import type { AppRole } from "@/features/auth/authorization";
 import { usePathname } from "next/navigation";
 import type { AiExperience } from "./ai-experience";
+import { safeUseNoticeVersion } from "@/features/learning/evidence-versions";
 
 type ProfileInput = { displayName: string; institution: string; primarySubject: string; teachingLevel: TeachingLevel; yearsTeaching: string };
 type GoalsInput = AiExperience & { aiFamiliarity: AiFamiliarity; goals: string[] };
@@ -87,7 +88,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       const next = merged.state;
       conflicts.current = [...new Map([...(cached?.conflicts ?? []), ...merged.conflicts].map(item => [item.id, item])).values()]; setSyncConflicts(conflicts.current);
       scope.current = nextScope; baseline.current = payload.state; revision.current = payload.revision;
-      pending.current = !sameState(next, payload.state);
+      pending.current = payload.needsSync===true || !sameState(next, payload.state);
       setIdentity({ participantId: payload.participantId, storageScope: nextScope, role: payload.role ?? "participant" });
       replace(next); setSyncStatus(conflicts.current.length ? "conflict" : pending.current ? "saving" : "saved"); setSyncError(null); cache();
     } catch (error) {
@@ -175,16 +176,16 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   }, [cache, replace]);
   const saveProfile = useCallback((input: ProfileInput) => updateState((value) => ({ ...value, ...input })), [updateState]);
   const saveGoals = useCallback((input: GoalsInput) => updateState((value) => ({ ...value, ...input, onboardingCompleted: true })), [updateState]);
-  const setSafeUseAccepted = useCallback((accepted: boolean) => updateState((value) => ({ ...value, safeUseAccepted: accepted })), [updateState]);
+  const setSafeUseAccepted = useCallback((accepted: boolean) => updateState((value) => ({ ...value, safeUseAccepted: accepted, safeUseNoticeVersion: accepted ? safeUseNoticeVersion : null })), [updateState]);
   const completeLesson = useCallback((slug: string) => updateState((value) => ({ ...value, completedLessonSlugs: [...new Set([...value.completedLessonSlugs, slug])] })), [updateState]);
   const completeModuleLesson = useCallback((module: 2 | 3 | 4, id: string) => {
     const key = module === 2 ? "moduleTwoCompletedLessonIds" : module === 3 ? "moduleThreeCompletedLessonIds" : "moduleFourCompletedLessonIds";
     updateState((value) => ({ ...value, [key]: [...new Set([...value[key], id])] }));
   }, [updateState]);
-  const recordQuizAttempt = useCallback((attempt: QuizAttempt) => updateState((value) => ({ ...value, quizAttempts: [...value.quizAttempts, { ...attempt, id: crypto.randomUUID() }] })), [updateState]);
+  const recordQuizAttempt = useCallback((attempt: QuizAttempt) => updateState((value) => ({ ...value, quizAttempts: [...value.quizAttempts, { ...attempt, id: attempt.id ?? crypto.randomUUID() }] })), [updateState]);
   const recordModuleQuizAttempt = useCallback((module: 2 | 3 | 4, attempt: QuizAttempt) => {
     const key = module === 2 ? "moduleTwoQuizAttempts" : module === 3 ? "moduleThreeQuizAttempts" : "moduleFourQuizAttempts";
-    updateState((value) => ({ ...value, [key]: [...value[key], { ...attempt, id: crypto.randomUUID() }] }));
+    updateState((value) => ({ ...value, [key]: [...value[key], { ...attempt, id: attempt.id ?? crypto.randomUUID() }] }));
   }, [updateState]);
 
   const value = useMemo(() => ({ hydrated: hydrated && validatedPath === pathname, isPresentationDemo: identity.storageScope === "demo", state, syncStatus, syncError, retrySync, syncConflicts, resolveSyncConflict,

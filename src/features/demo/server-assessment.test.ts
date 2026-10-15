@@ -8,6 +8,25 @@ const questions = assessmentBanks.quizAttempts;
 const correctAnswers = Object.fromEntries(questions.map((question) => [question.id, question.correctOptionIds]));
 
 describe("trusted server assessment", () => {
+  it("rejects invented acknowledgement versions while preserving actual historical and unknown versions",()=>{
+    expect(()=>assessParticipantState({...initialDemoState,safeUseAccepted:true,safeUseNoticeVersion:"2099-future-invented"})).toThrow(/current safe-use notice/);
+    const historical={...initialDemoState,safeUseAccepted:true,safeUseNoticeVersion:"2026-09-historical"};
+    expect(assessParticipantState(historical,historical).safeUseNoticeVersion).toBe("2026-09-historical");
+    expect(assessParticipantState({...historical,safeUseNoticeVersion:null},historical).safeUseNoticeVersion).toBe("2026-09-historical");
+    expect(()=>assessParticipantState(historical,{...historical,safeUseAccepted:false})).toThrow(/current safe-use notice/);
+    const unknown={...initialDemoState,safeUseAccepted:true,safeUseNoticeVersion:null};
+    expect(assessParticipantState(unknown,unknown).safeUseNoticeVersion).toBeNull();
+  });
+  it("uses each immutable release's passing score and rejects missing or mismatched release identifiers",()=>{
+    const release={module:1,title:"Revised check",questions:questions.slice(0,5),passThresholdPercent:90,contentVersion:"assessment:10000000-0000-4000-8000-000000000999",releaseId:"10000000-0000-4000-8000-000000000999"};
+    const answers=Object.fromEntries(release.questions.slice(0,4).map(q=>[q.id,q.correctOptionIds]));
+    const graded=gradeAttempt({...attempt(answers),contentVersion:release.contentVersion},release.questions,"quizAttempts",release);
+    expect(graded).toMatchObject({scorePercent:80,passed:false,passThresholdPercent:90,contentVersion:release.contentVersion});
+    expect(()=>gradeAttempt(attempt(answers),release.questions,"quizAttempts",release)).toThrow(/changed/);
+    expect(()=>gradeAttempt({...attempt(answers),contentVersion:"wrong"},release.questions,"quizAttempts",release)).toThrow(/changed/);
+    const historical={...graded,passed:true,passThresholdPercent:70,contentVersion:"previous-verified-release"};
+    expect(assessParticipantState({...initialDemoState,quizAttempts:[historical]},{...initialDemoState,quizAttempts:[historical]},[release]).quizAttempts).toEqual([historical]);
+  });
   it("ignores fabricated score, pass and correct-answer totals", () => {
     const graded = gradeAttempt(attempt({}), questions, "module-1");
     expect(graded).toMatchObject({ scorePercent: 0, passed: false, correctAnswers: 0 });
@@ -41,7 +60,7 @@ describe("trusted server assessment", () => {
     const saved = { ...initialDemoState, quizAttempts: [historical] };
     const result = assessParticipantState({ ...saved, displayName: "Updated profile", quizAttempts: [{ ...historical, scorePercent: 0, contentVersion: "forged" }] }, saved);
     expect(result.quizAttempts).toEqual([historical]);
-    expect(() => assessParticipantState({ ...initialDemoState, quizAttempts: [historical] })).toThrow(/unknown question/);
+    expect(() => assessParticipantState({ ...initialDemoState, quizAttempts: [historical] })).toThrow(/knowledge check changed/);
   });
   it("preserves captured Passport history while allowing current edits and whole-assistant deletion", () => {
     const id = "00000000-0000-4000-8000-000000000999";
