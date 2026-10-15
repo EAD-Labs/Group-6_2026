@@ -9,6 +9,7 @@ import "./platform.css";
 import "./apple-experience.css";
 import "./onboarding-experience.css";
 import "./staffroom-experience.css";
+import "./visitor-experience.css";
 
 export const metadata: Metadata = {
   title: {
