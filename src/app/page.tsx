@@ -23,7 +23,7 @@ export default function HomePage() {
           <p className={styles.eyebrow}><span />A little help for the work you love</p>
           <h1 id="home-title">AI for teaching.<br /><span>Made simple.</span></h1>
           <p className={styles.description}>Plan a lesson. Make a quiz. Explain a tricky topic.<br className={styles.desktopBreak} /> Learn to use AI for everyday teaching, one clear step at a time.</p>
-          <div className={styles.actions}><Link className={styles.primary} href="/sign-up">Start learning <Icon name="arrow-right" /></Link><a className={styles.secondary} href="#how-it-works">See how it works <Icon name="play" /></a></div>
+          <div className={styles.actions}><Link className={styles.primary} href="/sign-up">Start learning <Icon name="arrow-right" /></Link><Link className={styles.secondary} href="/try">Try without an account <Icon name="play" /></Link></div>
           <p className={styles.accessNote}><Icon name="check" />No AI experience needed. No coding. Learn at your pace.</p>
           <div className={styles.courseFacts}><span><strong>4</strong> practical modules</span><span><strong>29</strong> guided lessons</span><span><Icon name="shield" />You stay in control</span></div>
         </div>
@@ -52,6 +52,6 @@ export default function HomePage() {
       </section>
       <section className={styles.closing} aria-labelledby="closing-title"><span className={styles.closingIcon}><Icon name="sparkles" /></span><h2 id="closing-title">Your next lesson starts here.</h2><p>Bring your teaching experience. We’ll help with the AI part.</p><Link className={styles.primary} href="/sign-up">Create my account <Icon name="arrow-right" /></Link></section>
     </main>
-    <footer className={styles.footer}><span>Made for teachers, with care.</span><nav aria-label="Help and privacy"><Link href="/help">Help</Link><Link href="/privacy">Privacy &amp; safe use</Link></nav><span className={styles.credit}>ET-617 · Group 6</span></footer>
+    <footer className={styles.footer}><span>Made for teachers, with care.</span><nav aria-label="Help and privacy"><Link href="/review-lab">Teaching Review Lab</Link><Link href="/help">Help</Link><Link href="/privacy">Privacy &amp; safe use</Link></nav><span className={styles.credit}>ET-617 · Group 6</span></footer>
   </div>;
 }

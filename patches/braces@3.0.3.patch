@@ -1,0 +1,22 @@
+diff --git a/lib/parse.js b/lib/parse.js
+index 3a6988e629f52aee6609dc5ec290a5e9ff47cecb..09b34c5d0395fe6454547780695dfaa683b71210 100644
+--- a/lib/parse.js
++++ b/lib/parse.js
+@@ -144,6 +144,8 @@ const parse = (input, options = {}) => {
+ 
+     if (value === CHAR_LEFT_PARENTHESES) {
+       block = push({ type: 'paren', nodes: [] });
++      // Bound AST depth before recursive compilation/stringification.
++      if (stack.length >= 128) throw new RangeError("Brace pattern nesting exceeds the safe limit");
+       stack.push(block);
+       push({ type: 'text', value });
+       continue;
+@@ -210,6 +212,8 @@ const parse = (input, options = {}) => {
+       };
+ 
+       block = push(brace);
++      // Bound AST depth before recursive compilation/stringification.
++      if (stack.length >= 128) throw new RangeError("Brace pattern nesting exceeds the safe limit");
+       stack.push(block);
+       push({ type: 'open', value });
+       continue;
