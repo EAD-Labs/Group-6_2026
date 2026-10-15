@@ -1,0 +1,1 @@
+study_id,session_id,task_id,task_version,date,release,device_browser,start_time,end_time,elapsed_seconds,technical_interruption_seconds,result,help_code,help_description,interface_error,conceptual_error,recovery,evidence_reference,observer_id,missing_reason

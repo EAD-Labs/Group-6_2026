@@ -17,3 +17,9 @@ tmp/
 .vercel/
 .env.local
 .env.*.local
+
+supabase/.temp/
+playwright-report/
+test-results/
+__pycache__/
+*.pyc

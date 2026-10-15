@@ -1,4 +1,4 @@
-> **Open pilot update — 6 October 2026:** Public signup now allows immediate email/password login. The user approved turning email confirmation off for this pilot. Email format is checked; mailbox ownership is not verified. General password recovery still needs approved custom SMTP. Gemini is already configured in production. The historical setup instructions below apply when those services need reconfiguration. See [pilot release](PILOT_RELEASE_2026-10-06.md).
+> **15 October user decision:** Continue with the existing production Supabase project; emails are deferred for now. Preserve immediate password signup/login and do not enable SMTP or send recovery emails for this release. Custom SMTP was OFF in the 14 October dashboard check. Recovery delivery is **deferred**, not verified. The instructions below remain a future owner reference; they are not a request for current credentials or configuration. Gemini is configured, but real successful generation needs its own evidence.
 
 # Finish Gemini and recovery-email setup
 
@@ -41,11 +41,11 @@ Checked 2 October 2026 for [the live PromptShala site](https://promptshala.verce
 
 Supabase's default SMTP only sends to project-team addresses and is intended for development; custom SMTP is required for participant email delivery. See [Supabase's SMTP instructions](https://supabase.com/docs/guides/auth/auth-smtp).
 
-## Choose the first administrator
+## Administrator provisioning in a new environment
 
 Provide the intended administrator's email address, without a password. The intended administrator creates their own account at `/sign-up`; the authorised Supabase owner verifies that specifically approved email and UUID. Only then should the owner assign the `admin` role through the trusted database administration channel and test ordinary sign-in. Sending an invitation requires approval for that recipient. User-supplied profile metadata cannot grant staff permissions.
 
-The website is deployed and its synthetic account checks passed. An observed live Gemini acceptance check, external email delivery and the first real administrator remain separate setup steps. Client content approval, complete UAT, the isolated restore rehearsal and the teacher pilot remain in [the release plan](../progress.md).
+The first approved production administrator was assigned on 6 October 2026; its identity is restricted. A new staging/restore environment needs its own approved bootstrap, and a fresh ordinary production admin login still needs acceptance. The website's dated synthetic checks do not establish successful live Gemini, recovery email arrival, complete client UAT, full managed recovery or the teacher study. Use the [current delivery register](final/FINAL_DELIVERY_RECORD.md) for actual outcomes.
 
 ## October 10 redesign: saved CRAFT prompts
 

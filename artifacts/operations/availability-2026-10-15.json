@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "availability-probe/1",
+  "sampledAt": "2026-10-15T04:17:05.579Z",
+  "origin": "https://promptshala.vercel.app",
+  "healthy": true,
+  "timeoutMs": 5000,
+  "endpoints": [
+    {
+      "endpoint": "/health",
+      "healthy": true,
+      "outcome": "ok",
+      "status": 200,
+      "durationMs": 1546
+    },
+    {
+      "endpoint": "/api/health",
+      "healthy": true,
+      "outcome": "ok",
+      "status": 200,
+      "durationMs": 211
+    }
+  ],
+  "interpretation": "Two public endpoint samples only. Configuration flags do not verify Auth, database writes, email, AI or learner journeys. Scheduled sampling is not a measured 99.5% availability result."
+}

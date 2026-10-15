@@ -1,12 +1,12 @@
 # User acceptance and ten-participant pilot plan
 
-Prepared 1 October 2026 against HLD v1.3, section 14. **Planned; not executed or signed off.** Local automated evidence supports development review. It does not replace acceptance in the approved deployment, participant observation, a measured load test or a field study.
+Prepared 1 October 2026 against HLD v1.3, section 14; execution boundary clarified 14 October. **Client acceptance plan; not signed off.** Dated production synthetic checks since 1 October support several cases; they do not establish full client UAT, observed learning, measured hosted load or field-study outcomes. Use the [current evidence register](../final/FINAL_DELIVERY_RECORD.md), [client decision packet](../final/CLIENT_REVIEW_AND_DECISIONS.md) and [ready study materials](../study/README.md). The table below retains the original planned cases; its early "not run" statements refer to the original session, not denial of later evidence.
 
 ## Test record and entry conditions
 
 Record the release revision, URL, Supabase project, migration versions, browser/OS/device, network profile, test account role, date, tester and evidence path for every run. Use synthetic accounts and classroom sources. Prepare participants A and B, an administrator, a facilitator assigned to cohort X, a second cohort Y, a content manager, an incomplete learner and a legitimately completed test learner. Do not fabricate passing progress through a public API to simplify certificate testing.
 
-Before external UAT: owner restores authorised deployment access; staging credentials and migrations are verified; safe-use/privacy wording and provider terms are approved; an operator and facilitator are available; account recovery works; automated checks pass; no known critical data/privacy defect remains. Current blockers are missing local connected-service configuration and Vercel team access (403). Record actual service outcomes after these are resolved.
+Before external UAT: identify the reviewed target/migrations; approve safe-use/privacy wording and provider terms; have an operator/facilitator available; pass current automated checks and resolve critical data/privacy defects. On 15 October the user chose the existing production project and deferred email; record recovery delivery under AC-01 as deferred/not observed, not passed. Do not send email or run isolated-load/restore rehearsals against production. The historical Vercel 403 blocker was resolved; actual new service outcomes need their own record.
 
 Result vocabulary: **Pass** (observed with evidence), **Fail** (expected result not observed), **Blocked** (dependency prevents execution), **Not run**, or **Accepted change** (named decision and approver; not a disguised pass). The nineteen cases below start **Not run**. Where the current scope differs from the HLD, the reviewer must resolve that difference explicitly.
 
@@ -35,6 +35,25 @@ Result vocabulary: **Pass** (observed with evidence), **Fail** (expected result 
 | AC-19 · Delivery reports | Review separate Foundation/Core, AI Practice/Workflows and Certification/Admin reports with unit, integration and UAT evidence. Check actual dates and sequence against HLD. | Three honest reports and review decisions. Retrospective reports must not claim staged handoffs occurred before later work if they did not. | Draft reports supplied; separate UAT/acceptance and original sequencing unverified. |
 
 The [implementation plan](../HLD/IMPLEMENTATION_PLAN.md) maps technical gaps. The [lesson review](../content/LESSON_REVIEW.md) records all 29 curriculum checks and source verification. Neither document is client sign-off.
+
+## Final release additions - supplementary acceptance
+
+These cases extend the original nineteen criteria and start **Not run by the client**. Developer browser/database results may be attached as supporting evidence; keep the actual release and reviewer disposition separate.
+
+| ID | Reviewer task and boundary | Evidence to record |
+| --- | --- | --- |
+| V01 | Give a visitor only the QR and neutral classroom task. Observe request check/revision, source scaffold/edit, review and reset without a team demonstration. Ask them to explain local versus AI and temporary versus saved work. | Independent/helped/incomplete, actual help, next-action confusion and truthful understanding; phone/desktop result. |
+| V02 | In Teaching Review Lab, review an original and revised permitted draft with a portable rubric. Change material/objective/source after rating; verify old ratings are not presented as current evidence. Import a different rubric and clear the session. | Rubric/evidence/version export, reset behaviour, source handling and downloaded-copy explanation. |
+| V03 | Ask an educator from another subject to adapt the supplied rubric and use it on a different teaching resource. Include an essential-check problem and revise it. | Adaptation effort, usable criteria, preserved version and specific evidence; no automatic factual or learning-effect claim. |
+| A01 | Draft a structured lesson update with goal, text, activity/reflection and accessible reading/video links; omit permissions or accessible notes once, then correct. Preview as a learner. | Validation understandable, intended audience and substantive educator/media review. |
+| A02 | Use administrator, content manager and assigned/unassigned facilitator accounts. Draft/revise/publish/archive through ordinary sessions and directly attempt a forbidden audience/role operation. | Server denial, approved scope and audit; hidden UI alone is insufficient. |
+| A03 | Publish both a global and cohort-specific lesson update, then revise one audience. Open as an enrolled learner and an outsider. | Correct audience visibility, no unrelated-audience archive, unchanged original course and immutable history. |
+| A04 | Draft/review a knowledge-check bank, single/multiple-answer choices, explanation and 70-100% passing score. Attempt invalid thresholds/mappings and publication as non-admin. | Useful educator-reviewed questions, understandable validation, protected release and actual required-correct count. |
+| A05 | Publish a new check while another learner has the old version open; preserve an earlier verified pass. Repeat the same submitted attempt and then change its answers. Resume on another device. | New attempts use exact new bank/threshold; publication race is recoverable; old pass/version retained; identical retry returns committed private receipt; changed replay denied. |
+| A06 | Compare current-version question reports, historical records and certificate assessment snapshot. Try another account's receipt and a forged safe-use notice/version. | Accurate version boundaries, owner-only receipt, trusted eligibility and denied fabricated evidence. |
+| O01 | Read retention readiness with authorised/missing/wrong maintenance credential. Review proposed policy history. Confirm no account/certificate cleanup starts from this report. | Aggregate-only output, denial and explicit disabled long-term policy; no raw records/secrets in evidence. |
+
+Final assessment-release migration was applied on 15 October; current local regression is recorded in the final validation artifact. Never treat an earlier 75-question run as proof of subsequently edited published questions or actual client acceptance.
 
 ## Ten-participant pilot facilitation
 

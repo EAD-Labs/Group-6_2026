@@ -1,0 +1,70 @@
+name: Container build and smoke
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  standalone-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+      - name: Build with public fictional configuration
+        run: |
+          docker build --tag promptshala-container-smoke . \
+            --build-arg NEXT_PUBLIC_APP_ENV=test \
+            --build-arg NEXT_PUBLIC_SUPABASE_URL=https://example.supabase.co \
+            --build-arg NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_container_fixture \
+            --build-arg NEXT_PUBLIC_SITE_URL=http://127.0.0.1:3000
+      - name: Start restricted non-root standalone runtime
+        run: |
+          docker run --detach --name promptshala-runtime \
+            --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m \
+            --cap-drop ALL --security-opt no-new-privileges --pids-limit 256 \
+            --publish 127.0.0.1:3000:3000 \
+            --env NEXT_PUBLIC_APP_ENV=test \
+            promptshala-container-smoke
+          test "$(docker exec promptshala-runtime id -u)" = "1001"
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --max-time 2 http://127.0.0.1:3000/health >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          exit 1
+      - name: Probe container health contract
+        run: node scripts/probe-availability.ts artifacts/operations/container-health.json --local-origin http://127.0.0.1:3000
+      - name: Load public visitor and review pages without external services
+        run: |
+          node --input-type=module <<'JS'
+          for (const route of ["/", "/try", "/review-lab"]) {
+            const response = await fetch(`http://127.0.0.1:3000${route}`, { redirect: "error", signal: AbortSignal.timeout(10_000) });
+            if (response.status !== 200 || !response.headers.get("content-type")?.includes("text/html")) throw new Error("Public container route did not load");
+            const body = await response.text();
+            if (!body.includes("PromptShala")) throw new Error("Expected application markup missing");
+            console.info(JSON.stringify({ route, status: response.status, htmlReceived: true }));
+          }
+          JS
+      - name: Retain safe runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: container-health-${{ github.run_id }}
+          path: artifacts/operations/container-health.json
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Show runtime logs on failure
+        if: failure()
+        run: docker logs promptshala-runtime || true
+      - name: Remove the temporary runtime
+        if: always()
+        run: docker rm --force promptshala-runtime || true

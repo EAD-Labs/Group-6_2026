@@ -1,0 +1,30 @@
+.content-authoring-studio .platform-form fieldset {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.75rem;
+  background: var(--paper);
+}
+.content-authoring-studio legend {
+  padding-inline: 0.4rem;
+  color: var(--ink);
+  font-weight: 650;
+  font-size: 0.95rem;
+}
+.content-authoring-studio details > summary {
+  min-height: 2.75rem;
+  padding-block: 0.75rem;
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+}
+.content-authoring-studio details fieldset + fieldset { margin-top: 1rem; }
+.content-authoring-studio details > .button { margin-top: 1rem; }
+.content-authoring-studio .platform-check input { margin-top: 0.35rem; flex-shrink: 0; }
+.content-authoring-studio .content-preview :is(p, li) { overflow-wrap: anywhere; }
+.content-authoring-studio .platform-actions .button:active { transform: scale(0.98); }
+@media (prefers-reduced-motion: reduce) {
+  .content-authoring-studio .platform-actions .button:active { transform: none; }
+}

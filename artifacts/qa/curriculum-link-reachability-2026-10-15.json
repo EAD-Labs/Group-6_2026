@@ -1,0 +1,155 @@
+{
+  "checkedAt": "2026-10-15T04:19:50.003Z",
+  "scope": "HTTP reachability only; not educator approval, video playback/caption/rights or content suitability",
+  "results": [
+    {
+      "url": "https://edu.google.com/intl/ALL_ca/ai-resources-in-education/",
+      "status": 200,
+      "finalUrl": "https://edu.google.com/intl/ALL_ca/ai-resources-in-education/",
+      "contentType": "text/html"
+    },
+    {
+      "url": "https://edu.google.com/resources/ai-for-k-12-educators/",
+      "status": 200,
+      "finalUrl": "https://edu.google.com/resources/ai-for-k-12-educators/",
+      "contentType": "text/html"
+    },
+    {
+      "url": "https://educationendowmentfoundation.org.uk/education-evidence/guidance-reports/feedback",
+      "status": 403,
+      "finalUrl": "https://educationendowmentfoundation.org.uk/education-evidence/guidance-reports/feedback",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://grow.google/ai-for-educators/",
+      "status": 200,
+      "finalUrl": "https://grow.google/ai-for-educators/",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://lesson-plans.code.org/foundations-gen-ai-2024/20250507162310/teacher-lesson-plans/Input-Training-Data.pdf",
+      "status": 200,
+      "finalUrl": "https://lesson-plans.code.org/foundations-gen-ai-2024/20250507162310/teacher-lesson-plans/Input-Training-Data.pdf",
+      "contentType": "application/octet-stream"
+    },
+    {
+      "url": "https://services.google.com/fh/files/misc/learnlm_prompt_guide.pdf",
+      "status": 200,
+      "finalUrl": "https://services.google.com/fh/files/misc/learnlm_prompt_guide.pdf",
+      "contentType": "application/pdf"
+    },
+    {
+      "url": "https://support.google.com/gemini/answer/15235603?hl=en",
+      "status": 200,
+      "finalUrl": "https://support.google.com/gemini/answer/15235603?hl=en",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://support.google.com/gemini/answer/15236405?hl=en",
+      "status": 200,
+      "finalUrl": "https://support.google.com/gemini/answer/15236405?hl=en",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://support.google.com/gemininotebook/answer/16179559?hl=en",
+      "status": 200,
+      "finalUrl": "https://support.google.com/gemininotebook/answer/16179559?hl=en",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://support.google.com/gemininotebook/answer/16215270?co=GENIE.Platform%3DDesktop&hl=en-6",
+      "status": 200,
+      "finalUrl": "https://support.google.com/gemininotebook/answer/16215270?co=GENIE.Platform%3DDesktop&hl=en-6",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://support.google.com/gemininotebook/answer/16215270?hl=en",
+      "status": 200,
+      "finalUrl": "https://support.google.com/gemininotebook/answer/16215270?hl=en",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://support.google.com/gemininotebook/answer/16269187?hl=en",
+      "status": 200,
+      "finalUrl": "https://support.google.com/gemininotebook/answer/16269187?hl=en",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://udlguidelines.cast.org/",
+      "status": 200,
+      "finalUrl": "https://udlguidelines.cast.org/",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://wiki.creativecommons.org/wiki/Best_practices_for_attribution",
+      "status": 200,
+      "finalUrl": "https://wiki.creativecommons.org/wiki/Best_practices_for_attribution",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "status": 200,
+      "finalUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "status": 200,
+      "finalUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://www.unesco.org/en/articles/ai-competency-framework-teachers",
+      "status": 200,
+      "finalUrl": "https://www.unesco.org/en/articles/ai-competency-framework-teachers",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://www.unesco.org/en/articles/ai-competency-framework-teachers?hub=83294",
+      "status": 200,
+      "finalUrl": "https://www.unesco.org/en/articles/ai-competency-framework-teachers?hub=83294",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research?hub=67098",
+      "status": 200,
+      "finalUrl": "https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research?hub=67098",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=0wfJeL-IalY",
+      "status": 200,
+      "finalUrl": "https://www.youtube.com/watch?v=0wfJeL-IalY",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=3oqxjPXbynE",
+      "status": 200,
+      "finalUrl": "https://www.youtube.com/watch?v=3oqxjPXbynE",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=Ok-xpKjKp2g",
+      "status": 200,
+      "finalUrl": "https://www.youtube.com/watch?v=Ok-xpKjKp2g",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=X-AWdfSFCHQ",
+      "status": 200,
+      "finalUrl": "https://www.youtube.com/watch?v=X-AWdfSFCHQ",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=ZvcLzoHybhY",
+      "status": 200,
+      "finalUrl": "https://www.youtube.com/watch?v=ZvcLzoHybhY",
+      "contentType": "text/html; charset=utf-8"
+    }
+  ],
+  "readerVerification": {
+    "url": "https://educationendowmentfoundation.org.uk/education-evidence/guidance-reports/feedback",
+    "verifiedAt": "2026-10-15",
+    "result": "The independent web reader opened the current EEF Teacher Feedback to Improve Pupil Learning guidance page; direct-host HTTP403 is not treated as a broken resource."
+  }
+}

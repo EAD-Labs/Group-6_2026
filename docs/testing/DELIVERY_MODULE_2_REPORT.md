@@ -1,41 +1,41 @@
-# Delivery Module 2 report — AI Practice and Workflows
+# Delivery Module 2 report - AI Practice and Workflows
 
-Prepared 1 October 2026. **Draft for review; no UAT or handover sign-off.** This is technical Delivery Module 2: CRAFT prompt practice, reusable assistants, source transformation and notebook guidance. It spans teacher-learning Modules 2–4. Attach a reviewed commit and actual deployed environment before acceptance.
+Updated 15 October 2026. **Review-ready report; no client UAT or handover sign-off.** This technical delivery spans prompt practice, reusable helpers, source workflows and the wider-context review module. The [1 October report](history/2026-10-01/DELIVERY_MODULE_2_REPORT.md) remains dated history.
 
-## Scope delivered in code
+## Delivered scope
 
-- CRAFT lab with five-dimension feedback, revised-attempt comparison and a reusable prompt library. Feedback identifies live evaluation or rule-based fallback.
-- AI Staffroom with editable Passport/context/source pack, role-aware challenge cases, expected/actual review, repair versions, retests, synthetic rehearsal, teacher-led handoffs, reuse and Markdown export.
-- Guided Source Studio with three original fictional packs, passage-based claim audits, prepared editable resources, revision, review checklist and portable portfolio.
-- Separate own-source workspace for pasted text or plain `.txt`, six output formats, editable local extractive scaffold, optional configured Gemini draft, source labels, review/export and private 30-day storage/deletion.
-- Notebook guidance and verified provider references. It is not an embedded NotebookLM account integration, autonomous browsing agent or connector to a participant's Google files.
+- CRAFT task/prompt evaluation across five dimensions, original/revised comparisons, reusable templates and private full task/prompt/feedback history with account export/deletion.
+- Optional personal Gemini key in open-tab memory; never persisted in the database/browser storage; cleared on refresh, sign-out and account change.
+- Teaching helper specification/context/source pack, saved versions, six v1 cases and three same-input v2 retests, failure repair or all-pass strengthening, duplication and Markdown export.
+- Guided Source Studio with fictional source packs, passage-based claim audits, review/edit and portfolio evidence.
+- Separate own-material pasted-text/`.txt` transformation into six text formats, editable extractive scaffold or optional AI draft, teaching brief, source labels, six review checks and private 30-day resource saving/reopening/deletion.
+- Final working-tree additions: reusable Teaching Review Lab with custom versioned rubric import, human evidence ratings, critical checks, original/revision comparison and portable export; explicit rubric version on new CRAFT evidence; provider compatibility/resilience improvements. Deployment and real-provider evidence are recorded separately.
 
-## Evidence currently available
+## Evidence and interpretation
 
 | Layer | Evidence | Result and limit |
 | --- | --- | --- |
-| Pedagogical review | [Lesson matrix](../content/LESSON_REVIEW.md), teacher examples, Staffroom challenges and [quiz bank](../content/QUIZ_BANK.md) | Seven prompt lessons, eight assistant lessons and eight source lessons reviewed. Examples are original fictional teaching scenarios. Provider/help sources checked; videos not fully watched. |
-| Targeted automated run | `quiz.test.ts`, `pathway.test.ts`, `source-studio.test.ts`, `open-curriculum.test.tsx` | Shared final curriculum run passed 32 tests/four files on 1 October; same run cited in Delivery Module 1, not an additional total. |
-| Content lint | Six edited curriculum TypeScript files | Passed. Does not establish live AI, source transformation or all-app integration quality. |
-| Further coverage in repository | CRAFT evaluator/provider tests, practice and Staffroom tests, participant isolation, database/resource tests | Release owner must attach the final run output. Local tests and mocked provider replies do not establish successful live calls. |
-| Live Gemini | Authenticated consented requests, failure injection and timing | Not run with an approved configured provider in this session. |
-| Remote private resource lifecycle | Own-source save/reload, A/B privacy, deletion/expiry and scheduled cleanup | Not run on managed Supabase or deployed cron in this session. |
-| Module UAT | AC-05–08, relevant AC-09 and AC-13–17 in [UAT plan](UAT_AND_PILOT.md) | Not run or signed off. |
+| Pedagogy/content | [Lesson matrix](../content/LESSON_REVIEW.md), teacher scenarios and helper challenges | Original fictional examples; formative feedback, revision and source verification. Not a measured classroom-effectiveness result. |
+| Earlier production | [Release review](RELEASE_REVIEW.md), October client-feedback record | Private CRAFT persistence/relogin/export/isolation and invalid personal-key fallback checked. A deliberately invalid key is not successful live AI verification. |
+| Automated provider/workflow tests | CRAFT/helper/transform/provider, rubric, privacy and database suites | Shared reported 435-test / 66-file final local run; mocked responses establish contract handling, not live Google success. Attach final run/revision in the current register. |
+| Public browser captures | `artifacts/final-presentation/capture.json` and PNGs | Genuine local browser interactions with fictional material. Public methods are local checklist/scaffolds, not generated live-AI replies. |
+| Broader-context capability | `src/features/review-lab`, imported rubric and exported review | Course-independent human evidence workflow; score is not fact verification, permission or proven effectiveness. |
+| Client acceptance | AC-05-08, AC-09, relevant AC-13-17 | Pending actual reviewer execution/decision. |
 
-## Behaviour and scope boundaries
+Do not describe a prepared excerpt, rule-based result or extractive scaffold as a fresh provider response. Labels indicate origin and limits. Numbered source references need human checking; syntax alone does not prove passage support.
 
-The prompt score evaluates request features; it is not proof of a correct classroom output. Staffroom live testing needs connected configuration; manual evidence must state its actual origin. Guided Source Studio uses authored packs and examples. Optional own-source transformation is a distinct workspace and does not replace the guided assessed portfolio.
+## Scope and limits
 
-The own-source default produces an extractive scaffold. Its local mode has no provider call. Live mode sends permitted text and the task brief to the configured provider, subject to authentication, saved consent, limits and timeout. A syntactically valid source label does not establish that its passage supports the claim; the teacher still checks it. PDF/Word import, arbitrary website import, cloud-drive integration and rendered slide/audio production are not implemented. Slide outlines and audio scripts are text outputs.
+NotebookLM is guidance to an external tool, not an embedded Google-account/Drive integration. `.txt` and pasted text are supported; PDF/Word/cloud/web imports, rendered presentations and audio files are outside current scope. Slide outlines and audio scripts are text. Public visitor/review paths save no course progress and need no key; full cloud workflows require authentication.
 
-Connected saved resources expire 30 days after creation. Owner access filters expired rows and the maintenance function purges them; deployed scheduler execution is still unverified. Clearing the browser workspace is separate from deleting its server record. Exports and external-provider copies are outside application deletion.
+Resource expiry is 30 days from original creation, not extended by edits. Local Clear and cloud Delete remove different copies. Daily maintenance has previous actual production success evidence; it is not wholly unverified. Downloads and provider/backups have separate retention.
 
-## Outstanding acceptance work
+## Outstanding acceptance
 
-Approve provider account, terms, budget and privacy notice; verify the selected model and actual response format; run successful and failing live requests without pupil data; retain measured latency and input-preservation evidence; test rate limiting under realistic sessions. In staging, rehearse resource save/reload with its teaching brief, owner isolation, size/type rejection, local/cloud deletion and expiry cleanup. Observe teachers doing a Passport repair/retest and a claim audit without hidden assistance.
+Actual existing-production observation on 14 October at 17:42 UTC: CRAFT returned labelled rule-based fallback (200), helper was unavailable (503), and transformation returned extractive fallback (200). The synthetic account was removed. No successful course-provider or valid personal-key result is claimed; private detailed evidence stays outside public source.
 
-Current external blockers: no local Supabase/Gemini configuration and Vercel team access 403. Client confirmation of scope boundaries and content remains pending. No time saving, learning gain or pilot completion is claimed.
+Observe successful real course-key and personal-key operation in all three AI workflows and record model/mode/latency without secrets/content. Test timeout, malformed output, rate limit and retry while preserving work. Approve provider budget/processing terms and monitored ownership. Repeat own-source save/reopen/delete/expiry and all six formats with ordinary accounts; observe helper repair/retest and claim audit without hidden help. Resolve the approved raw-history privacy change against older fingerprint-only HLD wording.
 
-The HLD requests a separate Module 2 test/demo handoff before Module 3 begins. This draft records current implementation; it cannot retrospectively prove that sequence.
+Reviewer/date: ______. Final revision/environment/evidence: [current register](../final/FINAL_DELIVERY_RECORD.md). Results/defects/decision: ______.
 
-Review record: revision **pending**; environment **pending**; tester/date **pending**; cases passed/failed/blocked **pending**; defects/waivers **pending**; client reviewer and decision **pending**.
+No time saving, learning gain, complete field study or historical sequential handoff is asserted.

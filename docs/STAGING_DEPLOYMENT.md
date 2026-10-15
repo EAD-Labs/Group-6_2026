@@ -1,5 +1,7 @@
 # Staging Deployment Plan
 
+Updated 15 October 2026. This is a **future isolated-testing runbook**, not proof that staging exists. The user chose the existing production project for the current release; no new paid project or project deletion is required. Do not run destructive restore or the 25-user workload on that shared production target. A separate isolated target would need a later actual project/approval record; record outcomes in the [current register](final/FINAL_DELIVERY_RECORD.md).
+
 ## Initial approach
 
 Use Vercel for the Next.js application and a dedicated Supabase staging project for authentication and PostgreSQL. A protected `staging` branch receives approved feature branches and has a stable Vercel Preview alias for client demonstrations. Production remains tied to `main` and is not promoted until release approval.
@@ -9,15 +11,15 @@ Use Vercel for the Next.js application and a dedicated Supabase staging project 
 | Environment | Web application | Supabase | Data |
 |---|---|---|---|
 | Local | `pnpm dev` | Local Supabase or developer sandbox | Disposable fictional test data |
-| Staging | Vercel Preview tracking `staging` | Dedicated staging project | Ten fictional/pilot accounts only |
-| Production | Vercel Production tracking `main` | Dedicated production project | Created only after pilot approval |
+| Staging | Protected Vercel Preview/stable test alias | Dedicated staging project | Synthetic accounts only; 25 distinct accounts for load rehearsal |
+| Production | Existing Vercel Production | Existing production project | Approved account/teacher data; no destructive load/recovery rehearsal |
 
 Never reuse a Supabase project or secret across these environments.
 
 ## One-time setup
 
-1. Create separate Supabase staging and production projects in the organisation account.
-2. Create a Vercel project connected to `EAD-Labs/Group-6_2026`.
+1. Create or verify a separate Supabase staging project in the authorised organisation. Confirm it differs from existing production before writes.
+2. Use the existing Vercel/GitHub arrangement or a clearly named protected staging app; do not create a duplicate production project merely to run this plan.
 3. Configure `main` as the Vercel production branch but keep production promotion controlled until release approval.
 4. Create and protect a `staging` branch in GitHub.
 5. Assign the `staging` branch a stable Vercel Preview URL or alias.
@@ -25,7 +27,7 @@ Never reuse a Supabase project or secret across these environments.
 7. Add `GEMINI_API_KEY` and `GEMINI_CRAFT_MODEL` as optional server-only values only when enabling approved live AI. Never expose either value with a `NEXT_PUBLIC_` prefix. Guided practice and supported deterministic fallbacks remain available without them.
 8. Add `SUPABASE_SERVICE_ROLE_KEY` as a server-only value: trusted progress writes, staff operations, certificate issuance and account deletion require it. Add a separate random `CRON_SECRET` for retention cleanup. Run `node scripts/check-environment.mjs --strict`; this checks presence, not credential validity or connectivity.
 9. Apply migrations to staging using an authorised maintainer account.
-10. Provision only the approved ten pilot users and one or two administrators.
+10. Provision synthetic participant/staff fixtures needed for isolation tests; prepare 25 distinct synthetic participants for the guarded load rehearsal. Real field-study accounts belong in the approved accepted environment, not disposable fixtures.
 
 ## Deployment flow
 
@@ -41,14 +43,14 @@ Never reuse a Supabase project or secret across these environments.
 
 ## Staging smoke test
 
-- `/health` returns status `ok` and environment `staging`.
+- `/api/health` returns the intended environment and configuration flags; separately test actual database/session/provider functionality.
 - Public home and sign-in pages load on mobile and desktop.
 - A provisioned participant can sign in and sign out.
 - A signed-out visitor is redirected from `/dashboard`, `/learn/**`, and `/settings/**`.
 - Participant A cannot read Participant B’s profile, progress, attempts, or responses.
 - Module 1 is available after onboarding.
 - Lessons and quizzes can be opened for practice; completion requires all of the module's lessons and required evidence.
-- Three of five answers fails; four of five passes.
+- Base banks contain 14/19/23/19 questions; 70% requires 10/14/17/14 correct. Published releases may change count and threshold (70-100%). Verify below/at/above the actual published threshold, historical pass preservation and exact multi-select handling.
 - A failed attempt can be retried and remains in attempt history.
 - All four learning modules are accessible from the start. Completion records require their lessons, passed quiz and required practice evidence; retries retain the best score.
 - The course's evaluator key stays on the server and never appears in the browser or response payloads. An optional personal key stays in the open tab's memory, is forwarded server-side only for explicit AI requests, and clears on refresh, sign-out and account change.

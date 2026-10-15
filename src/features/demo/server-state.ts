@@ -77,6 +77,7 @@ function cleanQuizAttempts(value: unknown): QuizAttempt[] {
         id: cleanString(attempt.id, "", 100) || undefined,
         contentVersion: cleanString(attempt.contentVersion, "", 80) || undefined,
         verifiedAt: cleanString(attempt.verifiedAt, "", 40) || undefined,
+        passThresholdPercent: Number.isInteger(attempt.passThresholdPercent) && Number(attempt.passThresholdPercent) >= 70 && Number(attempt.passThresholdPercent) <= 100 ? Number(attempt.passThresholdPercent) : undefined,
         answers:
           attempt.answers && typeof attempt.answers === "object"
             ? attempt.answers
@@ -89,7 +90,7 @@ function cleanQuizAttempts(value: unknown): QuizAttempt[] {
           0,
           Math.min(1000, Math.round(Number(attempt.correctAnswers) || 0)),
         ),
-        passed: scorePercent >= 70,
+        passed: scorePercent >= (Number.isInteger(attempt.passThresholdPercent) && Number(attempt.passThresholdPercent) >= 70 && Number(attempt.passThresholdPercent) <= 100 ? Number(attempt.passThresholdPercent) : 70),
         scorePercent,
       };
     })
@@ -247,6 +248,7 @@ export function sanitizeDemoState(value: unknown): DemoState {
     reducedMotion: Boolean(input.reducedMotion),
     reflection: cleanString(input.reflection, "", 500),
     safeUseAccepted: Boolean(input.safeUseAccepted),
+    safeUseNoticeVersion: input.safeUseAccepted && typeof input.safeUseNoticeVersion === "string" && /^[a-zA-Z0-9.-]{3,80}$/.test(input.safeUseNoticeVersion) ? input.safeUseNoticeVersion : null,
     teachingLevel,
     yearsTeaching: String(Math.max(0, Math.min(70, Math.floor(Number(input.yearsTeaching) || 0)))),
   };

@@ -7,6 +7,10 @@ import { hasPublicSupabaseEnvironment } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hasSameOrigin, readJsonBody, RequestValidationError } from "@/lib/server/request";
+import { resolveCurrentAssessments } from "@/features/content-authoring/server-assessment-releases";
+import { assessmentFields } from "@/features/content-authoring/assessment-release";
+import { uuidPattern } from "@/features/platform/server";
+import type { QuizAttempt } from "@/features/demo/demo-state";
 
 const json = (body: unknown, status = 200) => NextResponse.json(body, { status, headers: { "Cache-Control": "private, no-store" } });
 
@@ -41,9 +45,17 @@ export async function PUT(request: Request) {
     if (!body.state || typeof body.state !== "object" || Array.isArray(body.state) || !Number.isSafeInteger(body.revision) || Number(body.revision) < 0) {
       return json({ error: "Provide a valid participant state and revision." }, 400);
     }
-    const record = await getParticipantState(supabase, data.user.id);
+    const admin = createAdminClient();
+    const [record,releases]=await Promise.all([getParticipantState(supabase,data.user.id),resolveCurrentAssessments(admin)]);
     if (record.revision !== body.revision) return json({ error: "Saved progress changed on another device.", conflict: true, participantId: data.user.id, ...record }, 409);
-    const state = assessParticipantState(sanitizeDemoState(body.state), record.state);
+    const incoming=sanitizeDemoState(body.state),savedState={...record.state};
+    const newIds=assessmentFields.flatMap(field=>incoming[field].filter(attempt=>attempt.id&&uuidPattern.test(attempt.id)&&!record.state[field].some(saved=>saved.id===attempt.id)).map(attempt=>attempt.id!));
+    if(newIds.length){
+      const receipts=await admin.from("verified_quiz_submissions").select("quiz_id,grading_receipt").eq("participant_id",data.user.id).in("attempt_id",[...new Set(newIds)]);
+      if(receipts.error)throw new Error("Verified results unavailable");
+      for(const row of receipts.data??[]){const index=[1,2,3,4].findIndex(number=>row.quiz_id===`00000000-0000-4000-8000-00000000020${number}`);if(index>=0&&row.grading_receipt){const field=assessmentFields[index];savedState[field]=[...savedState[field],row.grading_receipt as QuizAttempt];}}
+    }
+    const state = assessParticipantState(incoming, savedState, releases);
     const pathway = getPathwayStatus(state);
     const fields = Object.keys(assessmentBanks) as Array<keyof typeof assessmentBanks>;
     const passes = [pathway.onePassed, pathway.twoPassed, pathway.threePassed, pathway.fourPassed];
@@ -56,7 +68,7 @@ export async function PUT(request: Request) {
     const attempts = fields.flatMap((field, index) => state[field].map((attempt, attemptIndex) => ({
       ...attempt, quizId: `00000000-0000-4000-8000-00000000020${index + 1}`, attemptNumber: attemptIndex + 1,
     })));
-    const result = await createAdminClient().rpc("save_participant_state", {
+    const result = await admin.rpc("save_participant_state", {
       p_participant_id: data.user.id, p_expected_revision: record.revision,
       p_state: state, p_progress: progress, p_attempts: attempts,
     });

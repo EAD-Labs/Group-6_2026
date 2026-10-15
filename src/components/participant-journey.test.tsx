@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useDemo } from "@/features/demo/demo-provider";
+import { evaluateQuiz } from "@/features/learning/quiz";
 import { initialDemoState, type AssistantSpec } from "@/features/demo/demo-state";
 import { moduleOneLessons, moduleOneQuizQuestions } from "@/features/learning/catalog";
 import { ModuleQuiz } from "./module-quiz";
@@ -25,27 +26,39 @@ beforeEach(() => {
   localStorage.clear();
   context = { state: structuredClone(initialDemoState), hydrated: true, storageScope: "participant:alice", syncStatus: "saved", syncError: null, retrySync: vi.fn(), recordQuizAttempt: vi.fn(), recordModuleQuizAttempt: vi.fn(), updateState: vi.fn(), completeModuleLesson: vi.fn() } as unknown as ReturnType<typeof useDemo>;
   vi.mocked(useDemo).mockImplementation(() => context);
+  vi.stubGlobal("fetch",vi.fn().mockImplementation(async (_url,options)=>{
+    if(!options?.method)return {ok:true,json:async()=>({assessment:{module:1,title:"Module 1 knowledge check",questions:moduleOneQuizQuestions,passThresholdPercent:70,contentVersion:"base-test"}})};
+    const body=JSON.parse(options.body);const evaluation=evaluateQuiz(moduleOneQuizQuestions,body.answers);
+    return {ok:true,json:async()=>({evaluation,attempt:{id:body.attemptId,answers:body.answers,attemptedAt:new Date().toISOString(),contentVersion:"base-test",passThresholdPercent:70,correctAnswers:evaluation.correctAnswers,passed:evaluation.passed,scorePercent:evaluation.scorePercent}})};
+  }));
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
 describe("participant learning continuity", () => {
-  it("restores an unfinished quiz for its owner without showing it to another account", () => {
+  it("explicitly restarts only an unsent old-bank attempt while preserving verified history",async()=>{
+    const verified={id:"verified-result",answers:{},attemptedAt:"2026-10-01T00:00:00Z",scorePercent:80,correctAnswers:4,passed:true,contentVersion:"older-verified-bank",verifiedAt:"2026-10-01T00:00:00Z"};
+    const unsent={id:"unsent-result",answers:{},attemptedAt:"2026-10-02T00:00:00Z",scorePercent:80,correctAnswers:4,passed:true,contentVersion:"retired-bank"};
+    context={...context,syncError:"The Module 1 knowledge check changed while you were working.",state:{...context.state,quizAttempts:[verified,unsent]}};
+    render(<ModuleQuiz module={1}/>);fireEvent.click(await screen.findByRole("button",{name:"Remove the unverified result and restart"}));
+    const updater=vi.mocked(context.updateState).mock.calls[0][0];expect(updater(context.state).quizAttempts).toEqual([verified]);expect(context.state.quizAttempts).toEqual([verified,unsent]);
+  });
+  it("restores an unfinished quiz for its owner without showing it to another account", async () => {
     const first = render(<ModuleQuiz module={1} />);
-    fireEvent.click(screen.getByRole("button", { name: "Start knowledge check" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Start knowledge check" }));
     const label = moduleOneQuizQuestions[0].options[1].label;
     fireEvent.click(screen.getByRole("radio", { name: label }));
     first.unmount();
     const resumed = render(<ModuleQuiz module={1} />);
-    expect(screen.getByRole("radio", { name: label })).toBeChecked();
+    expect(await screen.findByRole("radio", { name: label })).toBeChecked();
     context = { ...context, storageScope: "participant:bob" };
     resumed.rerender(<ModuleQuiz module={1} />);
-    expect(screen.getByRole("button", { name: "Start knowledge check" })).toBeVisible();
+    expect(await screen.findByRole("button", { name: "Start knowledge check" })).toBeVisible();
     expect(screen.queryByRole("radio", { name: label })).not.toBeInTheDocument();
   });
 
-  it("cannot submit skipped questions and keeps quiz success separate from module completion", () => {
+  it("cannot submit skipped questions and keeps quiz success separate from module completion", async () => {
     render(<ModuleQuiz module={1} />);
-    fireEvent.click(screen.getByRole("button", { name: "Start knowledge check" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Start knowledge check" }));
     fireEvent.click(screen.getByRole("button", { name: `Question ${moduleOneQuizQuestions.length}, not answered` }));
     expect(screen.getByRole("button", { name: "Submit answers" })).toBeDisabled();
     moduleOneQuizQuestions.forEach((question, index) => {
@@ -53,7 +66,7 @@ describe("participant learning continuity", () => {
       question.options.filter((option) => question.correctOptionIds.includes(option.id)).forEach((option) => fireEvent.click(screen.getByRole(question.kind === "single" ? "radio" : "checkbox", { name: option.label })));
     });
     fireEvent.click(screen.getByRole("button", { name: "Submit answers" }));
-    expect(context.recordQuizAttempt).toHaveBeenCalledOnce();
+    await waitFor(()=>expect(context.recordQuizAttempt).toHaveBeenCalledOnce());
     expect(screen.getByRole("heading", { name: "Knowledge check passed." })).toBeVisible();
     expect(screen.getByRole("heading", { name: "Still to complete in this module" })).toBeVisible();
     expect(screen.queryByText(/Module complete/)).not.toBeInTheDocument();

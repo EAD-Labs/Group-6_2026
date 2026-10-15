@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ mode: vi.fn(), user: vi.fn(), load: vi.fn(), rpc: vi.fn() }));
+const mocks = vi.hoisted(() => ({ mode: vi.fn(), user: vi.fn(), load: vi.fn(), rpc: vi.fn(),from:vi.fn() }));
+vi.mock("server-only",()=>({}));
 vi.mock("next/headers", () => ({ cookies: async () => ({ get: mocks.mode }) }));
 vi.mock("@/lib/env", () => ({ hasPublicSupabaseEnvironment: () => true }));
 vi.mock("@/lib/supabase/proxy", () => ({ presentationDemoCookie: "demo" }));
 vi.mock("@/lib/supabase/server", () => ({ createClient: async () => ({ auth: { getUser: mocks.user } }) }));
-vi.mock("@/lib/supabase/admin", () => ({ createAdminClient: () => ({ rpc: mocks.rpc }) }));
+vi.mock("@/lib/supabase/admin", () => ({ createAdminClient: () => ({ rpc: mocks.rpc,from:mocks.from }) }));
 vi.mock("@/features/demo/participant-persistence", () => ({ getParticipantState: mocks.load }));
 import { PUT } from "./route";
 import { initialDemoState } from "@/features/demo/demo-state";
@@ -15,8 +16,21 @@ beforeEach(() => {
   mocks.user.mockResolvedValue({ data: { user: { id: userId } }, error: null });
   mocks.load.mockResolvedValue({ state: initialDemoState, revision: 1, role: "participant" });
   mocks.rpc.mockResolvedValue({ data: 2, error: null });
+  mocks.from.mockImplementation(()=>{const query={select:vi.fn().mockReturnThis(),eq:vi.fn().mockReturnThis(),in:vi.fn().mockReturnThis(),then:(resolve:(value:unknown)=>void)=>resolve({data:[],error:null})};return query;});
 });
 describe("participant persistence trust boundary", () => {
+  it("rejects forged future notice acknowledgements before committing anything",async()=>{
+    const response=await PUT(request({participantId:userId,revision:1,state:{...initialDemoState,safeUseAccepted:true,safeUseNoticeVersion:"2099-future-forged"}}));
+    expect(response.status).toBe(400);expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+  it("preserves an account-owned server grading receipt when publication changes before progress sync",async()=>{
+    const id="90000000-0000-4000-8000-000000000001",receipt={id,answers:{},attemptedAt:"2026-10-15T00:00:00Z",correctAnswers:4,scorePercent:80,passed:true,contentVersion:"assessment:90000000-0000-4000-8000-000000000002",passThresholdPercent:70,verifiedAt:"2026-10-15T00:00:00Z"};
+    const ownerFilters:unknown[][]=[];
+    mocks.from.mockImplementation((table:string)=>{const query={select:vi.fn().mockReturnThis(),eq:vi.fn((...args:unknown[])=>{ownerFilters.push([table,...args]);return query;}),in:vi.fn().mockReturnThis(),then:(resolve:(value:unknown)=>void)=>resolve({data:table==="assessment_releases"?[{id:"90000000-0000-4000-8000-000000000003",module_number:1,title:"New check",questions:[],pass_threshold:90,status:"published"}]:[{quiz_id:"00000000-0000-4000-8000-000000000201",grading_receipt:receipt}],error:null})};return query;});
+    const response=await PUT(request({participantId:userId,revision:1,state:{...initialDemoState,quizAttempts:[{...receipt,scorePercent:0,passThresholdPercent:100,passed:false}]}}));
+    expect(response.status).toBe(200);expect((await response.json()).state.quizAttempts).toEqual([receipt]);
+    expect(ownerFilters).toContainEqual(["verified_quiz_submissions","participant_id",userId]);
+  });
   it("saves server scores and all progress in one revision-checked transaction", async () => {
     const response = await PUT(request({ participantId: userId, revision: 1, state: { ...initialDemoState, quizAttempts: [{ id: "test", answers: {}, attemptedAt: "2026-09-30T12:00:00Z", scorePercent: 100, passed: true }] } }));
     expect(response.status).toBe(200);

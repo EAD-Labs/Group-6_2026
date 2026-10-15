@@ -8,6 +8,7 @@ import { hasGeminiEnvironment } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { hasSameOrigin, readJsonBody, RequestValidationError } from "@/lib/server/request";
 import { readParticipantGeminiKey } from "@/lib/ai/gemini-key";
+import { craftRubricVersion } from "@/features/learning/evidence-versions";
 
 export async function POST(request: Request) {
   if (!hasSameOrigin(request)) return NextResponse.json({ error: "The request origin is not allowed." }, { status: 403 });
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
           prompt_fingerprint: createHash("sha256").update(prompt).digest("hex"),
           dimension_scores: Object.fromEntries(evaluation.dimensions.map((dimension) => [dimension.id, dimension.score])),
           overall_score: evaluation.overallScore, score_percent: evaluation.scorePercent,
-          evaluation_source: evaluation.source, model: evaluation.model, safety_flags: evaluation.safetyFlags,
+          evaluation_source: evaluation.source, model: evaluation.model, safety_flags: evaluation.safetyFlags, rubric_version: craftRubricVersion,
         });
         if (error) throw new Error("Practice save unavailable.");
         saved = true;

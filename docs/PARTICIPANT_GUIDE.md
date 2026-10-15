@@ -2,16 +2,20 @@
 
 # PromptShala participant guide
 
-Updated 1 October 2026. This guide describes the current code. Connected accounts, live AI and certificates require the configured release environment; they have not yet been accepted in a participant pilot.
+Updated 14 October 2026. This guide describes implemented workflows; connected AI depends on the configured release. Client acceptance and the participant field study are recorded separately.
+
+## Try before creating an account
+
+Open `/try` for a three-step fictional classroom exercise: improve a request, prepare a source-based scaffold and review it. It uses local methods, sends no entered material to AI and saves no course progress. Refresh or **Start over** clears the page's work; downloads remain on your device. `/review-lab` can also review any permitted teaching draft with your own evidence ratings. The facilitator should confirm these routes are deployed on the shared release.
 
 ## Start and return to your work
 
-1. Open the site address shared by your facilitator. Use **Sign in** for a connected account, or the demo entry to explore on this device.
-2. Complete your profile, learning goals and safe-use agreement. Use the name you want on a completion certificate. Keep classroom examples fictional or remove identifying details before using a practice tool.
+1. Open the site address shared by your facilitator. Choose **Create account** if you do not have one, or **Sign in** to return. Public immediate login is enabled for the approved pilot; use an email you control and a password of at least 12 characters.
+2. Complete your profile, learning goals and safe-use agreement. Optional questions ask how often you use AI, which tools you use and what you want help with; you can update these later. Use the name you want on a completion certificate. Keep classroom examples fictional or remove identifying details before using a practice tool.
 3. Open **Dashboard** for your next activity. The course menu lets you open any of the four modules from the start. **Progress** lists the evidence still needed for assessed completion.
 4. Read the save status before leaving. **Progress synced** means the connected save finished. **Saved here · waiting for internet** means this browser still has work to send. Reconnect, return to the same account and use **Try again** if shown.
 
-Demo work is saved in this browser. It does not issue a certificate or establish a cloud account. Clearing browser storage can remove it. A connected account uses separate account-scoped storage; sign out before another person uses the device. Local browser copies are not encrypted. Export important practice drafts before clearing storage or changing devices.
+A connected account uses separate account-scoped browser recovery and cloud records; sign out before another person uses the device. Local browser copies are not encrypted. Export important practice drafts before clearing storage or changing devices. The public try-out has no saved account and cannot issue a certificate.
 
 **Checking saved progress**, **Saving progress…** and **Progress has not synced** are not confirmation of a completed cloud save. If a save keeps failing, retain your current browser work and contact the facilitator with the page, time and visible error. Do not send API keys, passwords or private source text.
 
@@ -26,13 +30,23 @@ Use a 20–30 minute session for one explanation, one worked example and a short
 | 3 · Reusable teacher assistants | Build a Passport, test expected against actual behaviour, repair it, retest and document a teacher-led handoff. | Eight completed lessons, a passing check, and the Staffroom evidence checklist in Progress. |
 | 4 · Working with sources | Select permitted material, audit claims against passages, revise a resource and record its limits. | Eight completed lessons, a passing check, and the guided Source Studio portfolio checklist in Progress. |
 
-There are 29 lessons and four retryable knowledge checks. A quiz pass requires at least 70%; each result includes answer explanations. With five questions, this means at least four correct; Module 3 has ten questions and needs at least seven. A quiz pass alone does not complete a module. Opening a lesson or video does not establish understanding: attempt its activity, use the concept check, then mark the lesson complete when you have done the work.
+There are 29 lessons and 75 original questions across four retryable checks. Original banks use 70%: 14/19/23/19 questions need 10/14/17/14 correct. Staff may publish an updated bank and passing score between 70% and 100%; read the check's displayed requirements. Earlier verified passes stay valid at their original score/version. Each result includes explanations; a quiz pass alone does not complete a module. Opening a lesson/video does not establish understanding: attempt the activity and chapter checks, then mark the lesson complete when you have done the work.
+
+If questions change while you work, follow the message to refresh and start a new attempt; earlier submitted results remain saved. Submitting the same attempt again does not create a second result. Your verified results can be recovered on another device after signing into the same account. Course progress still requires its lessons and applicable practical work.
 
 ## CRAFT practice and the prompt library
 
 CRAFT means **Context, Role, Action, Format and Target** in this course. In Module 2, enter a teaching task and a prompt, ask for feedback, then revise a specific weakness. Compare attempts for the same task. A higher prompt score is evidence about the request; it does not prove that an AI-produced worksheet is accurate or useful.
 
-The lab identifies its feedback source. Rule-based feedback remains available when live evaluation is unavailable. This fallback inspects prompt features; it is not an AI-generated classroom response. Save a useful prompt in the library with its use, checks and limitations. Test it again when the learners, content or task change.
+The lab identifies its feedback source. Rule-based feedback remains available when live evaluation is unavailable. This fallback inspects prompt features; it is not an AI-generated classroom response. Submitted tasks, prompts and feedback are saved privately to your connected account; earlier records may not contain text. Reopen previous work, compare attempts or save a useful prompt in the library with its use, checks and limitations. Test it again when the learners, content or task change. Account exports include this private history, and account deletion removes its connected records.
+
+## Optional Gemini connection
+
+You can use the course's configured AI connection or open **Profile > Gemini connection** (`/settings/api-key`) to enter your own Gemini key. This is optional. The personal key is held only in the open tab and clears on refresh, sign-out or account change; it is not saved to your account or browser storage. Never send your key to a facilitator or enter it in a prompt. Live requests send the stated task/material to Gemini; review the notice and use permitted fictional examples. If the provider fails, read the feedback-source label and use the available fallback/manual path.
+
+## Teaching Review Lab
+
+At `/review-lab`, enter the learners, a learning objective, the source/answer-key evidence and a teaching draft. Choose a rating and explain its evidence for each criterion. Compare a revised draft using the same rubric, then **Download my review** when entries are complete. Essential checks highlight evidence/privacy problems; a high rating does not prove correctness. Loading a custom rubric clears earlier ratings so different criteria are not compared. Work stays in page memory until downloaded; clear or refresh before sharing the device. This activity does not automatically mark the four-module course passed.
 
 ## AI Staffroom
 
@@ -63,7 +77,7 @@ Local workspace drafts are account-scoped and expire after 30 days. If connected
 
 Open **Progress** to see each missing lesson, quiz and practice requirement with a link back to the work. All four modules must be assessed as passed. Opening later modules is always allowed; access is separate from completion.
 
-In a connected release, finish onboarding, check your profile name, wait for **Progress synced**, then open `/certificate`. The server rechecks saved eligibility. When eligible, request the certificate and download the PDF. The demo cannot issue one. The certificate records course completion; it is not a teaching licence or a measure of classroom impact.
+In a connected release, finish onboarding, check your profile name, wait for **Progress synced**, then open `/certificate`. The server rechecks saved eligibility. When eligible, request the certificate and download the PDF. The certificate records course completion; it is not a teaching licence or a measure of classroom impact.
 
 The verification link shows the certificate's identifier, issue date and valid/revoked status. It does not disclose your name or private learning work. Someone checking a PDF must compare its printed details separately. If verification is temporarily unavailable, that is not the same as an invalid certificate.
 

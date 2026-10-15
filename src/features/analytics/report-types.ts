@@ -5,8 +5,8 @@ export type ActivityRow = { id: string; kind: string; path: string; target: stri
 export type LearningDetail = {
   person: PersonSummary; completedLessons: Record<string, string[]> | null; modules: ModuleSummary[];
   pages: { path: string; visits: number; activeMs: number; clicks: number; lastSeenAt: string }[];
-  questions: { module: number; questionId: string; contentVersion: string; firstViewedAt: string | null; firstCorrectAt: string | null; wrongChecks: number; checks: number; activeToCorrectMs: number; elapsedToCorrectMs: number | null }[];
-  attempts: { id: string; module: number; number: number; score: number; passed: boolean; submittedAt: string; contentVersion: string | null }[];
+  questions: { module: number; questionId: string; question?:string|null; contentVersion: string; firstViewedAt: string | null; firstCorrectAt: string | null; wrongChecks: number; checks: number; activeToCorrectMs: number; elapsedToCorrectMs: number | null }[];
+  attempts: { id: string; module: number; number: number; score: number; passed: boolean; submittedAt: string; contentVersion: string | null;passThresholdPercent?:number }[];
   events: ActivityRow[]; eventsTotal: number; eventsPage: number;
 };
 export function duration(ms: number) {

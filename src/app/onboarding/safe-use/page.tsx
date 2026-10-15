@@ -8,6 +8,7 @@ import { OnboardingShell } from "@/components/onboarding-shell";
 import { HydrationGate } from "@/components/ui/hydration-gate";
 import { Icon } from "@/components/ui/icon";
 import { useDemo } from "@/features/demo/demo-provider";
+import { safeUseNoticeVersion } from "@/features/learning/evidence-versions";
 
 const safetyPrinciples = [
   {
@@ -71,6 +72,7 @@ function SafeUseForm() {
             <span><strong>I’ll keep student details private and check AI’s work.</strong><small>You can read these reminders again in your profile.</small></span>
           </label>
           <p className="draft-note">When you ask AI for help, the text you enter is sent to the AI service. Your saved work belongs to your account. <Link href="/privacy">How we use your information</Link>.</p>
+          <p className="draft-note">Safe-use notice {safeUseNoticeVersion}. Continuing records this version with your acknowledgement.</p>
           <div className="onboarding-actions align-end">
             <button className="button button-primary" disabled={!accepted} onClick={continueOnboarding} type="button">I understand, continue <Icon name="arrow-right" /></button>
           </div>

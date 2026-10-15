@@ -10,6 +10,7 @@ export type QuizAttempt = {
   id?: string;
   contentVersion?: string;
   verifiedAt?: string;
+  passThresholdPercent?: number;
   answers: Record<string, string[]>;
   attemptedAt: string;
   correctAnswers: number;
@@ -104,6 +105,7 @@ export type DemoState = AiExperience & {
   reducedMotion: boolean;
   reflection: string;
   safeUseAccepted: boolean;
+  safeUseNoticeVersion?: string | null;
   teachingLevel: TeachingLevel;
   yearsTeaching: string;
 };
@@ -134,6 +136,7 @@ export const initialDemoState: DemoState = {
   reducedMotion: false,
   reflection: "",
   safeUseAccepted: false,
+  safeUseNoticeVersion: null,
   teachingLevel: "Classes 5–7",
   yearsTeaching: "8",
 };

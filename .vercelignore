@@ -1,0 +1,20 @@
+# Upload application source only. Private local backups and credentials stay local.
+.vercel/
+.git/
+.env*
+node_modules/
+.next/
+output/
+tmp/
+coverage/
+playwright-report/
+test-results/
+__pycache__/
+*.pyc
+*.log
+.codex*/
+PROJECT.md
+docs/
+artifacts/
+e2e/
+.github/
