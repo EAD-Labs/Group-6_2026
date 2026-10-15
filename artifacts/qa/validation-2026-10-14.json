@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "qa-summary/1",
+  "capturedAt": "2026-10-14",
+  "scope": "Local isolated no-database public visitor/review journeys; synthetic fictional material only. Not client UAT, authenticated staging, hosted load, full WCAG audit or Firefox verification.",
+  "automatedTests": {
+    "passed": 364,
+    "files": 60
+  },
+  "browserJourneys": {
+    "passed": 27,
+    "failed": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "startedAt": "2026-10-14T17:47:03.167Z",
+    "durationMs": 13395,
+    "projects": [
+      "chromium",
+      "webkit",
+      "phone360px"
+    ]
+  },
+  "checks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "databaseMigrationsAndRLS": "all local migrations passed in PGlite; managed advisors/target still require separate check",
+    "retentionReport": "read-only counts, no long-term deletion enabled; local permission and invariant tests passed",
+    "loadHarness": "prepared and guard-tested; no hosted load measurement performed",
+    "aiTransport": "mocked timeout/schema/network/stateless/secret-log tests passed; live provider success requires separate evidence",
+    "firefox": "local binary could not launch in prior run; Linux CI configured but not observed"
+  },
+  "posterCapture": "artifacts/final-presentation/capture.json",
+  "review": {
+    "reviewedAt": "2026-10-14",
+    "scope": "Evidence receipts, private CRAFT storage/export, current Gemini request/response compatibility, lesson package RLS/publication/immutability, retention RPC and isolated-load guards. No production data or credential export.",
+    "primarySources": [
+      "https://ai.google.dev/api/interactions-api",
+      "https://ai.google.dev/gemini-api/docs/interactions-breaking-changes-may-2026",
+      "https://ai.google.dev/gemini-api/docs/structured-output",
+      "https://ai.google.dev/gemini-api/docs/whats-new-gemini-3.5",
+      "https://supabase.com/docs/guides/api/securing-your-api"
+    ],
+    "fixedFindings": [
+      {
+        "issue": "HTTP200 partial/failed provider interaction could count as successful output",
+        "file": "src/lib/ai/interactions.ts",
+        "fix": "Require status completed; reject other statuses; log fixed numeric providerStatus without provider bodies, material, keys or identity. Minimal thinking for accepted 3.5 model and default Gemini 3 sampling follow primary guidance."
+      },
+      {
+        "issue": "Review material could change without invalidating human ratings",
+        "file": "src/components/teaching-review-lab.tsx",
+        "fix": "Explicit latest-draft import preserves work until clicked; changes to material, revision or context invalidate ratings; clear removes brief fields."
+      },
+      {
+        "issue": "Load harness content request lacked the route required query",
+        "file": "scripts/isolated-load.ts",
+        "fix": "Pass module 1 and actual lesson slug. No hosted workload was executed."
+      },
+      {
+        "issue": "A newly claimed safe-use acknowledgement could invent a future or unknown notice version",
+        "file": "src/features/demo/server-assessment.ts",
+        "fix": "Server accepts the served version or an unchanged trusted historical version; ordinary older-client saves preserve actual historical/null evidence without manufacturing acceptance."
+      },
+      {
+        "issue": "Edited knowledge-check telemetry could be validated against the wrong base/current question bank",
+        "file": "src/features/analytics/events.ts",
+        "fix": "Resolve exact immutable published/archived banks server-side, recompute correctness, reject mismatched/unpublished versions, and preserve fixed base lesson checks and legacy events."
+      }
+    ],
+    "pendingFindings": [],
+    "verification": {
+      "focusedSuites": "69 focused tests in 6 files passed after provider completion and numeric status hardening",
+      "migrationAndRLS": "All current migrations applied to independent PGlite instances; learner/staff role and cohort boundaries, immutable versions, revoked write grants and read-only retention invariants passed",
+      "lastAggregateRun": "Lint and type check passed; 422 tests passed and 4 outdated open-curriculum asynchronous-loading fixtures failed across 65 files. Authoring owner is updating fixtures and a legacy-loader regression before the final aggregate. Bounded local/CI workers eliminated the earlier heavy-component timeout.",
+      "activityIntegration": "38 focused activity/transport tests across 3 files passed; type check passed. Covers archived queued events, cross-module/version rejection, client correctness and question-bank tampering, and lesson-inline/base version preservation."
+    },
+    "verifiedExternalBlockers": [
+      "Root-reported probes of the earlier deployed revision returned rule-based CRAFT 200, assistant 503, extractive transformation 200 in under 1 second. No successful live provider output was observed and provider HTTPstatus was unavailable in that deployment. Model 3.5 is documented; cause remains unverified pending deployment with safe diagnostics.",
+      "No 25-user hosted authenticated measurement has been executed.",
+      "Remote application of new migrations, managed advisors, complete isolated restore, observed recovery email, real client UAT and teacher-study results require their own execution evidence."
+    ]
+  }
+}

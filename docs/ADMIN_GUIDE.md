@@ -1,6 +1,6 @@
 # PromptShala administrator and facilitator guide
 
-Updated 1 October 2026. These are operating instructions for implemented features, not a record of live acceptance. The database migrations, server credentials and role checks must be verified in the intended environment before using real participant records.
+Updated 14 October 2026. These are operating instructions for implemented features, not a record of client acceptance. Earlier production synthetic checks and the 6 October administrator assignment exist; verify the final release, role checks and current migration state before using real participant records.
 
 ## Roles and access
 
@@ -9,11 +9,13 @@ Sign in with your assigned account and open `/admin`. The server checks the auth
 | Role | Available work |
 | --- | --- |
 | Participant | Own learning, practice, resources, account data and eligible certificate; no staff operations. |
-| Facilitator | Minimal rosters and aggregate reports for assigned cohorts; create and review lesson-addendum drafts. |
-| Content manager | Create and review lesson-addendum drafts; reports only for cohorts assigned to that account. |
-| Administrator | All cohorts and reports; publish/unpublish addenda; manage cohorts, membership, roles, certificate revocation and course planning estimates; inspect the activity log. |
+| Facilitator | Minimal rosters/aggregate reports and lesson-update drafts for assigned cohorts; propose knowledge-check drafts. |
+| Content manager | Draft/review lesson updates and knowledge checks; reports only for assigned cohorts. |
+| Administrator | All cohorts/reports; publish/archive lesson and knowledge-check releases; manage membership, roles, certificates and planning estimates; inspect the audit log. |
 
-The first administrator must be assigned by the authorised project operator after account creation; there is no public self-promotion flow. Follow [Operations](OPERATIONS.md). An administrator cannot change their own role in the application. Keep at least one separately controlled recovery administrator and review staff access when responsibilities change.
+The first approved real administrator was assigned on 6 October 2026. For a new environment, the authorised project operator must bootstrap a specifically approved existing account; there is no public self-promotion flow. Follow [Operations](OPERATIONS.md). An administrator cannot change their own role in the application. Designate a separately controlled recovery operator and review staff access when responsibilities change.
+
+The public visitor and review paths require no staff login, do not save course progress, and exclude real participant records. Do not place administrator credentials on the event poster or shared visitor device. Use a synthetic participant account for the longer learner demo.
 
 ## Cohorts and participant reports
 
@@ -27,17 +29,17 @@ The report does not include private prompt text, assistant transcripts or source
 
 The roster is for identifying membership, not inspecting an individual’s answers. A question miss pattern suggests a topic to revisit; it does not establish the cause of a mistake or diagnose a teacher. A zero respondent count means no current-version attempt. Historical attempts still remain in the participant’s own history. The workspace is not an invitation service or a full student information system; do not share service credentials with a facilitator.
 
-## Content studio: versioned lesson addenda
+## Content studio: versioned lesson updates
 
-The Content studio publishes additional plain text alongside an existing lesson. The original curriculum and quizzes remain versioned in the repository. This is not a full lesson replacement or quiz-authoring interface.
+The final release expands plain-text addenda into lesson packages: learning goal, teaching text, up to six reading/video links with accessible-alternative notes, activity/reflection, rights acknowledgement, learner preview and a chosen course/cohort audience. The original 29 lessons and 75 base questions remain available. Knowledge checks have a separate versioned authoring/release workflow below. Production schema and role-write denials were checked on 15 October; final application deployment and ordinary-role UAT remain separate.
 
-1. Select an existing module and lesson. Enter a clear title and the additional explanation or activity; blank lines separate paragraphs.
-2. Use **Preview draft** to check the text. Confirm factual claims against a named source, classroom suitability, accessibility of the wording, permission and absence of identifying pupil data.
-3. **Save new draft version** creates a version for review. Saving is not publishing. Record the teaching problem the addendum solves in your review notes.
-4. An administrator reviews and **Publishes** the chosen version. A previously published addendum for that lesson is archived. Signed-in participants receive the published addendum; demo reading remains the built-in curriculum.
-5. To revise, create a new draft version from the text, review, then publish it. To withdraw an addendum, use **Unpublish**. The original lesson remains available.
+1. Select an existing module and lesson, then **Who should see this update?** Choose everyone or the intended cohort. Facilitators are restricted to their assigned cohort drafts.
+2. Add the update title, learning goal, plain-language teaching text, an activity and reflection. Reading/video links require HTTPS, a recognisable title and captions/transcript or an accessible-alternative note. Confirm sharing rights and suitability.
+3. Use **Preview as a learner**. Check source support, classroom fit, instructions, accessible alternatives and absence of identifying pupil data. A typed accessibility note is not a completed media review.
+4. **Save new draft** creates an immutable version for review; saving is not publishing. An administrator publishes the chosen version. The previous version for the same lesson and audience is archived. Global and cohort-specific updates can coexist without archiving another audience's version.
+5. Choose **Revise as a new draft** for corrections. To withdraw publication, use **Unpublish**; saved history remains. The original lesson stays available.
 
-Recommended editorial review: one specific learning objective; a correct worked example; an instruction the teacher can carry out; an observable success check; a source when a factual claim needs one. Verify links and videos separately. A saved reference link does not establish that the whole resource has been reviewed.
+Recommended editorial review: one specific learning objective; a correct worked example; an instruction the teacher can carry out; an observable success check; a source when a factual claim needs one. Verify all links/video/captions and the intended cohort visibility separately. A saved reference link does not establish that the whole resource has been reviewed.
 
 ## People, certificates and audit
 
@@ -51,9 +53,19 @@ To revoke a record, verify the certificate identifier and enter the specific rea
 
 ## Course settings and completion policy
 
-Course settings store module planning-minute estimates. The existing lesson text and individual reading estimates are code-managed. Changing a planning estimate does not change lesson content, assessment evidence, quiz questions or required scores.
+Course settings store planning-minute estimates. Use Content studio for lesson packages and **Knowledge checks** for question-bank/passing-score releases. A planning estimate does not impose a timer or change assessment evidence.
 
-The current completion policy is fixed in versioned code: open module access, all required lessons, at least 70% on each module quiz, and the applicable practice evidence. If the client changes the policy, create a reviewed release decision and test its effect on existing records and certificates. Do not describe this settings screen as a prerequisite or pass-mark editor.
+Access remains open, and required lessons, practical evidence and safe-use acknowledgement stay in place. A published knowledge-check release defines its passing score from 70% to 100%. Earlier server-verified passes retain the original bank/threshold; a newly published threshold does not retrospectively remove them. Certificate issuance snapshots the assessment evidence used. Changes to broader evidence requirements still require a reviewed release decision.
+
+## Knowledge checks: draft, review and publish
+
+1. Open **Knowledge checks**, choose a module and enter a clear check title. Set **Passing score (%)** between 70 and 100; the draft displays how many correct answers are needed.
+2. Review each question's text, concept, lesson-to-revisit, single/multiple-answer type, choices, correct answers and explanation. A bank may have 5-40 questions, each with 2-6 answer choices. Questions need coherent correct sets, unique references and valid lesson mappings.
+3. Add/remove questions or choices where needed, then **Save new knowledge check draft**. Staff can propose drafts; only an administrator can publish/archive. Educator review must check correctness, ambiguity, learner fit and answer explanations rather than treating validation as pedagogical approval.
+4. Review the saved release, then publish its exact version. New attempts use that bank/threshold for everyone in the module; the earlier published release is archived. Lesson chapter checks retain their original formative bank.
+5. Use **Revise as a new draft** for corrections. Unpublishing returns new attempts to the original course bank if no published release remains. Existing submissions and historical question text stay attached to their immutable version.
+
+If a check changes during a learner's attempt, the application asks for a refresh/new attempt and keeps earlier verified results. Repeating an identical submitted attempt returns its committed private receipt; changed answers require a new attempt. Do not rewrite saved answers or manually grant passes. Verify current-version question reporting and certificate evidence with genuine learner sessions before acceptance.
 
 ## Before a cohort starts
 

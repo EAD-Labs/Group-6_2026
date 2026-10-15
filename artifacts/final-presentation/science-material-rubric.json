@@ -1,0 +1,35 @@
+{
+  "id": "science-activity-review",
+  "version": "1.0",
+  "title": "Science activity review",
+  "criteria": [
+    {
+      "id": "purpose",
+      "label": "Learning purpose",
+      "question": "What observation or explanation does the learner practise?",
+      "weight": 2,
+      "critical": false
+    },
+    {
+      "id": "evidence",
+      "label": "Evidence and conclusions",
+      "question": "Which passage or repeated observation supports each claim? Does the conclusion stay within that evidence?",
+      "weight": 3,
+      "critical": true
+    },
+    {
+      "id": "participation",
+      "label": "Participation and instructions",
+      "question": "Can the intended learners follow the steps and respond through an accessible alternative?",
+      "weight": 2,
+      "critical": false
+    },
+    {
+      "id": "safety",
+      "label": "Privacy and permission",
+      "question": "Is the activity safe and permitted, and does it avoid identifying learner information?",
+      "weight": 3,
+      "critical": true
+    }
+  ]
+}

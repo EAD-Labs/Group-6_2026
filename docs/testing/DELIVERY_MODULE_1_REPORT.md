@@ -1,43 +1,40 @@
-# Delivery Module 1 report — Foundation and Learning Core
+# Delivery Module 1 report - Foundation and Learning Core
 
-Prepared 1 October 2026. **Draft for review; no UAT or handover sign-off.** This is technical Delivery Module 1 (identity/access, learning, assessment/progress), not only the first of the four teacher-learning modules. It describes the current working tree; attach the reviewed commit and deployment identifiers before acceptance.
+Updated 15 October 2026. **Review-ready report; no client UAT or handover sign-off.** This technical delivery covers identity, access, learning, assessment and progress across all four teacher-learning modules. The [1 October report](history/2026-10-01/DELIVERY_MODULE_1_REPORT.md) is preserved as dated history.
 
-## Scope delivered in code
+## Delivered scope
 
-Sign-in/out, recovery pages, onboarding profile/goals/safe use; the four-module course with 29 lessons; concept checks and 25 quiz questions across four retryable checks; open course navigation; Dashboard/Progress with missing evidence; account-scoped browser recovery and connected state synchronisation. Trusted server validation recomputes quiz scores from answers, retains immutable response snapshots and uses an atomic revision check for saves.
+- Email/password signup and sign-in/out; recovery/reset pages; safe-use, teacher profile/goals and optional AI-use onboarding.
+- Four open modules, 29 lessons, 75 questions (14/19/23/19 by module), chapter understanding checks, explanations and retries.
+- Server recomputation, immutable question-bank/passing-score releases, private idempotent committed receipts, cross-device recovery, retained historical verified passes, best-score progress and exact completion requirements.
+- Atomic revision/conflict handling, account-cache separation, private account export/deletion and accessible navigation.
+- Final additions: notice-version evidence, forged-version rejection, versioned assessment authoring and a public visitor path. Historical unknown notice versions stay unknown. Production assessment schema/role-write denials were verified on 15 October; application deployment and client UAT remain separately recorded.
 
-All 29 lessons have an individual pedagogical review, classroom example, actionable practice/reflection and concept check. The [lesson matrix](../content/LESSON_REVIEW.md) records the edits and source evidence. The content review did not watch every embedded video end-to-end, approve provider account terms or establish classroom effectiveness.
+Open module access is the approved client policy. Certificate eligibility still requires recorded assessed completion; opening a page is not passing a module.
 
-## Evidence currently available
+## Current evidence
 
-| Layer | Evidence | Result and limit |
+| Layer | Evidence | Result and boundary |
 | --- | --- | --- |
-| Curriculum | [Lesson review](../content/LESSON_REVIEW.md), [curriculum](../content/CURRICULUM.md), [quiz bank](../content/QUIZ_BANK.md) | All 29 lessons reviewed; 25 current quiz items reflected in the bank. Client content approval pending. |
-| Targeted automated run | `src/features/learning/quiz.test.ts`, `pathway.test.ts`, `source-studio.test.ts`, `src/components/open-curriculum.test.tsx` | 32 tests in four files passed in the final curriculum verification on 1 October. This is one shared run, not 32 separate tests per delivery report. Source Studio coverage also supports Delivery Module 2. |
-| Content lint | ESLint on `catalog.ts`, `module-two-content.ts`, `module-two-teaching.ts`, `module-three-content.ts`, `module-four-content.ts`, `staffroom-challenges.ts` | Passed in the curriculum verification. Does not establish whole-app lint/build status. |
-| Server/sync coverage in repository | `server-assessment.test.ts`, `scoped-state.test.ts`, `demo-provider.test.tsx`, participant-state route tests, platform database integration tests | Tests are available for the final release run. Attach its actual output separately; test existence is not a pass claim here. |
-| Full check/build/browser | Final integration validation | Pending attachment by release owner. Earlier 93-test/preview reports concern an older revision. |
-| Supabase Auth/session/RLS integration | Two real staging participants plus staff roles | Not run against a configured remote project in this session. Local PGlite/database tests, when recorded, remain distinct from managed Supabase verification. |
-| Module UAT | AC-01–04, AC-09 and relevant AC-13–17 in [UAT plan](UAT_AND_PILOT.md) | Not run or signed off. |
+| Curriculum | [Lesson review](../content/LESSON_REVIEW.md), [curriculum](../content/CURRICULUM.md), current `src/features/learning` question bank | All 29 lessons have a review record; 75 current questions. Educator approval and full video/caption review remain separate. |
+| Earlier managed checks | [Release review](RELEASE_REVIEW.md), [6 October pilot](../PILOT_RELEASE_2026-10-06.md), [10 October client feedback](../design/CLIENT_FEEDBACK_2026-10-10.md) | Ordinary synthetic account/session/server grading checks completed on dated production releases. These are not client UAT. |
+| Development regression | [Current register](../final/FINAL_DELIVERY_RECORD.md) | Final local run: 435 automated tests in 66 files. Lint, types and production build passed; final 27 browser journeys passed. Attach the actual source/deployment identity after publication. |
+| Public visitor/browser checks | Maintained Playwright suite in `e2e/` | Reported 27 journeys across Chromium, WebKit and 360px Chromium; accessibility/keyboard smoke. Local Firefox launch failed; CI or supported-machine verification required. |
+| Permissions/version migrations | Local all-migration database tests | Exercises PostgreSQL-compatible permission/state contracts; managed Auth and HTTP sessions require separate remote tests. |
+| Client acceptance | AC-01-04, AC-09, relevant AC-13-17 | Not signed off; use [case sheet](../final/CLIENT_REVIEW_AND_DECISIONS.md). |
 
-Reproduce the recorded targeted command with the supported Node/pnpm runtime:
+The automated totals are shared across delivery reports; do not add them together. A local browser route, previous hosted screenshot or configured health flag does not establish deployment of the current source.
 
-```sh
-pnpm exec vitest run src/features/learning/quiz.test.ts src/features/learning/pathway.test.ts src/features/learning/source-studio.test.ts src/components/open-curriculum.test.tsx
-```
+## Outstanding acceptance and operations
 
-## Design changes and known limits
+The user deferred emails on 15 October; record recovery delivery as deferred, not passed, and do not send/configure email for this release. Recheck A-B-A/shared-device/cross-device state; run interrupted save and two-tab conflict paths; complete genuine all-module progress/certificate reconciliation; check current mobile/tablet/browser support and manual keyboard/screen-reader tasks. Hosted load/full recovery remain unexecuted under the user's existing-production choice and need a later isolated target.
 
-- The subsequent user request makes all modules accessible immediately. HLD AC-04 originally requires prerequisite locking. Completion remains assessed separately; record this deliberate change in the client acceptance record.
-- A local lesson flag, concept-check answer or quiz result does not prove understanding. The pilot needs direct task observation.
-- The trusted-progress migration invalidates legacy client-claimed passing scores without verifiable answers. Plan communication and retakes for affected records.
-- Browser drafts are not encrypted or a substitute for confirmed cloud sync. Recovery email configuration/delivery and cross-device account recovery still require staging tests.
-- Historical screenshots and deployments do not establish the current working tree's deployed state.
+Record the accepted change to original HLD AC-04 rather than claiming prerequisite locks exist. The course content and project-created formative questions require educator review; no measured learning effect is inferred from quiz scores.
 
-## Outstanding acceptance work
+## Review record
 
-Verify all migrations in staging; auth/recovery/role isolation; same-browser A→B→A and cross-device resume; offline save/reconnect/conflicting tabs; immutable quiz retries; exact Dashboard/Progress requirements; approved video/caption review; mobile/keyboard/screen-reader journeys. Complete full checks/build and retain outputs. Current external blockers are absent connected-service configuration locally and Vercel team `sus-co` access 403.
+Final reviewed revision/environment/test paths: see [current register](../final/FINAL_DELIVERY_RECORD.md).
 
-The HLD asks for sequential delivery-module handoffs. This retrospective draft cannot establish that Module 1 was separately accepted before Module 2 work began.
+Client reviewer/date: ______. Cases/results: ______. Defects/retests: ______. Decision/conditions: ______.
 
-Review record: revision **pending**; environment **pending**; tester/date **pending**; cases passed/failed/blocked **pending**; defects/waivers **pending**; client reviewer and decision **pending**.
+The HLD's sequential technical-module handoffs cannot be established retrospectively by this report. Report actual review dates and keep the original history.

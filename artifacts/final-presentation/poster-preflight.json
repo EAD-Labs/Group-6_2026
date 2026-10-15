@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-10-15T04:55:19.064541+00:00",
+  "pages": 1,
+  "portrait": true,
+  "widthMm": 841.0,
+  "heightMm": 1189.0,
+  "decodedQr": "https://promptshala.vercel.app/try",
+  "qrVerification": "CoreImage independently decoded the final rendered preview",
+  "fonts": [
+    {
+      "name": "/AAAAAA+NotoSans-Regular",
+      "embedded": true
+    }
+  ],
+  "allTextInsidePageMargins": true,
+  "visualReview": "Final rendered2200px preview inspected; no clipped titles, overlaps or missing glyphs observed",
+  "sha256": "e2181d3c4da9eb2217b91fa88bbe19d9d3ca19fa50e28d42f5c005be3f0f7142",
+  "publicCopyIdentical": true,
+  "sourceCapture": {
+    "capturedAt": "2026-10-15T04:50:39.090Z",
+    "baseUrl": "http://127.0.0.1:3017",
+    "material": "Fictional built-in classroom sample",
+    "personalData": false,
+    "method": "Real browser interactions; screenshots are not synthetic renderings"
+  },
+  "evidenceCounts": {
+    "automatedTests": 435,
+    "testFiles": 66,
+    "browserJourneys": 27
+  },
+  "evidence": "artifacts/qa/final-validation-2026-10-15.json",
+  "releaseBoundary": "Final live route/release/Moodle receipt require separate actual verification"
+}

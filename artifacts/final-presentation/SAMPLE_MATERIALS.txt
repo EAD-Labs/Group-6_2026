@@ -1,0 +1,19 @@
+PromptShala fictional visitor materials
+
+Purpose: Class 6 science; explain evaporation using observation. No pupil data.
+
+SOURCE
+Water in an open dish can slowly change into water vapour. This change is called evaporation. The speed depends on conditions, including temperature and exposed surface area.
+
+In a classroom observation, compare equal amounts of water in identical dishes. Record the conditions and the change over time. A single observation has limits; repeat and compare before drawing a general conclusion.
+
+FIRST REQUEST
+Explain evaporation.
+
+CLEARER REQUEST
+Act as a science teacher. For Class 6 learners who know that water can change state, write a 15-minute activity on evaporation. Use two numbered observation steps, three discussion questions and a short answer guide. Use only the source I provide; flag missing evidence. Keep the language simple and offer a spoken-answer option.
+
+REVIEW PROMPTS
+What will learners be able to do? Which passage supports the claim? Is an answer key actually checked? Can every learner participate? Is the material permitted and free of identifying information?
+
+This is prepared fictional material. The visitor path uses local checklist feedback and a source scaffold, not a fresh live-AI response.
