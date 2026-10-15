@@ -2,7 +2,7 @@
 
 export type ActivityInput = {
   kind: "page_view" | "page_time" | "click" | "question_view" | "question_answer" | "quiz_submit";
-  activeMs?: number; target?: string; module?: number; questionId?: string; selectedOptions?: string[]; attemptId?: string;
+  activeMs?: number; target?: string; module?: number; questionId?: string; selectedOptions?: string[]; attemptId?: string; contentVersion?:string;
 };
 export function recordActivity(input: ActivityInput) {
   window.dispatchEvent(new CustomEvent("promptshala:activity", { detail: input }));

@@ -4,6 +4,7 @@ import {
   type CraftDimensionId,
   type CraftScenario,
 } from "./craft";
+import { craftRubricVersion } from "./evidence-versions";
 
 export type CraftAiDimensionResult = {
   evidence: string;
@@ -16,6 +17,7 @@ export type CraftAiDimensionResult = {
 };
 
 export type CraftAiEvaluation = {
+  rubricVersion?: string;
   dimensions: CraftAiDimensionResult[];
   headline: string;
   maxScore: 15;
@@ -106,6 +108,7 @@ export function createRuleBasedCraftEvaluation(
   const scorePercent = Math.round((overallScore / 15) * 100);
 
   return {
+    rubricVersion: craftRubricVersion,
     dimensions,
     headline: headlineForScore(scorePercent),
     maxScore: 15,
@@ -241,6 +244,7 @@ export function normalizeGeminiCraftEvaluation(
     headline: headlineForScore(scorePercent),
     maxScore: 15,
     model,
+    rubricVersion: craftRubricVersion,
     nextSteps: cleanStringList(record.nextSteps, 3),
     overallScore,
     safetyFlags: cleanStringList(record.safetyFlags, 4),

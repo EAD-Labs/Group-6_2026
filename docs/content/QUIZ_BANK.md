@@ -1,3 +1,7 @@
+## Current release model - 15 October 2026
+
+The original 75 questions below remain the base banks and lesson chapter checks. Staff can now draft immutable knowledge-check releases with edited questions/choices/explanations, valid lesson mappings and a 70-100% passing score. Administrators publish/archive; new attempts use the current release, while historical verified passes and exact question/threshold versions remain saved. A published release may therefore have a different question count from this base register. See [admin workflow](../ADMIN_GUIDE.md) and [assessment architecture](../architecture/VERSIONED_ASSESSMENT_RELEASES.md). Authored formative content still needs educator approval; validation is not educational effectiveness.
+
 ## Open pilot bank — 6 October 2026
 
 The current canonical banks live in `src/features/learning/catalog.ts` and the three module content files. They contain **75 questions**: Module 1: **14**, Module 2: **19**, Module 3: **23**, Module 4: **19**. All 29 lessons have two or three questions, with extra coverage for longer practical lessons and the foundation safety review. These banks power both the chapter understanding checks and retryable module knowledge checks. Each question has a stable ID, lesson mapping, valid answer set and explanatory feedback. Trusted submissions retain the assessment version and fingerprint; historical scores are preserved. The pass threshold remains 70% (10/14, 14/19, 17/23, 14/19).

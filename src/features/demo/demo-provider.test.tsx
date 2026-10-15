@@ -15,6 +15,14 @@ function Probe() {
 beforeEach(() => { window.localStorage.clear(); fetchMock.mockReset(); vi.stubGlobal("fetch", fetchMock); });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 describe("participant synchronization", () => {
+  it("automatically saves recovered server receipts so module progress and certificates reconcile on a fresh device",async()=>{
+    const receipt={id:"server-graded",answers:{},attemptedAt:"2026-10-15T00:00:00Z",correctAnswers:5,scorePercent:100,passed:true,passThresholdPercent:90,contentVersion:"assessment:90000000-0000-4000-8000-000000000001",verifiedAt:"2026-10-15T00:00:00Z"};
+    fetchMock.mockImplementation((_url,options)=>options?.method==="PUT"?Promise.resolve(response({saved:true,state:JSON.parse(options.body).state,revision:2})):Promise.resolve(response({...record("alice"),needsSync:true,state:{...record("alice").state,quizAttempts:[receipt]}})));
+    render(<DemoProvider><Probe/></DemoProvider>);await screen.findByText("alice");
+    await waitFor(()=>expect(fetchMock.mock.calls.filter(call=>call[1]?.method==="PUT")).toHaveLength(1));
+    await waitFor(()=>expect(screen.getByTestId("status")).toHaveTextContent("saved"));
+    const write=fetchMock.mock.calls.find(call=>call[1]?.method==="PUT");expect(JSON.parse(write![1].body).state.quizAttempts).toEqual([receipt]);
+  });
   it("sends onboarding AI experience to the verified account and retains it in its cache", async () => {
     fetchMock.mockImplementation((_url, options) => options?.method === "PUT"
       ? Promise.resolve(response({ saved: true, state: JSON.parse(options.body).state, revision: 2 }))

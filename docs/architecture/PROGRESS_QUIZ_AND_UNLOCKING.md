@@ -26,18 +26,18 @@ The Module 4 portfolio requires an objective, audience, source register, permiss
 - A required lesson interaction must be completed before the participant marks that lesson complete.
 - Every chapter and quiz remains open regardless of prior progress.
 - Optional media and external Google notebook access do not block completion.
-- Quiz grading uses a 70% threshold. Five-question quizzes require four correct answers; Module 3's ten-question quiz requires seven.
+- Original banks have 14/19/23/19 questions at 70% (10/14/17/14 correct). A published assessment release may change its module bank and passing score from 70% to 100%; the interface displays that release's requirements. Historical verified passes retain their original threshold/version.
 - Quizzes show explanations after submission, support unlimited retries and retain prior attempts and best scores.
 - A passed quiz alone does not complete a module.
 - Source Studio export is a practice record, not a certificate.
 
 ## Current persistence and release boundary
 
-The review interface stores demo evidence locally and has an authenticated participant-state API that sanitizes records and saves profile, lesson, quiz and assistant data under existing RLS. Module 4 adds a profile `source_portfolio` object, lesson IDs and quiz ID. Apply the Modules 2/3 migration before the Module 4 migration on the target database.
+Signed-in state uses account-scoped local recovery and authenticated, atomic revision-checked server saving. The server recomputes grades and checks trusted evidence rather than accepting a client-supplied score. Published question banks/thresholds are immutable releases; private committed receipts support idempotent submission and recovery on another device. Existing verified passes and question text keep their original version.
 
-The preview does not establish production persistence. Signed-in round-trip checks and two-participant isolation remain required. Quiz evaluation currently runs in the learning client; the API stores sanitized attempt metadata. It is not yet a server-authoritative assessment transaction and must not determine issued credentials without the certification implementation.
+`POST /api/assessments` validates the current release, grades submitted answers, saves a service-controlled receipt and returns only the committed result. A reused attempt ID with different answers/version is rejected; a mid-attempt publication change requires a new attempt. Participant-state sanitisation validates immutable release evidence, exact recorded notice versions and trusted submissions. Certificate issuance snapshots the assessment evidence that establishes eligibility.
 
-Before certificate issuing, implement authoritative server grading with content versions, immutable question responses, validated module evidence and an atomic progress update. Test duplicate/unknown options, invalid scores, concurrent retries, session expiry and failed writes. Keep administrative corrections audited.
+Production schema/ordinary-role write denials were checked on 15 October; final application deployment/client UAT is recorded separately. Local final checks cover malformed answers, version races, forged scores/notices, receipt privacy, historical pass retention and reporting. See [versioned assessment architecture](VERSIONED_ASSESSMENT_RELEASES.md) and [current evidence](../final/FINAL_DELIVERY_RECORD.md). These are formative checks, not a secure high-stakes examination system or a measure of classroom effectiveness.
 
 ## Related evidence
 

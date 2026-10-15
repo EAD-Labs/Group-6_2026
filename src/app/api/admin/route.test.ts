@@ -30,9 +30,16 @@ describe("cohort administration API",()=>{
     expect((await POST(request({cohortId,participantId:adminId},"unenrol"))).status).toBe(403);
     expect(mocks.rpc).not.toHaveBeenCalled();
   });
+  it("accepts a complete facilitator-authored package and delegates cohort scope to the role-checked transaction",async()=>{
+    mocks.staff.mockResolvedValue({admin:{rpc:mocks.rpc},user:{id:adminId},role:"facilitator"});
+    const payload={module:1,lessonSlug:"meet-generative-ai",title:"Check an answer",body:"Compare each generated answer with the source before sharing it with learners.",cohortId,package:{schemaVersion:1,rightsConfirmed:true,learningGoal:"Check every answer against the source.",media:[],activity:{title:"Check one claim",instructions:"Use a fictional classroom example and check one claim before revising the draft instructions.",reflection:"What information was missing from the request?"}}};
+    expect((await POST(request(payload,"save_lesson_package"))).status).toBe(200);
+    expect(mocks.rpc).toHaveBeenCalledWith("staff_operation",{p_actor:adminId,p_action:"save_lesson_package",p_payload:payload});
+    expect((await POST(request({...payload,package:{...payload.package,rightsConfirmed:false}},"save_lesson_package"))).status).toBe(400);
+  });
   it("returns only the minimal scoped roster and aggregate question counts, never individual assessment evidence",async()=>{
     const actor="10000000-0000-4000-8000-000000000003";
-    mocks.staff.mockResolvedValue({admin:{rpc:mocks.rpc,from:mocks.from},user:{id:actor},role:"facilitator",name:"Facilitator"});
+    mocks.staff.mockResolvedValue({admin:{rpc:mocks.rpc,from:mocks.from},client:{from:mocks.from},user:{id:actor},role:"facilitator",name:"Facilitator"});
     const filters:unknown[]=[];
     mocks.from.mockImplementation((table:string)=>{
       const query={select:vi.fn().mockReturnThis(),order:vi.fn().mockReturnThis(),limit:vi.fn().mockReturnThis(),or:vi.fn().mockReturnThis(),eq:vi.fn((...args:unknown[])=>{filters.push([table,...args]);return query;}),then:(resolve:(result:unknown)=>void)=>resolve({data:table==="cohorts"?[{id:cohortId,title:"Assigned",facilitator_id:actor}]:[],error:null})};

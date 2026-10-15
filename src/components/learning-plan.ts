@@ -51,7 +51,7 @@ export function getLearningPlan(state: DemoState) {
       requirements.push(...groups.map(([label, complete]) => ({ label, complete, href: `${path}/studio` })));
     }
     const best = Math.max(0, ...attempts[index].map((attempt) => attempt.scorePercent));
-    requirements.push({ label: attempts[index].length ? `Knowledge check: best ${best}% · 70% required` : "Pass the knowledge check with at least 70%", complete: hasPassed(attempts[index]), href: `${path}/quiz` });
+    requirements.push({ label: attempts[index].length ? `Knowledge check: best ${best}% · passing score recorded with each attempt` : "Pass the knowledge check; its passing score is shown before you start", complete: hasPassed(attempts[index]), href: `${path}/quiz` });
     return { ...module, lessons: lessons[index], completed: done, attempts: attempts[index], requirements, passed: passed[index], percent: Math.round((done + Number(passed[index])) / (lessons[index].length + 1) * 100), next: requirements.find((item) => !item.complete) ?? { label: "Review module", href: path, complete: true } };
   });
 }

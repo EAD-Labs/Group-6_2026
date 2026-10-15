@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach,beforeEach, describe, expect, it, vi } from "vitest";
+import { baseAssessmentBanks } from "@/features/content-authoring/assessment-release";
 
 import CraftPracticePage from "@/app/learn/module-2/practice/page";
 import ModuleTwoPage from "@/app/learn/module-2/page";
@@ -21,7 +22,9 @@ vi.mock("./ui/hydration-gate", () => ({ HydrationGate: ({ children }: { children
 describe("participant access without prerequisites", () => {
   beforeEach(() => {
     vi.mocked(useDemo).mockReturnValue({ state: initialDemoState, isPresentationDemo: false } as ReturnType<typeof useDemo>);
+    vi.stubGlobal("fetch",vi.fn().mockImplementation(async(url:string)=>{const number=Number(new URL(url,"https://example.test").searchParams.get("module"));return {ok:true,json:async()=>({assessment:{module:number,title:`Module ${number} knowledge check`,questions:baseAssessmentBanks[number-1],passThresholdPercent:70,contentVersion:`base-module-${number}`}})};}));
   });
+  afterEach(()=>vi.unstubAllGlobals());
 
   it("opens both later module overviews with links to their final lessons", () => {
     const two = render(<ModuleTwoPage />);
@@ -53,9 +56,9 @@ describe("participant access without prerequisites", () => {
     expect(screen.getByRole("heading", { name: "Record what you tried and learned" })).toBeInTheDocument();
   });
 
-  it.each([1, 2, 3, 4] as const)("opens Module %s quiz without prior lessons or evidence", (module) => {
+  it.each([1, 2, 3, 4] as const)("opens Module %s quiz without prior lessons or evidence", async(module) => {
     render(module === 1 ? <QuizExperience /> : <PathwayQuiz module={module} />);
-    expect(screen.getByRole("button", { name: /Start/ })).toBeEnabled();
+    expect(await screen.findByRole("button", { name: /Start/ })).toBeEnabled();
     expect(screen.queryByText(/Finish the lessons first|Finish all six lessons first/)).toBeNull();
   });
 });

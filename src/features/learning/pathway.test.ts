@@ -5,11 +5,16 @@ import { moduleTwoLessons } from "./module-two-content";
 import { moduleFourLessons } from "./module-four-content";
 import { readyPortfolio } from "@/test/fixtures/source-portfolio";
 import { moduleThreeLessons } from "./module-three-content";
-import { assistantHasEvidence, assistantHasRepairEvidence, getPathwayStatus } from "./pathway";
+import { assistantHasEvidence, assistantHasRepairEvidence, getPathwayStatus,hasPassed } from "./pathway";
 import { staffroomChallenges } from "./staffroom-challenges";
 import { promptLibraryCategories } from "./prompt-library";
 
 const pass: QuizAttempt = { answers: {}, attemptedAt: "2026-09-25T00:00:00Z", correctAnswers: 4, passed: true, scorePercent: 80 };
+it("respects the threshold recorded with each attempt and retains earlier valid passes",()=>{
+  expect(hasPassed([{...pass,scorePercent:80,passThresholdPercent:90,passed:false}])).toBe(false);
+  expect(hasPassed([{...pass,scorePercent:80,passThresholdPercent:70},{...pass,scorePercent:85,passThresholdPercent:90,passed:false}])).toBe(true);
+  expect(getPathwayStatus({...initialDemoState,completedLessonSlugs:moduleOneLessons.map(lesson=>lesson.slug),quizAttempts:[{...pass,passThresholdPercent:90,passed:false}]}).onePassed).toBe(false);
+});
 const assistant: AssistantSpec = {
   id: "00000000-0000-4000-8000-000000000999", version: 2, name: "Exit tickets", purpose: "Draft exit tickets", persona: "Class 6 teacher",
   task: "Create questions", context: "Ask for learning goal", format: "Three items with answers",
