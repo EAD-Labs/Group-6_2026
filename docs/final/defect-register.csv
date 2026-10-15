@@ -1,0 +1,1 @@
+defect_id,case_id,revision,environment,reported_date,expected_result,actual_result,reproduction_steps,severity,evidence_path,owner,due_date,fix_revision,retest_date,retest_result,client_disposition

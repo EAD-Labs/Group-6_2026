@@ -1,0 +1,22 @@
+import { expect, test } from "@playwright/test";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+test("capture real public demonstration screens for the final poster", async ({ page }, info) => {
+  test.skip(info.project.name !== "chromium", "One consistent desktop capture is sufficient for the poster.");
+  const directory = path.join(process.cwd(), "artifacts/final-presentation");
+  await mkdir(directory, { recursive: true });
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.goto("/try");
+  await page.getByRole("button", { name: "Try a clearer example" }).click();
+  await page.getByRole("button", { name: "Check my request" }).click();
+  await expect(page.getByRole("status")).toContainText("Checklist signals");
+  await page.locator(".visitor-workspace").screenshot({ path: path.join(directory, "clear-request.png") });
+  await page.getByRole("button", { name: "Next: prepare a draft" }).click();
+  await page.getByRole("button", { name: "Prepare my draft" }).click();
+  await expect(page.getByLabel("Make it right for your learners")).toHaveValue(/\[S1\]/);
+  await page.locator(".visitor-workspace").screenshot({ path: path.join(directory, "source-draft.png") });
+  await page.goto("/review-lab");
+  await expect(page.locator("#original-objective-score")).toBeVisible();
+  await page.screenshot({ path: path.join(directory, "review-lab.png"), clip: { x: 40, y: 110, width: 1360, height: 820 } });
+  await writeFile(path.join(directory, "capture.json"), JSON.stringify({ capturedAt: new Date().toISOString(), baseUrl: process.env.PROMPTSHALA_TEST_URL ?? "http://127.0.0.1:3017", material: "Fictional built-in classroom sample", personalData: false, method: "Real browser interactions; screenshots are not synthetic renderings" }, null, 2));
+});

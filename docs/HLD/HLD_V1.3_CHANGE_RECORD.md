@@ -1,5 +1,7 @@
 # PromptShala HLD v1.3 Change Record
 
+**Historical 8-9 September record retained below. Consolidation note: 14 October 2026.** Later authorised changes supersede prerequisite locking, fingerprint-only CRAFT history and the original 15 October presentation milestone. All modules are open; completion is assessed separately. The October client approved immediate signup, optional tab-memory personal keys, private full CRAFT prompt/history and simplified teacher wording. The course announcement now requires A0 poster submission on **20 October** and presentation on **23 October, 9:30 AM-12:00 PM**, reporting **9:15 AM**, LA-LHC Complex Foyer. The HLD study window remains 16 October-6 November. Preserve the earlier signatures as historical records; consolidated acceptance of the final version must be recorded by a real reviewer using the [client packet](../final/CLIENT_REVIEW_AND_DECISIONS.md).
+
 **Decision date:** 8 September 2026  
 **Implementation evidence updated:** 9 September 2026  
 **Schedule authority:** HLD v1.3 Section 17.4  

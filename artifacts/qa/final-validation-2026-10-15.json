@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "final-validation/1",
+  "checkedAt": "2026-10-15T04:51:36.345Z",
+  "scope": "Final local working source before four-commit publication; synthetic test material only. Deployment and live service results recorded separately.",
+  "checks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "automatedTests": {
+      "passed": 435,
+      "failed": 0,
+      "files": 66
+    },
+    "browser": {
+      "journeysPassed": 27,
+      "screenshotCapturePassed": 1,
+      "captureOnlyProjectSkips": 2,
+      "failed": 0,
+      "flaky": 0,
+      "projects": [
+        "chromium",
+        "webkit",
+        "phone360px"
+      ],
+      "durationMs": 13994
+    },
+    "productionDependencies": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0
+    },
+    "developmentDependency": "Upstream braces3.0.3 advisory remains reported; bounded parser-depth patch installed and regression-tested. Do not claim a zero all-dependency audit."
+  },
+  "coverage": "All migration/RLS, immutable assessment publication/grading/receipt recovery, owner-only exports, retained historical notice/pass evidence, visitor/reset/export, custom rubrics and bounded stateless provider requests.",
+  "limits": [
+    "Firefox local host launch unavailable; Linux CI still requires observation",
+    "Container runtime requires Linux CI; no local Docker installation",
+    "Public browser accessibility smoke is not full screen-reader/WCAG conformance",
+    "No isolated managed restore or representative25-user authenticated load",
+    "No educator/client sign-off or real field-study outcomes"
+  ],
+  "ownerDecisions": "15 October: existing production Supabase project for release; email setup deferred"
+}

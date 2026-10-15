@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-15",
+  "environment": "existing production Supabase project",
+  "scope": "Additive migrations, privilege and advisor checks; no learner identities or records included",
+  "backup": "Approved affected-table AES-256-GCM backup refreshed and round-trip verified; encrypted data/key/evidence remain in ignored private storage",
+  "recordPreservation": "Profile, saved-state and private CRAFT row counts unchanged before/after migration",
+  "appliedChanges": [
+    "evidence_versions",
+    "restrict_ddl_trigger_execution",
+    "retention_readiness_report",
+    "lesson_packages_and_cohort_visibility",
+    "optimize_policy_checks_and_foreign_keys",
+    "versioned_assessment_releases"
+  ],
+  "performance": {
+    "policiesWithEquivalentCachedIdentityChecks": 27,
+    "newRelationshipIndexes": 11,
+    "remainingWarnings": 0,
+    "remainingInfo": "Unused-index observations include newly created indexes; retain until representative usage exists"
+  },
+  "security": {
+    "ddlTriggerExecutableByAuthenticated": false,
+    "intentionalInfo": "Service-only audit/rate/private-retention tables have RLS and no browser policies",
+    "intentionalWarning": "Identity-scoped is_admin() remains callable by authenticated users because existing RLS policies require it",
+    "planLimitation": "Chrome verified leaked-password protection is available only on Pro and above; no plan upgrade authorised or applied",
+    "remediationReferences": [
+      "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+      "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection",
+      "https://supabase.com/docs/guides/database/postgres/row-level-security#call-functions-with-select"
+    ]
+  },
+  "retentionReport": { "observedMode": "read_only", "approvalStatus": "awaiting_approval", "longTermCleanup": "disabled", "deletedRows": 0 },
+  "ownerDecisions": "15 October: use the existing production project for this release; defer email setup",
+  "assessmentPermissions": { "learnerCanInsertRelease": false, "learnerCanExecuteStaffOperation": false },
+  "notEstablished": ["Hosted isolated restore", "Representative 25-user authenticated load", "Client acceptance"]
+}

@@ -1,5 +1,7 @@
 # Release review — 1–2 October 2026
 
+**Dated historical release evidence. Current boundary clarified 14 October 2026:** this report describes the named October releases and original tests below. Final source adds a public visitor path, generic review lab, evidence versions, structured lesson/cohort authoring and operational improvements. Use the [current register](../final/FINAL_DELIVERY_RECORD.md) and [14 October local QA](../../artifacts/qa/validation-2026-10-14.json) for new evidence. Earlier guided-demo state, quiz counts and staging/service blockers must not be carried forward as current facts. Preserve the historical outputs and distinctions between synthetic development checks and client acceptance.
+
 ## Result and boundaries
 
 The reviewed local revision passes lint, TypeScript, all 221 tests across 33 files and the production build (74 generated routes/pages in the Next.js output). The managed rollout and synthetic production evidence below extend these local results. Client acceptance, a completed accessibility audit, a 25-person load test and a teacher pilot remain pending.

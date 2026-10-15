@@ -2,6 +2,8 @@
 
 Baseline: all 25 pages of `PromptShala_HLD_v1.3_CRAFT_Updated.pdf`, including the preserved signed baseline; current implementation and Jira KAN-5/6/8/9/17/18/20/21. This ledger distinguishes implementation from evidence collected against an actual deployment.
 
+**Historical initial-gap ledger; current boundary updated 14 October 2026.** Much of the planned work below is implemented and has dated synthetic production evidence. It is not the current missing-feature list. Use [the current completion plan](../FINAL_COMPLETION_PLAN.md), [delivery/evidence register](../final/FINAL_DELIVERY_RECORD.md), current three technical delivery reports and real Jira updates. The approved October pilot added immediate signup, private full CRAFT history and administrator-only individual learning telemetry; private prompts/sources/transcripts remain excluded from routine reports. The visitor path is now local temporary practice, not the removed guided demo-login mode. Final code adds structured lesson packages/cohort publication; verified final deployment is recorded separately.
+
 ## Decisions carried forward
 
 - The later explicit open-curriculum decision supersedes HLD prerequisite navigation locks (AC-04). All four modules remain accessible. Completion still requires all lessons, valid quiz results and practice evidence.
