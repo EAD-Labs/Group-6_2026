@@ -72,6 +72,21 @@ it("saves optional AI experience atomically and only exposes it to its owner", a
 });
 
 describe("migrated PostgreSQL permissions and transaction behavior", () => {
+  it("records actual consent versions without inventing historical acceptance or duplicate receipts", async () => {
+    const id = "10000000-0000-4000-8000-000000000008";
+    await db.query("insert into auth.users(id,email) values($1,'consent@example.test')", [id]);
+    await save(id, 0, { ...initialDemoState, safeUseAccepted: true });
+    expect((await db.query("select safe_use_notice_version from public.profiles where id=$1", [id])).rows[0]).toEqual({ safe_use_notice_version: null });
+    expect((await db.query("select * from public.consent_receipts where participant_id=$1", [id])).rows).toHaveLength(0);
+    await save(id, 1, { ...initialDemoState, safeUseAccepted: true, safeUseNoticeVersion: "2026-10-13-v1" });
+    await save(id, 2, { ...initialDemoState, safeUseAccepted: true, safeUseNoticeVersion: "2026-10-13-v1" });
+    const own = await asRole("authenticated", id, () => db.query("select notice_version from public.consent_receipts where participant_id=$1", [id]));
+    expect(own.rows).toEqual([{ notice_version: "2026-10-13-v1" }]);
+    expect((await asRole("authenticated", ids.bob, () => db.query("select * from public.consent_receipts where participant_id=$1", [id]))).rows).toHaveLength(0);
+    await expect(asRole("authenticated", id, () => db.query("insert into public.consent_receipts(participant_id,notice_version) values($1,'forged')", [id]))).rejects.toThrow(/permission denied/);
+    await save(id, 3, { ...initialDemoState, safeUseAccepted: true });
+    expect((await db.query("select safe_use_notice_version from public.profiles where id=$1", [id])).rows[0]).toEqual({ safe_use_notice_version: "2026-10-13-v1" });
+  });
   it("applies every migration and isolates private state for two participants and staff", async () => {
     await save(ids.alice, 0, { ...initialDemoState, displayName: "Alice private" });
     await save(ids.bob, 0, { ...initialDemoState, displayName: "Bob private" });
@@ -172,6 +187,41 @@ describe("migrated PostgreSQL permissions and transaction behavior", () => {
     expect((await take(ids.alice)).rows[0].allowed).toBe(false);
     expect((await take(ids.bob)).rows[0].allowed).toBe(true);
     await expect(asRole("authenticated", ids.alice, () => db.query("select public.consume_ai_rate_limit($1,'assistant',1000)", [ids.alice]))).rejects.toThrow(/permission denied/);
+  });
+  it("reports aggregate retention candidates without deleting data or exposing them to learners", async () => {
+    const asOf = "2030-10-14T00:00:00Z";
+    const report = async () => (await asRole("service_role", "", () => db.query<{ value: Record<string, unknown> }>("select public.retention_readiness_report($1) as value", [asOf]))).rows[0].value;
+    const before = await report() as { proposedPolicyCandidates: { inactiveAccounts: number; certificatesDeletedWithThoseAccounts: number }; existingCleanupCandidates: { expiredResources: number; auditEventsOver90Days: number; learningEventsOver90Days: number } };
+    const old = "10000000-0000-4000-8000-000000000071", recentLogin = "10000000-0000-4000-8000-000000000072", recentSave = "10000000-0000-4000-8000-000000000073";
+    for (const id of [old, recentLogin, recentSave]) await db.query("insert into auth.users(id,email,created_at) values($1,$2,'2025-01-01')", [id, `private-${id}@example.test`]);
+    await db.query("update auth.users set last_sign_in_at='2030-10-13' where id=$1", [recentLogin]);
+    await db.query("insert into public.participant_states(participant_id,state,updated_at) values($1,'{}','2030-10-13')", [recentSave]);
+    await db.query("insert into public.certificates(participant_id,participant_name,issued_at) values($1,'Private test name','2025-01-01')", [old]);
+    const resource = await db.query<{ id: string }>("insert into public.teacher_resources(owner_id,title,audience,objective,source_text,output_format,draft,permission,expires_at) values($1,'Private source','Class 6','Explain evaporation','Fictional source material only; no learner data is needed for this read-only report test.','summary','Private draft','own','2030-01-01') returning id", [old]);
+    await db.query("insert into public.audit_events(actor_id,action,created_at) values($1,'test_retention_report','2030-01-01')", [old]);
+    await db.query("insert into public.learning_events(id,participant_id,session_id,kind,path,occurred_at,received_at) values('30000000-0000-4000-8000-000000000071',$1,'30000000-0000-4000-8000-000000000072','page_view','/dashboard','2030-01-01','2030-01-01')", [old]);
+    const result = await report();
+    expect(result).toMatchObject({ mode: "read_only", deletedRows: 0, policy: { approvalStatus: "awaiting_approval", longTermCleanup: "disabled", inactivityMonths: 12, certificateYears: 3 },
+      proposedPolicyCandidates: { inactiveAccounts: before.proposedPolicyCandidates.inactiveAccounts + 1, certificatesDeletedWithThoseAccounts: before.proposedPolicyCandidates.certificatesDeletedWithThoseAccounts + 1 },
+      existingCleanupCandidates: { expiredResources: before.existingCleanupCandidates.expiredResources + 1, auditEventsOver90Days: before.existingCleanupCandidates.auditEventsOver90Days + 1, learningEventsOver90Days: before.existingCleanupCandidates.learningEventsOver90Days + 1 } });
+    expect(JSON.stringify(result)).not.toMatch(/private-|Private source|Private draft|Private test name|10000000-/);
+    expect(await report()).toEqual(result);
+    expect((await db.query("select id from public.teacher_resources where id=$1", [resource.rows[0].id])).rows).toHaveLength(1);
+    expect((await db.query("select id from auth.users where id=$1", [old])).rows).toHaveLength(1);
+    for (const role of ["anon", "authenticated"] as const) {
+      await expect(asRole(role, ids.admin, () => db.query("select public.retention_readiness_report($1)", [asOf]))).rejects.toThrow(/permission denied/);
+      await expect(asRole(role, ids.admin, () => db.query("select * from promptshala_private.retention_policy_versions"))).rejects.toThrow(/permission denied/);
+    }
+    await expect(asRole("service_role", "", () => db.query("select public.retention_readiness_report('infinity')"))).rejects.toThrow(/finite report time/);
+  });
+  it("keeps policy decisions append-only and cannot enable destructive long-term cleanup", async () => {
+    await expect(asRole("service_role", "", () => db.query("update promptshala_private.retention_policy_versions set inactivity_months=1"))).rejects.toThrow(/permission denied/);
+    await expect(asRole("service_role", "", () => db.query("delete from promptshala_private.retention_policy_versions"))).rejects.toThrow(/permission denied/);
+    await expect(asRole("service_role", "", () => db.query("insert into promptshala_private.retention_policy_versions(version,inactivity_months,certificate_years,approval_status) values('invalid-approval',12,3,'approved_for_planning')"))).rejects.toThrow(/check constraint/);
+    await expect(asRole("service_role", "", () => db.query("insert into promptshala_private.retention_policy_versions(version,inactivity_months,certificate_years,approval_status,long_term_cleanup) values('invalid-cleanup',12,3,'awaiting_approval','enabled')"))).rejects.toThrow(/check constraint/);
+    await asRole("service_role", "", () => db.query("insert into promptshala_private.retention_policy_versions(version,inactivity_months,certificate_years,approval_status,decision_reference,created_at) values('2030-reviewed-policy',18,4,'approved_for_planning','TEST ONLY: synthetic policy decision','2030-10-12')"));
+    const result = await asRole("service_role", "", () => db.query<{ value: unknown }>("select public.retention_readiness_report('2030-10-14') as value"));
+    expect(result.rows[0].value).toMatchObject({ policy: { version: "2030-reviewed-policy", inactivityMonths: 18, certificateYears: 4, approvalStatus: "approved_for_planning", longTermCleanup: "disabled" }, deletedRows: 0 });
   });
   it("stores checked CRAFT text privately, blocks forged feedback, and cascades account deletion", async () => {
     const participant = "10000000-0000-4000-8000-000000000098";

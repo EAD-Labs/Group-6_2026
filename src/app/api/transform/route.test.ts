@@ -32,13 +32,13 @@ describe("source transformation privacy and recovery", () => {
   it("blocks signed-out sessions and rejects invented citation labels", async () => {
     mocks.access.mockResolvedValueOnce({ mode: "unauthenticated" }); expect((await POST(request({ useAi: true }))).status).toBe(401);
     mocks.access.mockResolvedValue({ mode: "authenticated", participantId: "alice" });
-    provider.mockResolvedValue(new Response(JSON.stringify({ steps: [{ type: "model_output", content: [{ type: "text", text: "An invented claim [S999]." }] }] }), { status: 200 }));
+    provider.mockResolvedValue(new Response(JSON.stringify({ status: "completed", steps: [{ type: "model_output", content: [{ type: "text", text: "An invented claim [S999]." }] }] }), { status: 200 }));
     expect((await (await POST(request({ useAi: true }))).json()).source).toBe("extractive");
   });
   it("uses a personal key for an explicit live request while preserving the account quota", async () => {
     mocks.configured = false; mocks.access.mockResolvedValue({ mode: "authenticated", participantId: "alice" });
     const submitted = request({ useAi: true }); submitted.headers.set("x-promptshala-gemini-key", "private_gemini_key_for_testing");
-    provider.mockResolvedValue(new Response(JSON.stringify({ steps: [{ type: "model_output", content: [{ type: "text", text: "Water may become vapour [S1]." }] }] }), { status: 200 }));
+    provider.mockResolvedValue(new Response(JSON.stringify({ status: "completed", steps: [{ type: "model_output", content: [{ type: "text", text: "Water may become vapour [S1]." }] }] }), { status: 200 }));
     expect((await (await POST(submitted)).json()).source).toBe("gemini");
     expect(provider).toHaveBeenCalledWith("https://generativelanguage.googleapis.com/v1beta/interactions", expect.objectContaining({ headers: expect.objectContaining({ "x-goog-api-key": "private_gemini_key_for_testing" }) }));
     expect(mocks.budget).toHaveBeenCalledWith("alice", "transform");
