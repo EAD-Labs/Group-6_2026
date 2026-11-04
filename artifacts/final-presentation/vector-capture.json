@@ -1,0 +1,40 @@
+{
+  "capturedAt": "2026-10-20T09:54:39.034Z",
+  "url": "https://promptshala.vercel.app/try",
+  "method": "Unmodified live browser UI rendered as screen-media PDFs, cropped to .visitor-workspace",
+  "fictionalMaterial": true,
+  "personalData": false,
+  "applicationWrites": false,
+  "providerCalls": false,
+  "viewportCssPx": {
+    "width": 1440,
+    "height": 1100
+  },
+  "sourceScript": "scripts/capture-poster-vector.mjs",
+  "captures": [
+    {
+      "name": "clear-request",
+      "file": "artifacts/final-presentation/clear-request-vector.pdf",
+      "rectangleCssPx": {
+        "x": 152,
+        "y": 624.171875,
+        "width": 1136,
+        "height": 850.734375
+      },
+      "widthPt": 852,
+      "heightPt": 638.05078125
+    },
+    {
+      "name": "source-draft",
+      "file": "artifacts/final-presentation/source-draft-vector.pdf",
+      "rectangleCssPx": {
+        "x": 152,
+        "y": 624.171875,
+        "width": 1136,
+        "height": 742.125
+      },
+      "widthPt": 852,
+      "heightPt": 556.59375
+    }
+  ]
+}

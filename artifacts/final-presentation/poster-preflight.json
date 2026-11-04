@@ -1,33 +1,99 @@
 {
-  "checkedAt": "2026-10-15T04:55:19.064541+00:00",
+  "checkedAt": "2026-10-20T09:55:55.136407+00:00",
+  "redesignDate": "2026-10-20",
+  "designRevision": "Classroom colour: teal, cream, mint, coral and gold",
   "pages": 1,
   "portrait": true,
   "widthMm": 841.0,
   "heightMm": 1189.0,
   "decodedQr": "https://promptshala.vercel.app/try",
-  "qrVerification": "CoreImage independently decoded the final rendered preview",
-  "fonts": [
+  "qrVerification": "CoreImage independently decoded the final rendered PNG",
+  "fontResourceCount": 124,
+  "fontTypes": {
+    "/TrueType": 3,
+    "/Type3": 120,
+    "/Type0": 1
+  },
+  "allFontsEmbedded": true,
+  "vectorGlyphProgramsVerified": 754,
+  "fontBoundingBoxesContainAllGlyphs": true,
+  "allAuthoredTextInsidePageMargins": true,
+  "minimumAuthoredTextMarginPoints": 60,
+  "screenGeometryNote": "Actual browser panels are clipped to their visible workspace; hidden source-page operators may exist outside the crop.",
+  "layoutElementCount": 78,
+  "layoutOverlapCount": 0,
+  "applicationPanels": [
     {
-      "name": "/AAAAAA+NotoSans-Regular",
-      "embedded": true
+      "file": "clear-request-vector.pdf",
+      "type": "vector PDF with embedded vector text"
+    },
+    {
+      "file": "source-draft-vector.pdf",
+      "type": "vector PDF with embedded vector text"
     }
   ],
-  "allTextInsidePageMargins": true,
-  "visualReview": "Final rendered2200px preview inspected; no clipped titles, overlaps or missing glyphs observed",
-  "sha256": "e2181d3c4da9eb2217b91fa88bbe19d9d3ca19fa50e28d42f5c005be3f0f7142",
+  "rasterContent": "Soft CSS interface shadows only; body copy, UI text, rules, arrows and QR remain vector.",
+  "highZoomInspection": {
+    "zoomPercent": 400,
+    "renderDpi": 384,
+    "referenceScreenDpi": 96,
+    "result": "App text and edges remain sharp; no missing glyphs observed."
+  },
+  "renderWarnings": 0,
+  "visualReview": "Final 3200px page and 400% app-panel crop inspected; no overlapping titles, missing glyphs or unintended clipping observed.",
+  "sha256": "44090774153c93200897ec00d4ab77a8f0d0ed194df3739c7aefd62282583e23",
+  "previewSha256": "029f9f6dde2fab88c5f73999da89e95b135833038509ac43d9bcaf807366690c",
+  "fileBytes": 955285,
   "publicCopyIdentical": true,
   "sourceCapture": {
-    "capturedAt": "2026-10-15T04:50:39.090Z",
-    "baseUrl": "http://127.0.0.1:3017",
-    "material": "Fictional built-in classroom sample",
+    "capturedAt": "2026-10-20T09:54:39.034Z",
+    "url": "https://promptshala.vercel.app/try",
+    "method": "Unmodified live browser UI rendered as screen-media PDFs, cropped to .visitor-workspace",
+    "fictionalMaterial": true,
     "personalData": false,
-    "method": "Real browser interactions; screenshots are not synthetic renderings"
+    "applicationWrites": false,
+    "providerCalls": false,
+    "viewportCssPx": {
+      "width": 1440,
+      "height": 1100
+    },
+    "sourceScript": "scripts/capture-poster-vector.mjs",
+    "captures": [
+      {
+        "name": "clear-request",
+        "file": "artifacts/final-presentation/clear-request-vector.pdf",
+        "rectangleCssPx": {
+          "x": 152,
+          "y": 624.171875,
+          "width": 1136,
+          "height": 850.734375
+        },
+        "widthPt": 852,
+        "heightPt": 638.05078125
+      },
+      {
+        "name": "source-draft",
+        "file": "artifacts/final-presentation/source-draft-vector.pdf",
+        "rectangleCssPx": {
+          "x": 152,
+          "y": 624.171875,
+          "width": 1136,
+          "height": 742.125
+        },
+        "widthPt": 852,
+        "heightPt": 556.59375
+      }
+    ]
   },
-  "evidenceCounts": {
-    "automatedTests": 435,
-    "testFiles": 66,
-    "browserJourneys": 27
-  },
-  "evidence": "artifacts/qa/final-validation-2026-10-15.json",
-  "releaseBoundary": "Final live route/release/Moodle receipt require separate actual verification"
+  "authoredPosterWordCount": 342,
+  "instructionLabelRemoved": true,
+  "courseTopicsCovered": [
+    "Client problem and requirements",
+    "Teacher persona and design choices",
+    "Development process and learning cycle",
+    "Working features and actual app screenshots",
+    "Client feedback and changes",
+    "Testing plans and adaptation to other subjects"
+  ],
+  "releaseBoundary": "This preflight verifies the redesigned local poster and public-screen capture. It does not assert live AI success, completed teacher trials, client acceptance or Moodle submission."
 }

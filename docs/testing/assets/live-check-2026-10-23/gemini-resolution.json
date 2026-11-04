@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-10-23T03:34:09.224Z",
+  "productionUrl": "https://promptshala.vercel.app",
+  "productionSecretUpdated": true,
+  "sensitive": true,
+  "secretPrinted": false,
+  "sourceCodeChanged": false,
+  "deployment": {
+    "checkedAt": "2026-10-23T03:32:06.850Z",
+    "status": 200,
+    "uid": "dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g",
+    "url": "promptshala-38px93q21-sus-co.vercel.app",
+    "state": "READY",
+    "alias": [
+      "promptshala.vercel.app",
+      "promptshala-sus-co.vercel.app"
+    ],
+    "gitSha": "998ce3381c620ef3ea23d27e9cc8bc34348f9f77"
+  },
+  "checks": [
+    {
+      "name": "Live course-key CRAFT evaluation",
+      "status": 200,
+      "source": "gemini",
+      "model": "gemini-3.5-flash",
+      "elapsedMs": 4330,
+      "passed": true,
+      "saved": true
+    },
+    {
+      "name": "Gemini CRAFT prompt and feedback reload from private history",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Live course-key teaching helper",
+      "status": 200,
+      "elapsedMs": 5553,
+      "passed": true
+    },
+    {
+      "name": "Live course-key source transformation",
+      "status": 200,
+      "source": "gemini",
+      "elapsedMs": 7007,
+      "passed": true
+    }
+  ],
+  "initialCraftAttempt": {
+    "result": "Google returned transient HTTP 503; app used labelled fallback",
+    "confirmedByProductionLogs": true,
+    "retrySucceeded": true
+  },
+  "syntheticAccountsCreated": 2,
+  "allSyntheticAccountsDeleted": true,
+  "outboundEmails": 0
+}
