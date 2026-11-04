@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+test.use({ deviceScaleFactor: 4 });
 test("capture real public demonstration screens for the final poster", async ({ page }, info) => {
   test.skip(info.project.name !== "chromium", "One consistent desktop capture is sufficient for the poster.");
   const directory = path.join(process.cwd(), "artifacts/final-presentation");
@@ -8,6 +9,7 @@ test("capture real public demonstration screens for the final poster", async ({ 
   await page.setViewportSize({ width: 1440, height: 1100 });
   await page.goto("/try");
   await page.getByRole("button", { name: "Try a clearer example" }).click();
+  await page.getByRole("textbox", { name: "Your request", exact: true }).fill("Act as a science teacher. For Class 6 learners who know that water can change state, write a 15-minute activity on evaporation. Use two numbered observation steps, three discussion questions and a short answer guide. Use only the source I provide; flag missing information. Keep the language simple and offer a spoken-answer option.");
   await page.getByRole("button", { name: "Check my request" }).click();
   await expect(page.getByRole("status")).toContainText("Checklist signals");
   await page.locator(".visitor-workspace").screenshot({ path: path.join(directory, "clear-request.png") });
@@ -18,5 +20,5 @@ test("capture real public demonstration screens for the final poster", async ({ 
   await page.goto("/review-lab");
   await expect(page.locator("#original-objective-score")).toBeVisible();
   await page.screenshot({ path: path.join(directory, "review-lab.png"), clip: { x: 40, y: 110, width: 1360, height: 820 } });
-  await writeFile(path.join(directory, "capture.json"), JSON.stringify({ capturedAt: new Date().toISOString(), baseUrl: process.env.PROMPTSHALA_TEST_URL ?? "http://127.0.0.1:3017", material: "Fictional built-in classroom sample", personalData: false, method: "Real browser interactions; screenshots are not synthetic renderings" }, null, 2));
+  await writeFile(path.join(directory, "capture.json"), JSON.stringify({ capturedAt: new Date().toISOString(), baseUrl: process.env.PROMPTSHALA_TEST_URL ?? "http://127.0.0.1:3017", material: "Fictional classroom sample; clearer request entered through the visible form", personalData: false, deviceScaleFactor: 4, method: "Real browser interactions; screenshots are not synthetic renderings" }, null, 2));
 });
