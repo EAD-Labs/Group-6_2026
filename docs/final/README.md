@@ -32,9 +32,9 @@ The poster uses real browser captures of fictional classroom material. Its QR op
 
 | Course criterion | Evidence available to the reviewer |
 | --- | --- |
-| Client problem and alignment | Poster sections 01/05; client-decision matrix; HLD/change history |
-| Learner needs | Poster section 02; beginner-teacher persona and concrete design consequences |
-| Pedagogy and process | Poster section 03; worked examples, formative feedback, revision and transfer tasks |
+| Client problem and alignment | Poster: "From workshops to practice" and "You asked. We simplified."; client-decision matrix; HLD/change history |
+| Learner needs | Poster: "A teacher like Meera"; beginner-teacher persona and concrete design consequences |
+| Pedagogy and process | Poster: "Built with the client" and "See how a lesson takes shape"; worked examples, formative feedback, revision and transfer tasks |
 | Working and independently testable app | Public visitor path, full account course, actual screenshots and browser evidence |
 | Feedback and future implementation | Feedback-to-change rows, operational acceptance work, study plan |
 | Generalisability | Portable Teaching Review Lab rubric, versioned evidence export and adaptation example |
