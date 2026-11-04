@@ -1,154 +1,366 @@
-"""A0 portrait, vector type/diagrams/QR, embedded font and real UI captures.
+"""Build the one-page A0 PromptShala poster from real application captures.
 
-Run after e2e/poster-assets.spec.ts. Authoring outputs are under output/pdf;
-after render/preflight, publish matching PDF/preview copies in artifacts.
-Regenerate after final deployment/evidence updates; never invent study results.
+Run scripts/capture-poster-vector.mjs first (the e2e poster-assets capture is
+the raster fallback). Render and inspect the output/pdf PDF before publishing
+the matching PDF/PNG pair in artifacts/final-presentation.
 """
 from pathlib import Path
-from reportlab.pdfgen import canvas
-from reportlab.lib.colors import HexColor, toColor
+import argparse
+import json
+
+from PIL import Image
+from reportlab.graphics.barcode.qr import QrCodeWidget
+from reportlab.lib.colors import HexColor
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.graphics.barcode.qr import QrCodeWidget
-from PIL import Image
-import json
-import argparse
+from pypdf import PdfReader, PdfWriter, Transformation
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument("--unit-tests", type=int, default=435, help="Actually passed final automated test count")
-parser.add_argument("--browser-journeys", type=int, default=27, help="Actually passed browser journey count, excluding capture/skip rows")
+# Preserve the earlier build command. Test counts stay in the release record.
+parser.add_argument("--unit-tests", type=int, default=435)
+parser.add_argument("--browser-journeys", type=int, default=27)
 args = parser.parse_args()
 if args.unit_tests < 1 or args.browser_journeys < 1:
-    raise ValueError("Use recorded positive test counts, not estimates")
+    raise ValueError("Recorded test counts must be positive")
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "artifacts/final-presentation"
 OUT = ROOT / "output/pdf"
 OUT.mkdir(parents=True, exist_ok=True)
 W, H = 841 * mm, 1189 * mm
-M, GAP = 90, 38
-CW = (W - 2*M - GAP)/2
-INK, MUTED, BLUE = "#172f4d", "#455d79", "#214f84"
-PALE, PAPER, LINE = "#e8f0fb", "#f7f9fc", "#d8e2ef"
-pdfmetrics.registerFont(TTFont("Poster", str(ROOT / "public/fonts/NotoSans-Regular.ttf")))
+M, GAP = 88, 48
+INNER = W - 2 * M
+CW = (INNER - GAP) / 2
+RIGHT = M + CW + GAP
+INK, BLUE, MUTED = "#143C43", "#176F70", "#3E5B60"
+LINE, PALE, WHITE = "#CCDCD5", "#E4F0E8", "#FFFFFF"
+PAPER, NIGHT, MINT, CORAL, GOLD = "#FCF7ED", "#123B43", "#C9E6D8", "#F28168", "#F4CB62"
+for name, filename in [
+    ("Body", "InstrumentSans-Regular.ttf"),
+    ("Bold", "InstrumentSans-Bold.ttf"),
+    ("Display", "InstrumentSerif-Regular.ttf"),
+]:
+    pdfmetrics.registerFont(TTFont(name, str(ASSETS / "fonts" / filename)))
+pdfmetrics.registerFontFamily("Body", normal="Body", bold="Bold")
+pdfmetrics.registerFontFamily("Bold", normal="Bold", bold="Bold")
+
 PATH = OUT / "ET617_Group6_Poster.pdf"
-C = canvas.Canvas(str(PATH), pagesize=(W,H), pageCompression=1, initialFontName="Poster")
-C.setTitle("PromptShala - ET617 Group 6 Final Project Poster")
-C.setAuthor("ET617 Group 6: Darshan Sonawane, Vishal Patel, Ashok Kumar, Raghuram Gundi")
-C.setSubject("Teacher-centred AI literacy; working application, design decisions and future implementation")
+C = canvas.Canvas(
+    str(PATH), pagesize=(W, H), pageCompression=1, initialFontName="Body"
+)
+C.setTitle("PromptShala - Helping teachers use AI in class")
+C.setAuthor(
+    "ET617 Group 6: Darshan Sonawane, Vishal Patel, Ashok Kumar, Raghuram Gundi"
+)
+C.setSubject(
+    "Teacher AI literacy, classroom practice, client feedback and future development"
+)
+LAYOUT = []
 
-def box(x, top, width, height, fill="white", radius=24, stroke=LINE):
-    C.setFillColor(toColor(fill)); C.setStrokeColor(toColor(stroke))
-    C.roundRect(x, H-top-height, width, height, radius, fill=1, stroke=1)
 
-def para(text, x, top, width, size=28, color=INK, leading=None, max_height=None):
-    style = ParagraphStyle("p", fontName="Poster", fontSize=size, leading=leading or size*1.38,
-                           textColor=HexColor(color), spaceAfter=0)
-    p = Paragraph(text, style); _, height=p.wrap(width, H)
-    if max_height is not None and height > max_height:
-        raise ValueError(f"Text overflow: {text[:80]} ({height} > {max_height})")
-    p.drawOn(C, x, H-top-height)
+def text(content, x, top, width, size=30, color=INK, font="Body",
+         leading=None, max_height=None, align=0):
+    style = ParagraphStyle(
+        "poster", fontName=font, fontSize=size,
+        leading=leading or size * 1.32, textColor=HexColor(color),
+        spaceBefore=0, spaceAfter=0, alignment=align,
+    )
+    paragraph = Paragraph(content, style)
+    _, height = paragraph.wrap(width, H)
+    if max_height is not None and height > max_height + 0.01:
+        raise ValueError(
+            f"Text overflow: {content[:65]} ({height:.1f} > {max_height})"
+        )
+    if min(x, top) < 60 or x + width > W - 60 or top + height > H - 60:
+        raise ValueError(f"Text outside safe margins: {content[:65]}")
+    paragraph.drawOn(C, x, H - top - height)
+    LAYOUT.append({
+        "kind": "text", "text": content, "x": x, "top": top,
+        "width": width, "height": height, "fontSize": size,
+    })
     return height
 
-def heading(number, title, x, top, width):
-    para(number, x, top, 100, 25, BLUE)
-    para(title, x+90, top-5, width-90, 39, INK, 49)
 
-def rule(x, top, width):
-    C.setStrokeColor(HexColor(LINE)); C.setLineWidth(1.5); C.line(x,H-top,x+width,H-top)
+def rule(top, x=M, width=INNER, color=LINE, thickness=1.6):
+    C.setStrokeColor(HexColor(color))
+    C.setLineWidth(thickness)
+    C.line(x, H - top, x + width, H - top)
 
-def arrow(x, top, width):
-    C.setStrokeColor(HexColor(BLUE)); C.setLineWidth(3); C.line(x,H-top,x+width,H-top)
-    C.setFillColor(HexColor(BLUE)); p=C.beginPath(); p.moveTo(x+width,H-top);p.lineTo(x+width-14,H-top+8);p.lineTo(x+width-14,H-top-8);p.close();C.drawPath(p,fill=1,stroke=0)
 
-C.setFillColor(HexColor(PAPER)); C.rect(0,0,W,H,fill=1,stroke=0)
-C.drawImage(str(ROOT / "public/brand/promptshala-logo.png"), M, H-185, width=480, height=160, preserveAspectRatio=True, mask="auto")
-para("ET617 FINAL PROJECT · GROUP 6", W-M-700, 80, 700, 25, BLUE)
-para("Practical AI literacy<br/>for everyday teaching.", M, 220, W-2*M-560, 84, INK, 101, 240)
-para("Learn. Try. Check. Improve. Keep the teacher in control.", M, 445, W-2*M-510, 33, MUTED)
-para("Client: Centre for Educational Technology, IIT Bombay", M, 510, W-2*M, 26, MUTED)
-para("Darshan Sonawane · Vishal Patel · Ashok Kumar · Raghuram Gundi", M, 551, W-2*M, 25, MUTED)
-box(W-M-450, 200, 450, 350, "white")
-qr = QrCodeWidget("https://promptshala.vercel.app/try", barLevel="M")
-qr_bounds=qr.getBounds()
-qr_scale=240/(qr_bounds[2]-qr_bounds[0])
-# Draw the widget's vector rectangles directly so all text fonts stay embedded.
-# The quiet border is included in the widget bounds; do not crop it.
-for rect in qr.draw().contents:
-    if rect.fillColor is not None:
-        C.setFillColor(rect.fillColor)
-        C.rect(W-M-345+rect.x*qr_scale,H-465+rect.y*qr_scale,
-               rect.width*qr_scale,rect.height*qr_scale,fill=1,stroke=0)
-para("TRY IT IN YOUR BROWSER",W-M-423,465,400,23,BLUE)
-para("No sign-in needed",W-M-423,504,400,22,MUTED)
-C.linkURL("https://promptshala.vercel.app/try",(W-M-450,H-550,W-M,H-200),relative=0)
+def rect(x, top, width, height, color=PALE, radius=0):
+    C.setFillColor(HexColor(color))
+    if radius:
+        C.roundRect(x, H - top - height, width, height, radius, fill=1, stroke=0)
+    else:
+        C.rect(x, H - top - height, width, height, fill=1, stroke=0)
 
-# Problem and learner design, not an unsupported claim about learning impact.
-for x in [M,M+CW+GAP]: box(x,630,CW,395)
-heading("01", "The client problem", M+30,663,CW-60)
-para("Workshops introduce AI. Teachers still need guided practice to turn it into responsible classroom work.",M+30,733,CW-60,32,max_height=130)
-para("The brief: four self-paced modules, formative feedback, reusable teaching workflows, saved progress and evidence of completion.",M+30,873,CW-60,27,MUTED,max_height=120)
-heading("02", "Designing for Meera",M+CW+GAP+30,663,CW-60)
-para("A beginner science teacher, Classes 5–10. A phone or shared laptop. Short learning windows. Limited technical confidence.",M+CW+GAP+30,733,CW-60,30,max_height=130)
-para("Design consequences: familiar classroom language, short steps, editable examples, visible feedback, accessible navigation and account isolation.",M+CW+GAP+30,873,CW-60,27,MUTED,max_height=120)
 
-box(M,1060,W-2*M,397)
-heading("03","How the design became a working learning experience",M+30,1090,W-2*M-60)
-steps=[("Understand","Client brief + persona"),("Design","Authentic teaching tasks"),("Build","Four guided modules"),("Review","Feedback + iteration"),("Verify","Tests; client UAT next")]
-SW=(W-2*M-100)/5
-for i,(label,detail) in enumerate(steps):
-    x=M+35+i*SW
-    box(x,1180,SW-30,108,PALE,16,PALE)
-    para(label,x+18,1196,SW-65,29,BLUE)
-    para(detail,x+18,1241,SW-65,21,MUTED)
-    if i<4: arrow(x+SW-25,1230,20)
-para("Pedagogy: explain an idea; practise a classroom task; get formative feedback; revise; transfer to a new context.",M+35,1320,W-2*M-70,29,max_height=90)
+def arrow(x, top, width, color=BLUE):
+    C.setStrokeColor(HexColor(color))
+    C.setLineWidth(2.5)
+    C.line(x, H - top, x + width, H - top)
+    p = C.beginPath()
+    p.moveTo(x + width - 10, H - top + 6)
+    p.lineTo(x + width, H - top)
+    p.lineTo(x + width - 10, H - top - 6)
+    C.drawPath(p)
 
-# Three real public application screens with large captions; no private data.
-heading("04","A visitor can independently try the core learning loop",M+5,1500,W-2*M-10)
-SCREEN_GAP=24; SW=(W-2*M-2*SCREEN_GAP)/3
-screens=[("clear-request.png","1. Make the request clearer","CRAFT checklist feedback supports deliberate revision."),("source-draft.png","2. Work from your own material","Numbered passages connect an editable scaffold to its source."),("review-lab.png","3. Check before classroom use","Human evidence ratings, essential checks and revision comparison.")]
-for i,(name,title,caption) in enumerate(screens):
-    x=M+i*(SW+SCREEN_GAP); box(x,1570,SW,530)
-    f=ASSETS/name
-    if not f.exists(): raise FileNotFoundError(f"Capture actual UI first: {f}")
-    C.drawImage(str(f),x+15,H-1910,width=SW-30,height=315,preserveAspectRatio=True,anchor="c",mask="auto")
-    para(title,x+24,1935,SW-48,27,INK,max_height=80)
-    para(caption,x+24,2025,SW-48,23,MUTED,max_height=65)
-para("Screens show genuine browser interactions with fictional sample material. Public practice is local; full cloud learning and live AI require an account.",M+8,2120,W-2*M-16,23,MUTED,max_height=70)
 
-box(M,2225,W-2*M,405)
-heading("05","Client feedback changed the product",M+30,2255,W-2*M-60)
-rows=[("Too much technical language","Task-based names, plain-language home page, shorter guided steps."),("Understand existing AI use","Optional tools, frequency, confidence and teaching-goal questions."),("Let teachers use their own Gemini key","One optional connection; tab-memory key, no database storage."),("Save crafted requests","Private prompt + feedback history, reuse, account export and deletion.")]
-for i,(feedback,change) in enumerate(rows):
-    y=2330+i*68
-    para(feedback,M+35,y,750,25,BLUE,max_height=64)
-    arrow(M+810,y+22,55)
-    para(change,M+900,y,W-2*M-935,25,INK,max_height=64)
+def screen(filename, x, top, width):
+    path = ASSETS / filename
+    vector_path = ASSETS / (path.stem + "-vector.pdf")
+    if vector_path.exists():
+        page = PdfReader(vector_path).pages[0]
+        vw, vh = float(page.mediabox.width), float(page.mediabox.height)
+        height = width * vh / vw
+        LAYOUT.append({
+            "kind": "vector-screen", "filename": vector_path.name,
+            "x": x, "top": top, "width": width, "height": height,
+            "sourceWidth": vw, "sourceHeight": vh,
+        })
+    else:
+        with Image.open(path) as im:
+            iw, ih = im.size
+        height = width * ih / iw
+        C.drawImage(str(path), x, H - top - height, width, height, mask="auto")
+        LAYOUT.append({
+            "kind": "screenshot", "filename": filename, "x": x, "top": top,
+            "width": width, "height": height, "pixelWidth": iw, "pixelHeight": ih,
+            "effectiveDpi": round(iw / (width / 72), 1),
+        })
+    return height
 
-for x in [M,M+CW+GAP]: box(x,2670,CW,440)
-heading("06","Current status & evidence",M+30,2702,CW-60)
-metrics=[("4","modules"),("29","lessons"),("75","questions")]
-for i,(n,label) in enumerate(metrics):
-    x=M+35+i*(CW-70)/3; para(n,x,2780,(CW-80)/3,68,BLUE);para(label,x,2878,(CW-80)/3,25,MUTED)
-para("Working course: saved learning, trusted quizzes, prompt practice, helpers, source tools, certificates and staff authoring.",M+35,2930,CW-70,25,max_height=115)
-para(f"{args.unit_tests} tests passed; {args.browser_journeys} browser journeys (Chromium, WebKit, 360px). Keyboard + accessibility smoke; full audit pending.",M+35,3015,CW-70,22,MUTED,max_height=65)
-para("Client UAT and teacher field study pending.",M+35,3076,CW-70,20,MUTED,max_height=35)
-heading("07","Implementation & wider use",M+CW+GAP+30,2702,CW-60)
-para("Deployed web app: Next.js + Supabase + optional server-side Gemini. Responsive access, private records and versioned assessment evidence.",M+CW+GAP+35,2780,CW-70,27,max_height=145)
-para("Beyond this client: the Teaching Review Lab accepts portable rubrics for other subjects and teacher-development programmes.",M+CW+GAP+35,2922,CW-70,26,max_height=100)
-para("Next: client UAT, operational recovery checks, real classroom study, and institution-approved curriculum and retention policies.",M+CW+GAP+35,3030,CW-70,23,MUTED,max_height=70)
 
-rule(M,3150,W-2*M)
-para("WORKING DEMO",M,3180,450,23,BLUE)
-para("promptshala.vercel.app/try",M,3223,950,30,INK)
-C.linkURL("https://promptshala.vercel.app/try",(M,H-3270,M+950,H-3215),relative=0)
-para("Source & engineering evidence",M+1200,3180,950,23,BLUE)
-para("github.com/EAD-Labs/Group-6_2026",M+1200,3223,950,26,INK)
-C.linkURL("https://github.com/EAD-Labs/Group-6_2026",(M+1200,H-3270,W-M,H-3215),relative=0)
-para("23 October 2026 · LA–LHC Complex Foyer, IIT Bombay · ET617",M,3290,W-2*M,20,MUTED)
-C.showPage();C.save()
-print(json.dumps({"path":str(PATH),"widthMm":841,"heightMm":1189,"pages":1,"qr":"https://promptshala.vercel.app/try","screenshots":str(ASSETS)},indent=2))
+def qr(x, top, size):
+    widget = QrCodeWidget("https://promptshala.vercel.app/try", barLevel="M")
+    bounds = widget.getBounds()
+    scale = size / (bounds[2] - bounds[0])
+    # Vector modules include the complete quiet border.
+    for item in widget.draw().contents:
+        if item.fillColor is not None:
+            C.setFillColor(item.fillColor)
+            C.rect(
+                x + item.x * scale, H - top - size + item.y * scale,
+                item.width * scale, item.height * scale, fill=1, stroke=0,
+            )
+    C.linkURL(
+        "https://promptshala.vercel.app/try",
+        (x, H - top - size, x + size, H - top), relative=0,
+    )
+    LAYOUT.append({
+        "kind": "qr", "x": x, "top": top, "width": size, "height": size,
+        "url": "https://promptshala.vercel.app/try",
+    })
+
+
+rect(0, 0, W, H, PAPER)
+rect(0, 0, W, 746, NIGHT)
+rect(M, 69, 12, 68, CORAL, radius=6)
+text("PromptShala", M + 34, 61, 1050, 72, WHITE, "Bold", 86, 90)
+text("ET617  /  GROUP 6  /  IIT BOMBAY", 1510, 85, 790, 26, MINT, "Bold", 34, 38, align=2)
+
+text("Helping teachers", M, 203, 1440, 116, WHITE, "Bold", 122, 128)
+text("use AI in class.", M, 325, 1450, 134, GOLD, "Display", 145, 150)
+text(
+    "A guided learning platform for writing better requests,<br/>"
+    "creating teaching materials and checking AI answers.",
+    M + 3, 501, 1400, 34, WHITE, leading=46, max_height=96,
+)
+
+# One concrete classroom example makes the purpose readable from across the room.
+text("ONE CLASSROOM IDEA. A CLEARER PATH.", 1590, 207, 690, 24, MINT, "Bold", 32, 35)
+example_cards = [
+    (1590, 263, 630, GOLD, "A TEACHER'S STARTING POINT", "Explain evaporation.", 38),
+    (1650, 410, 630, MINT, "A MORE USEFUL REQUEST", "Plan a 15-minute Class 6 activity.", 30),
+    (1590, 557, 690, CORAL, "THE TEACHER REVIEWS", "Check. Adapt. Use in class.", 38),
+]
+for x, y, width, color, label, content, size in example_cards:
+    rect(x, y, width, 115, color, radius=18)
+    text(label, x + 24, y + 15, width - 48, 21, INK, "Bold", 28, 30)
+    text(content, x + 24, y + 55, width - 48, size, INK, "Bold", size * 1.15, 49)
+# Connect each card to the next, rather than pointing away from the example.
+for start_x, end_x, top in [(1905, 1965, 382), (1965, 1935, 529)]:
+    C.setStrokeColor(HexColor(MINT))
+    C.setLineWidth(3)
+    p = C.beginPath()
+    p.moveTo(start_x, H - top)
+    p.lineTo(start_x, H - top - 10)
+    p.lineTo(end_x, H - top - 10)
+    p.lineTo(end_x, H - top - 23)
+    p.moveTo(end_x - 6, H - top - 17)
+    p.lineTo(end_x, H - top - 23)
+    p.lineTo(end_x + 6, H - top - 17)
+    C.drawPath(p)
+
+for x, number, label in [(M, "4", "modules"), (M + 430, "29", "lessons"),
+                         (M + 900, "75", "questions")]:
+    text(number, x, 637, 120, 63, GOLD, "Bold", 73, 76)
+    text(label, x + 135, 665, 270, 29, WHITE, leading=37, max_height=40)
+
+# Problem and persona: compact, readable and directly linked to design.
+text("From workshops to practice", M, 796, CW, 44, INK, "Bold", 55, 58)
+text(
+    "Knowing about AI is only the start. Teachers need guided practice "
+    "to ask useful questions and judge what belongs in a lesson.",
+    M, 867, CW - 34, 32, leading=43, max_height=132,
+)
+text(
+    "The client asked for self-paced learning, classroom tasks "
+    "and progress teachers can return to.",
+    M, 1016, CW - 34, 29, MUTED, leading=39, max_height=85,
+)
+rect(RIGHT - 12, 786, CW + 12, 352, PALE, radius=18)
+text("A teacher like Meera", RIGHT + 25, 811, CW - 50, 44, INK, "Bold", 55, 58)
+text(
+    "Learner persona · Classes 5-10 · New to AI",
+    RIGHT + 25, 881, CW - 50, 28, BLUE, "Bold", 37, 40,
+)
+for i, (need, design) in enumerate([
+    ("Busy school day", "Short, guided lessons"),
+    ("Limited AI experience", "Familiar classroom examples"),
+    ("Phone or shared laptop", "Simple screens; saved progress"),
+]):
+    y = 951 + i * 55
+    text(need, RIGHT + 25, y, 410, 28, INK, leading=37, max_height=40)
+    arrow(RIGHT + 442, y + 18, 42)
+    text(design, RIGHT + 510, y, CW - 535, 27, INK, leading=36, max_height=39)
+
+rect(M, 1175, INNER, 146, BLUE, radius=16)
+text("Built with the client", M + 28, 1202, 470, 31, WHITE, "Bold", 41, 44)
+text("Classroom needs shape the design", M + 28, 1254, 480, 23, MINT, leading=31, max_height=33)
+process = [
+    ("Listen", "Teacher needs"), ("Plan", "Learning tasks"), ("Build", "Working app"),
+    ("Review", "Client feedback"), ("Refine", "Clearer steps"),
+]
+for i, (title, detail) in enumerate(process):
+    x = 675 + i * 317
+    text(title, x, 1202, 255, 32, GOLD, "Bold", 41, 44)
+    text(detail, x, 1254, 255, 24, WHITE, leading=32, max_height=34)
+    if i < len(process) - 1:
+        arrow(x + 238, 1224, 48, MINT)
+
+# Two authentic application screens anchor the visual learning journey.
+text("See how a lesson takes shape.", M, 1373, INNER, 57, INK, "Bold", 68, 72)
+text(
+    "Learn a concept  →  Practise  →  Get feedback  →  Revise for your learners",
+    M, 1458, INNER, 31, BLUE, "Bold", 41, 44,
+)
+for x, number, title, color in [
+    (M, "01", "Ask for something useful", GOLD),
+    (RIGHT, "02", "Turn notes into a draft", CORAL),
+]:
+    rect(x, 1537, 77, 61, color, radius=12)
+    text(number, x + 9, 1547, 60, 31, INK, "Bold", 39, 42, align=1)
+    text(title, x + 100, 1546, CW - 100, 36, INK, "Bold", 45, 48)
+
+image_top = 1622
+left_height = screen("clear-request.png", M, image_top, CW)
+right_height = screen("source-draft.png", RIGHT, image_top, CW)
+text(
+    "CRAFT guides the context, role, action, format and audience.",
+    M, image_top + left_height + 20, CW, 28, MUTED, leading=37, max_height=78,
+)
+review_top = image_top + right_height + 25
+rect(RIGHT, review_top, CW, 152, MINT, radius=16)
+text("03", RIGHT + 20, review_top + 18, 70, 33, BLUE, "Bold", 42, 45)
+text(
+    "Review before classroom use", RIGHT + 105, review_top + 17,
+    CW - 130, 34, INK, "Bold", 43, 46,
+)
+text(
+    "Check accuracy and learner fit.<br/>Compare revisions in Teaching Review Lab.",
+    RIGHT + 105, review_top + 72, CW - 130, 27, INK, leading=36, max_height=76,
+)
+
+# Four client requests become four compact, distinct improvements.
+rect(0, 2540, W, 353, "#F6E8D3")
+text("You asked. We simplified.", M, 2573, 1500, 46, INK, "Bold", 57, 60)
+text("FROM CLIENT FEEDBACK", 1710, 2595, 585, 23, BLUE, "Bold", 31, 34, align=2)
+feedback = [
+    ("01", "Simpler language", "Clearer names, classroom examples<br/>and obvious next steps."),
+    ("02", "A personal starting point", "Onboarding asks about AI tools,<br/>confidence and teaching goals."),
+    ("03", "Use your own Gemini key", "An optional connection.<br/>The key stays in the open tab."),
+    ("04", "Keep useful work", "Private prompts and feedback,<br/>saved for the next sign-in."),
+]
+fw = INNER / 4
+for i, (number, title, description) in enumerate(feedback):
+    x = M + i * fw
+    if i:
+        C.setStrokeColor(HexColor("#D8C7AF"))
+        C.setLineWidth(1.5)
+        C.line(x - 25, H - 2674, x - 25, H - 2820)
+    text(number, x, 2664, 75, 26, BLUE, "Bold", 35, 38)
+    text(title, x, 2711, fw - 46, 29, INK, "Bold", 38, 41)
+    text(description, x, 2770, fw - 46, 26, MUTED, leading=35, max_height=74)
+
+# A bold closing invitation balances current features with genuine next steps.
+rect(0, 2893, W, H - 2893, NIGHT)
+text("Ready to explore", M, 2930, 1360, 37, WHITE, "Bold", 47, 50)
+text(
+    "A deployed web course with saved prompts, progress checks,<br/>"
+    "certificates and staff tools. Live AI verification is pending.",
+    M, 2991, 1420, 28, WHITE, leading=38, max_height=79,
+)
+text("Next: test, refine and adapt", M, 3088, 1360, 34, GOLD, "Bold", 44, 47)
+text(
+    "Teacher trials, curriculum review and accessibility checks.<br/>"
+    "Reusable Review Lab rubrics support other subjects and programmes.",
+    M, 3145, 1420, 27, MINT, leading=37, max_height=77,
+)
+rule(3232, M, 1420, "#3D656A")
+text(
+    "Darshan Sonawane · Vishal Patel · Ashok Kumar · Raghuram Gundi",
+    M, 3244, 1440, 22, WHITE, leading=28, max_height=31,
+)
+text(
+    "Client: Centre for Educational Technology, IIT Bombay",
+    M, 3280, 1440, 21, MINT, leading=28, max_height=30,
+)
+
+rect(1610, 2930, W - M - 1610, 375, GOLD, radius=24)
+text("Try a classroom task", 1640, 2952, 622, 38, INK, "Bold", 47, 51, align=1)
+qr(1636, 3020, 225)
+text("Scan. Try. Explore.", 1880, 3061, 365, 29, INK, "Bold", 38, 42)
+text("No sign-in needed", 1880, 3117, 365, 26, INK, leading=35, max_height=38)
+text("promptshala.vercel.app/try", 1640, 3256, 622, 25, INK, "Bold", 33, 36, align=1)
+C.linkURL(
+    "https://promptshala.vercel.app/try",
+    (1610, H - 3305, W - M, H - 2930), relative=0,
+)
+C.showPage()
+C.save()
+
+# Preserve browser-rendered vector text when placing the application panels.
+reader = PdfReader(PATH)
+page = reader.pages[0]
+for element in LAYOUT:
+    if element["kind"] == "vector-screen":
+        source = PdfReader(ASSETS / element["filename"]).pages[0]
+        scale = element["width"] / element["sourceWidth"]
+        transform = Transformation().scale(scale).translate(
+            element["x"], H - element["top"] - element["height"]
+        )
+        page.merge_transformed_page(source, transform)
+writer = PdfWriter()
+writer.add_page(page)
+writer.add_metadata({key: str(value) for key, value in reader.metadata.items()})
+merged = OUT / "ET617_Group6_Poster-merged.pdf"
+writer.write(merged)
+merged.replace(PATH)
+manifest = {
+    "pdf": str(PATH), "widthMm": 841, "heightMm": 1189, "pages": 1,
+    "qr": "https://promptshala.vercel.app/try", "elements": LAYOUT,
+    "historicalValidation": {
+        "automatedTests": args.unit_tests, "browserJourneys": args.browser_journeys,
+        "displayedOnPoster": False,
+    },
+}
+(OUT / "poster-layout.json").write_text(json.dumps(manifest, indent=2))
+print(json.dumps({
+    "path": str(PATH), "widthMm": 841, "heightMm": 1189,
+    "pages": 1, "elements": len(LAYOUT),
+}, indent=2))
