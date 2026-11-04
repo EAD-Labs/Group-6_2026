@@ -1,27 +1,37 @@
 # Final poster and demonstration assets
 
-The included print file is [ET617_Group6_Poster.pdf](ET617_Group6_Poster.pdf), with [preview](poster-preview.png), so a fresh clone contains the deliverables. Authoring originals remain at `output/pdf/ET617_Group6_Poster.pdf` and `output/pdf/ET617_Group6_Poster-preview.png`. The A0 portrait poster covers all six topics with a learner persona, process flow, actual UI captures, feedback-to-change matrix, implementation evidence and wider-context review module.
+The included print file is [ET617_Group6_Poster.pdf](ET617_Group6_Poster.pdf), with [preview](poster-preview.png). The latest 20 October redesign uses deep teal, cream, mint, coral and golden yellow. A large teacher-focused headline, classroom example and two vector application panels make the purpose clear quickly. It covers the client problem, teacher persona, development process, learning activities, client feedback, current features and future development.
+
+Authoring originals remain at `output/pdf/ET617_Group6_Poster.pdf` and `output/pdf/ET617_Group6_Poster-preview.png`. [Design notes](DESIGN.md) describe the visual direction. The previous published poster is preserved in Git history.
 
 ## Editable source and reproducibility
 
-`scripts/build-final-poster.py` is the editable ReportLab source. It uses the bundled Noto Sans font, vector text/diagrams/QR and screenshots in this folder. Requirements: Python with ReportLab/Pillow, Poppler for render/preflight. To regenerate after the actual final test run:
+`scripts/build-final-poster.py` is the editable ReportLab source, with pypdf merging the vector app panels. It uses the bundled Instrument Sans and Instrument Serif fonts in `fonts/`, with their OFL licences. Text, lines, arrows, QR and visible application text are vectors. Requirements: Python with ReportLab/Pillow/pypdf, Poppler for rendering, and pdfplumber for preflight.
+
+Capture the public app as screen-media PDF fragments. The script enters fictional material through the actual form, preserves the live UI and crops the PDF to the two workspaces. It does not invent screens or change application labels. Fonts remain embedded; soft CSS shadows are raster. The fully clipped page-header logo is removed from the fragments.
 
 ```sh
-python3 scripts/build-final-poster.py --unit-tests ACTUAL_PASSED_COUNT --browser-journeys ACTUAL_PASSED_COUNT
-pdftoppm -scale-to 2200 -singlefile -png output/pdf/ET617_Group6_Poster.pdf output/pdf/ET617_Group6_Poster-preview
+POSTER_PYTHON=python3 node scripts/capture-poster-vector.mjs
+```
+
+Then generate and render:
+
+```sh
+python3 scripts/build-final-poster.py
+pdftoppm -scale-to 3200 -singlefile -png output/pdf/ET617_Group6_Poster.pdf output/pdf/ET617_Group6_Poster-preview
 pdfinfo output/pdf/ET617_Group6_Poster.pdf
 pdffonts output/pdf/ET617_Group6_Poster.pdf
 cp output/pdf/ET617_Group6_Poster.pdf artifacts/final-presentation/ET617_Group6_Poster.pdf
 cp output/pdf/ET617_Group6_Poster-preview.png artifacts/final-presentation/poster-preview.png
 ```
 
-Replace the two placeholders with recorded numbers. Reinspect the rendered preview after every edit; do not submit an earlier PNG with a newer PDF. Text-height guards in the generator reject selected overflowing paragraphs, but they do not replace visual inspection.
+Reinspect the rendered preview after every edit; do not submit an earlier PNG with a newer PDF. Text-height guards reject overflowing paragraphs. `output/pdf/poster-layout.json` records placement for further checks. The source PDFs retain clipped operators outside their visible workspaces, so geometry checks must respect their clipping boundaries. Engineering test counts remain in the release record rather than appearing as decorative poster metrics.
 
-Screens were captured through real browser interaction, with fictional built-in classroom material and no personal data. `capture.json` records the actual capture time/environment; local capture is not proof of deployment. Regenerate captures through `e2e/poster-assets.spec.ts` only after the final UI is stable. The QR is vector geometry with its quiet zone and decodes to `https://promptshala.vercel.app/try`.
+Screens are captured through real browser interaction with fictional classroom material and no personal data. `vector-capture.json` records the current PDF capture. The earlier 4× raster captures and `capture.json` remain available as fallback assets. The QR includes its quiet zone and points to `https://promptshala.vercel.app/try`.
 
 ## Preflight and final live rehearsal
 
-`poster-preflight.json` records one-page 841 x 1189 mm portrait dimensions, embedded text font, final-preview QR decoding and text-boundary checks. Check the receiving printer's requirements; the supplied course requirement is A0 portrait PDF, not a specified PDF/X/CMYK profile. This file uses RGB artwork, vector type and source-resolution screenshots. Print at **100% / actual size**, with no automatic scaling.
+`poster-preflight.json` records one-page 841 x 1189 mm portrait dimensions, embedded text fonts, final-preview QR decoding, layout checks and high-zoom inspection. Check the receiving printer's requirements; the supplied course requirement is A0 portrait PDF, not a specified PDF/X/CMYK profile. This file uses RGB artwork and vector text, including the app panels; soft interface shadows remain raster. Print at **100% / actual size**, with no automatic scaling.
 
 Before the 20 October Moodle deadline: verify final PDF and QR on another device, confirm `/try` is deployed and works from a second network, rehearse the three-minute visitor path, and record the final source/deployment and actual Moodle receipt. Printing is arranged by the course teaching team. Reporting on 23 October is 9:15 AM; session 9:30 AM-12:00 PM, LA-LHC Complex Foyer, IIT Bombay.
 

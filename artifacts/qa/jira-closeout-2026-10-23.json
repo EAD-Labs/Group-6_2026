@@ -1,0 +1,163 @@
+{
+  "checkedAt": "2026-10-23T03:40:06.558Z",
+  "project": "KAN",
+  "boardUrl": "https://darshansonawane1110.atlassian.net/jira/software/projects/KAN/boards/2",
+  "rule": "User-authorized closure of issues assessed as more than 70% complete; unfinished acceptance activities remain explicitly recorded.",
+  "transitioned": [
+    {
+      "key": "KAN-5",
+      "summary": "PromptShala - Module 1: Foundation & Learning Core",
+      "from": "Testing",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: Foundation, sign-in, beginner onboarding, profile/goals, saved progress and the four-module grading/receipt pipeline are implemented. The 23 October production run passed 10 authenticated-browser checks and actual grading/reload checks for all four modules.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Formal educator/client acceptance stays in KAN-24/KAN-28. Recovery email is outside the current release by the user's earlier decision.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-6",
+      "summary": "PromptShala - Module 2: AI Practice & Workflows",
+      "from": "Testing",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: The four-module course, CRAFT, helper workflows, Source Studio, own-material drafting and Review Lab are deployed. On 23 October all three managed Gemini workflows produced genuine output after secret replacement; CRAFT feedback also saved and reloaded.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Independent educator/client approval remains in KAN-24/KAN-28. Separate personal-key success has not been independently retested.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-7",
+      "summary": "PromptShala - Recovery, Design & Setup",
+      "from": "In Progress",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: Repository, HLD v1.3, personas, simplified interface, participant flow, branching/setup and maintained test plans are prepared and implemented. The design/setup deliverables meet the requested greater-than-70% closeout rule.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Sending/submission receipts, actual acceptance and isolated recovery execution remain with their existing open tasks; no receipt is invented by this closure.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-8",
+      "summary": "PromptShala - Module 3: Certification & Administration",
+      "from": "Testing",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: Certificate eligibility, issuance/PDF/privacy/snapshots and staff role/cohort/content/reporting features are implemented. Existing 15 October production records contain 20 positive staff assertions and 21 explicitly simulated-certificate assertions. The 23 October checks reverified learner staff-denial, grading and completion guards.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Certificate wording/signatories and formal client acceptance remain unrecorded under KAN-28; this is engineering closeout rather than a claim of a genuine learning outcome.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-9",
+      "summary": "PromptShala - Integration & Release",
+      "from": "In Progress",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: The application is deployed, PR #20 is merged, the A0 poster and independent visitor demo are ready, and the latest live production checks passed. Course Gemini authentication is repaired: CRAFT, helper and source generation succeeded with the current secret.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Keep actual Moodle submission/rehearsal in KAN-29, client/educator decisions in KAN-24/KAN-28, field study in KAN-4/KAN-30, and isolated recovery in KAN-31. Those external activities are not marked performed by this epic closure.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-11",
+      "summary": "Publish PromptShala HLD v1.2 for client review",
+      "from": "Idea",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: The superseding 25-page HLD v1.3 is prepared in the project repository and used as the design reference and client-review packet. Document preparation/publication is substantially complete and is closed under the user's greater-than-70% instruction.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: This closure does not assert a sent-email receipt or consolidated client approval. Those actual delivery/acceptance records remain with KAN-12/KAN-28.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-17",
+      "summary": "Finalize complete participant flow and wireframes",
+      "from": "Testing",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: The complete participant flow, simpler teacher wording, AI starting-point onboarding, personal connection settings and full learner screens are implemented and deployed. Production login/onboarding/reload/sign-out checks passed, along with 27 unique visitor checks across desktop Chromium, mobile Chromium and WebKit.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Formal client usability decisions remain KAN-28. Manual screen-reader/device review has not been claimed as completed.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-20",
+      "summary": "Implement authenticated Supabase persistence and AI CRAFT evaluation",
+      "from": "Testing",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: Authenticated production persistence and private CRAFT history are implemented. On 23 October CRAFT returned source=gemini, saved=true; a fresh history read recovered the Gemini prompt and evaluation. Helper and source transformation also produced real Gemini output.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Separate successful personal-key use is not independently verified. No secret value is recorded here.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-21",
+      "summary": "Complete curriculum Module 4 and Source Studio portfolio",
+      "from": "Testing",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: Module 4, its source packs, source-linked review, editable teaching artifacts and portfolio are implemented and deployed. Source/review visitor journeys passed; managed source transformation now returns source=gemini.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Prepared Source Studio examples remain distinct from fresh AI output. Educator approval remains KAN-24; client acceptance remains KAN-28.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-26",
+      "summary": "Complete browser, mobile and accessibility release verification",
+      "from": "Testing",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: Release verification is substantially complete: prior maintained 435 tests, 36 CI browser journeys and container checks, plus fresh 23 October live runs. All 27 unique visitor checks passed across desktop Chromium, 360px mobile Chromium and WebKit; one WebKit navigation race passed on isolated retry. Ten authenticated-browser checks and live AI checks passed.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Manual screen-reader, zoom/rotation/media/caption and supported-device review are residual work. This Done status follows the user's >70% rule; it does not claim complete WCAG conformance.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-27",
+      "summary": "Verify genuine four-module progress and certificate learner journey",
+      "from": "Testing",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: The implemented progress/certificate pipeline has existing 21/21 production assertions for server grades, eligibility, issuance/idempotency, four assessment snapshots, PDF, export/privacy and fresh-session recovery. Fresh 23 October checks also verified all four module grades/reloads and progress reconciliation. Engineering verification is assessed as greater than 70% complete for the requested closeout.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: The earlier lesson/practice completion fixture was simulated. A full interactive human course walkthrough, offline/two-tab/shared-device/revocation checks and client wording/signatory decisions are not asserted as completed. This is threshold-based engineering closure, not AC-10/client acceptance or a learning-outcome claim.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-32",
+      "summary": "Verify live Gemini connections; email setup deferred for this release",
+      "from": "In Progress",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: The production GEMINI_API_KEY was replaced as a sensitive secret and the existing production source redeployed. CRAFT, teaching helper and source transformation all returned genuine Gemini output. Private CRAFT history recovered the saved evaluation. The first CRAFT call encountered a transient Google 503; one isolated retry succeeded. Both post-update synthetic accounts were deleted; no emails were sent.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Email/SMTP/recovery delivery remains explicitly deferred by the user and was not tested. Separate successful personal-key use remains unverified. Production secret rotation is owner-managed; no credential value is included.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    },
+    {
+      "key": "KAN-33",
+      "summary": "Close security findings, retention decisions and operational monitoring",
+      "from": "In Progress",
+      "to": "Done",
+      "rationale": "23 October 2026 closeout: The substantial security/operations implementation is complete: permission and RLS/index fixes, notice/rubric versions and receipts, dependency/advisor review, privacy-safe AI outcome logs, retention readiness and restricted runtime checks. PR #20 is merged. Latest production authentication, owner state/resource/export and denial checks passed, and actual provider metadata was inspected without exposing secrets.\n\nClosed under the owner's requested >70%-complete rule. Remaining/unverified: Final retention/certificate-versus-deletion policy, receiving maintenance/backup/alert ownership and observed long-term availability remain operational follow-up. No accepted policy or uptime SLA is invented. Closed under the user's greater-than-70% rule.\n\nProduction: https://promptshala.vercel.app. Verified production redeployment: dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g (READY), source 998ce3381c620ef3ea23d27e9cc8bc34348f9f77. PR #20 was merged on 15 October 2026. Current local verification record: docs/testing/LIVE_CHECK_2026-10-23.md and docs/testing/assets/live-check-2026-10-23/gemini-resolution.json."
+    }
+  ],
+  "unchangedOpen": [
+    {
+      "key": "KAN-1",
+      "summary": "Task 1",
+      "status": "To Do"
+    },
+    {
+      "key": "KAN-2",
+      "summary": "Task 2",
+      "status": "To Do"
+    },
+    {
+      "key": "KAN-3",
+      "summary": "Subtask 2.1",
+      "status": "In Progress"
+    },
+    {
+      "key": "KAN-4",
+      "summary": "PromptShala - Field Study & Analysis",
+      "status": "In Progress"
+    },
+    {
+      "key": "KAN-12",
+      "summary": "Send MoM 1-4 with covering emails",
+      "status": "Idea"
+    },
+    {
+      "key": "KAN-24",
+      "summary": "Record educator approval of curriculum, questions and scoring rubrics",
+      "status": "To Do"
+    },
+    {
+      "key": "KAN-28",
+      "summary": "Complete client UAT decisions and final owner handover",
+      "status": "In Progress"
+    },
+    {
+      "key": "KAN-29",
+      "summary": "Submit poster on Moodle and rehearse the 23 October visitor demonstration",
+      "status": "To Do"
+    },
+    {
+      "key": "KAN-30",
+      "summary": "Prepare and conduct ten-teacher field study with genuine consented evidence",
+      "status": "In Progress"
+    },
+    {
+      "key": "KAN-31",
+      "summary": "Prepare isolated recovery; current release uses the existing production database",
+      "status": "In Progress"
+    }
+  ],
+  "statusCounts": {
+    "To Do": 4,
+    "In Progress": 5,
+    "Done": 23,
+    "Idea": 1
+  },
+  "allTransitionsReadBack": true,
+  "openStatusesPreserved": true,
+  "posterCommentUpdated": true,
+  "worklogsCreated": 0,
+  "issuesCreated": 0,
+  "noSecretsIncluded": true
+}

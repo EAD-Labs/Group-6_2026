@@ -1,0 +1,524 @@
+{
+  "checkedAt": "2026-10-23T03:25:36.678Z",
+  "site": "https://promptshala.vercel.app",
+  "scope": "Live production visitor and ordinary learner flows; no application deployment or configuration changes.",
+  "http": [
+    {
+      "path": "/",
+      "status": 200,
+      "ms": 1318,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "ms": 1818,
+      "redirect": null,
+      "health": {
+        "aiEvaluator": "configured",
+        "environment": "production",
+        "model": "gemini-3.5-flash",
+        "supabase": "configured"
+      },
+      "serverError": false
+    },
+    {
+      "path": "/try",
+      "status": 200,
+      "ms": 852,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/review-lab",
+      "status": 200,
+      "ms": 1299,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/sign-in",
+      "status": 200,
+      "ms": 1817,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/sign-up",
+      "status": 200,
+      "ms": 1711,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/dashboard",
+      "status": 307,
+      "ms": 919,
+      "redirect": "/sign-in?next=%2Fdashboard",
+      "serverError": false
+    },
+    {
+      "path": "/learn",
+      "status": 307,
+      "ms": 886,
+      "redirect": "/sign-in?next=%2Flearn",
+      "serverError": false
+    },
+    {
+      "path": "/admin",
+      "status": 307,
+      "ms": 876,
+      "redirect": "/sign-in?next=%2Fadmin",
+      "serverError": false
+    },
+    {
+      "path": "/api/participant-state",
+      "status": 401,
+      "ms": 1604,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/api/content",
+      "status": 401,
+      "ms": 1461,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/api/resources",
+      "status": 401,
+      "ms": 1483,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/api/craft/history",
+      "status": 401,
+      "ms": 1688,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/api/assessments",
+      "status": 401,
+      "ms": 1414,
+      "redirect": null,
+      "serverError": false
+    },
+    {
+      "path": "/api/certificate/download",
+      "status": 401,
+      "ms": 2114,
+      "redirect": null,
+      "serverError": false
+    }
+  ],
+  "browser": {
+    "uniqueChecks": 27,
+    "passed": 27,
+    "engines": [
+      "Desktop Chromium",
+      "360px mobile Chromium",
+      "WebKit"
+    ],
+    "initialNavigationRace": {
+      "engine": "WebKit",
+      "test": "Public route access check",
+      "result": "Passed on isolated retry; initial navigation was interrupted by the preceding client-side navigation."
+    }
+  },
+  "authentication": {
+    "checks": [
+      {
+        "name": "No-email immediate-login policy verified before signup",
+        "passed": true
+      },
+      {
+        "name": "Actual email/password form reaches authenticated dashboard without configuration error",
+        "passed": true
+      },
+      {
+        "name": "Authenticated browser resolves own ordinary participant account",
+        "passed": true,
+        "status": 200
+      },
+      {
+        "name": "Safe-use acknowledgement reaches profile with usable semantic form controls",
+        "passed": true
+      },
+      {
+        "name": "Browser onboarding saves safe-use, fictional profile, AI starting point and selected goal",
+        "passed": true,
+        "status": 200
+      },
+      {
+        "name": "Saved account state survives reload with local cache cleared",
+        "passed": true
+      },
+      {
+        "name": "Introductory lesson is accessible without passing other course activities",
+        "passed": true
+      },
+      {
+        "name": "Actual sign-out control returns to sign-in",
+        "passed": true
+      },
+      {
+        "name": "Signed-out browser is redirected from dashboard and account API returns 401",
+        "passed": true,
+        "status": 401
+      },
+      {
+        "name": "No AI requests were made",
+        "passed": true
+      }
+    ],
+    "passedChecks": 10
+  },
+  "learner": {
+    "checks": [
+      {
+        "name": "Unknown notice version rejected",
+        "status": 400,
+        "passed": true
+      },
+      {
+        "name": "Module 1 trusted grading and idempotent receipt",
+        "status": 200,
+        "scorePercent": 100,
+        "threshold": 70,
+        "passed": true
+      },
+      {
+        "name": "Module 1 grade survives reload before progress sync",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Conflicting receipt and stale version rejected",
+        "statuses": [
+          409,
+          409
+        ],
+        "passed": true
+      },
+      {
+        "name": "Module 2 trusted grading and idempotent receipt",
+        "status": 200,
+        "scorePercent": 100,
+        "threshold": 70,
+        "passed": true
+      },
+      {
+        "name": "Module 2 grade survives reload before progress sync",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Module 3 trusted grading and idempotent receipt",
+        "status": 200,
+        "scorePercent": 100,
+        "threshold": 70,
+        "passed": true
+      },
+      {
+        "name": "Module 3 grade survives reload before progress sync",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Module 4 trusted grading and idempotent receipt",
+        "status": 200,
+        "scorePercent": 100,
+        "threshold": 70,
+        "passed": true
+      },
+      {
+        "name": "Module 4 grade survives reload before progress sync",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Recovered grading receipts reconcile with saved progress",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Quiz-only account cannot claim course completion",
+        "status": 409,
+        "passed": true
+      },
+      {
+        "name": "Ordinary learner denied staff workspace",
+        "status": 403,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /dashboard",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /progress",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /profile",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /settings/api-key",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /certificate",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /help",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /privacy",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-1",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-2",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-3",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-4",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-2/practice",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-3/staffroom",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-4/studio",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-4/transform",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-1/quiz",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-2/quiz",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-3/quiz",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /learn/module-4/quiz",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /api/content",
+        "status": 400,
+        "passed": true,
+        "note": "Original request omitted required module/lesson parameters. HTTP 400 is expected validation; separate correctly parameterized live check passed."
+      },
+      {
+        "name": "Authenticated route /api/craft/history",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Authenticated route /api/resources",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Save private teaching resource",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Private resource survives fresh read",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Delete only the synthetic teaching resource",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "name": "Owner export contains consent and grading receipts",
+        "status": 200,
+        "passed": true
+      }
+    ]
+  },
+  "contentValidation": [
+    {
+      "name": "Authenticated lesson content with required module and lesson parameters",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Lesson content rejects missing parameters",
+      "status": 400,
+      "passed": true
+    }
+  ],
+  "gemini": {
+    "working": true,
+    "checks": [
+      {
+        "name": "Live course-key CRAFT evaluation",
+        "status": 200,
+        "source": "rule-based",
+        "model": "deterministic CRAFT fallback",
+        "elapsedMs": 372,
+        "passed": false,
+        "saved": true
+      },
+      {
+        "name": "Live course-key teaching helper",
+        "status": 503,
+        "elapsedMs": 310,
+        "passed": false
+      },
+      {
+        "name": "Live course-key source transformation",
+        "status": 200,
+        "source": "extractive",
+        "elapsedMs": 288,
+        "passed": false
+      }
+    ],
+    "productionEvents": [
+      {
+        "workflow": "transform",
+        "outcome": "provider",
+        "providerStatus": 401,
+        "durationMs": 26,
+        "connection": "course"
+      },
+      {
+        "workflow": "assistant",
+        "outcome": "provider",
+        "providerStatus": 401,
+        "durationMs": 22,
+        "connection": "course"
+      },
+      {
+        "workflow": "craft",
+        "outcome": "provider",
+        "providerStatus": 401,
+        "durationMs": 29,
+        "connection": "course"
+      }
+    ],
+    "conclusion": "Resolved after production secret update and redeployment. CRAFT, teaching helper and source transformation generated real Gemini output; CRAFT feedback saved and reloaded.",
+    "credentialBoundary": "The older local production snapshot was independently rejected by Google as API_KEY_INVALID (400). The current production key is sensitive and cannot be pulled; do not assume it equals that older snapshot.",
+    "initialFailure": "All three live course-key workflows received HTTP 401 from Google. Production credential authentication must be repaired; fallback success is not Gemini success.",
+    "resolution": {
+      "checkedAt": "2026-10-23T03:34:09.224Z",
+      "productionUrl": "https://promptshala.vercel.app",
+      "productionSecretUpdated": true,
+      "sensitive": true,
+      "secretPrinted": false,
+      "sourceCodeChanged": false,
+      "deployment": {
+        "checkedAt": "2026-10-23T03:32:06.850Z",
+        "status": 200,
+        "uid": "dpl_Crop1Ric11ZuVmdgDwzN9ube8p7g",
+        "url": "promptshala-38px93q21-sus-co.vercel.app",
+        "state": "READY",
+        "alias": [
+          "promptshala.vercel.app",
+          "promptshala-sus-co.vercel.app"
+        ],
+        "gitSha": "998ce3381c620ef3ea23d27e9cc8bc34348f9f77"
+      },
+      "checks": [
+        {
+          "name": "Live course-key CRAFT evaluation",
+          "status": 200,
+          "source": "gemini",
+          "model": "gemini-3.5-flash",
+          "elapsedMs": 4330,
+          "passed": true,
+          "saved": true
+        },
+        {
+          "name": "Gemini CRAFT prompt and feedback reload from private history",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "name": "Live course-key teaching helper",
+          "status": 200,
+          "elapsedMs": 5553,
+          "passed": true
+        },
+        {
+          "name": "Live course-key source transformation",
+          "status": 200,
+          "source": "gemini",
+          "elapsedMs": 7007,
+          "passed": true
+        }
+      ],
+      "initialCraftAttempt": {
+        "result": "Google returned transient HTTP 503; app used labelled fallback",
+        "confirmedByProductionLogs": true,
+        "retrySucceeded": true
+      },
+      "syntheticAccountsCreated": 2,
+      "allSyntheticAccountsDeleted": true,
+      "outboundEmails": 0
+    }
+  },
+  "cleanup": {
+    "syntheticAccounts": 4,
+    "allDeleted": true,
+    "outboundEmails": 0
+  },
+  "limits": [
+    "No positive administrator publishing actions were performed.",
+    "Certificate access and incomplete-completion denial were tested; successful certificate issuance/download for a completed learner was not repeated.",
+    "The personal-key UI loads, but successful generation with a separate valid personal key was not established.",
+    "Browser accessibility scans passed covered visitor routes; this is not a full accessibility audit."
+  ]
+}

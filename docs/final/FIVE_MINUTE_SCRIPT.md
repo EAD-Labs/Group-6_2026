@@ -6,13 +6,13 @@ Use with the final deployed version and actual evidence register. The clock is a
 
 "PromptShala helps teachers move from hearing about AI to using it responsibly in a classroom task. The client asked for four self-paced modules, guided practice, progress and evidence of completion. The problem is that a tool can produce an answer quickly while the teacher still has to judge its accuracy, learner fit and safe use. We designed the experience around that judgement."
 
-Point to poster section 01; name one concrete classroom task rather than listing every feature.
+Point to "From workshops to practice"; name one concrete classroom task rather than listing every feature.
 
 ## 0:40-1:15 - Learners and design choices
 
 "Our primary persona is Meera, a beginner teacher of Classes 5-10 with limited technical confidence and short learning windows. She may use a phone or a shared laptop. That led to familiar teaching language, short guided steps, editable examples, clear next actions and private account records. The course is open to explore; completion is assessed separately."
 
-Point to section 02. Explain that a persona is a design assumption, not a participant whose outcomes have been measured.
+Point to "A teacher like Meera". Explain that a persona is a design assumption, not a participant whose outcomes have been measured.
 
 ## 1:15-2:35 - Working visitor experience
 

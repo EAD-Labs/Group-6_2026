@@ -1,0 +1,4 @@
+# Print artifacts and bundled font files are binary, even when their headers
+# contain readable text.
+*.pdf binary
+*.ttf binary
