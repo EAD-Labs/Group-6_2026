@@ -1,0 +1,171 @@
+{
+ "cohort_rule": "non-example email, participant role, first event 7 Oct 16:00-17:59 IST",
+ "n": 31,
+ "other_normal_email_accounts_excluded": 3,
+ "test_like_accounts_excluded": 17,
+ "all_accounts": 51,
+ "first_event_range": [
+  "16:50",
+  "17:13"
+ ],
+ "last_event_latest": "2026-10-07T19:08",
+ "active_min": {
+  "median": 12.4,
+  "q1": 8.1,
+  "q3": 15.8,
+  "max": 22.2,
+  "total_h": 6.2
+ },
+ "events": 3505,
+ "familiarity": {
+  "New to AI": 24,
+  "None": 1,
+  "Use it sometimes": 4,
+  "Tried it a few times": 2
+ },
+ "level": {
+  "Classes 8\u201310": 16,
+  "None": 1,
+  "Classes 5\u20137": 11,
+  "Both": 3
+ },
+ "subject": {
+  "Social Science": 5,
+  "General": 20,
+  "Multiple subjects": 2,
+  "None": 1,
+  "English": 2,
+  "Mathematics": 1
+ },
+ "years": {
+  "n": 21,
+  "median": 15,
+  "min": 2,
+  "max": 34
+ },
+ "onboarded": 27,
+ "safe_use": 30,
+ "lessons_ge1": 3,
+ "lesson_counts": [
+  1,
+  4,
+  6
+ ],
+ "certs": 0,
+ "assist": 0,
+ "quiz": [
+  [
+   1,
+   42,
+   0
+  ],
+  [
+   1,
+   64,
+   0
+  ],
+  [
+   1,
+   71,
+   1
+  ]
+ ],
+ "quiz_users": 2,
+ "funnel": {
+  "safe_use": 31,
+  "dashboard": 28,
+  "m1_lesson": 21,
+  "m2_practice": 22,
+  "m2_lesson": 10,
+  "m1_quiz": 4,
+  "m3_any": 2,
+  "m4_any": 0,
+  "progress": 8
+ },
+ "craft": {
+  "n": 79,
+  "users": 20,
+  "source": {
+   "gemini": 13,
+   "rule-based": 66
+  },
+  "repeaters": 16,
+  "attempts_med": 5.0,
+  "all_first": 46.5,
+  "all_last": 73.5,
+  "pairs": {
+   "gemini->rule-based": 6,
+   "gemini->gemini": 1,
+   "rule-based->rule-based": 9
+  },
+  "same_scorer": {
+   "n": 10,
+   "first": 70.0,
+   "last": 90.0,
+   "up": 5,
+   "same": 4,
+   "down": 1
+  },
+  "mean_by_source": {
+   "rule-based": 63.3,
+   "gemini": 43.6
+  },
+  "dim_mean_all": {
+   "context": 2.29,
+   "role": 1.62,
+   "action": 2.65,
+   "format": 1.38,
+   "target": 1.08
+  },
+  "dim_mean_rule": {
+   "context": 2.5,
+   "role": 1.64,
+   "action": 2.86,
+   "format": 1.45,
+   "target": 1.05
+  },
+  "format_zero_first": 12,
+  "target_zero_first": 11,
+  "max_dim": 3.0,
+  "minutes_first_last_med": 5.3,
+  "changed_prompt_users": 15,
+  "same_scorer_changed": {
+   "n": 9,
+   "first": 60,
+   "last": 80
+  }
+ },
+ "goals": {
+  "Explain difficult concepts": 12,
+  "Create quizzes and assessments": 9,
+  "Plan lessons and resources": 12,
+  "Communicate with parents": 4,
+  "Create worksheets and slide outlines": 9
+ },
+ "excluded_other_summary": [
+  {
+   "role": "participant",
+   "first_day": "2026-10-07"
+  },
+  {
+   "role": "admin",
+   "first_day": "2026-10-06"
+  },
+  {
+   "role": "participant",
+   "first_day": "2026-10-06"
+  }
+ ],
+ "devices": {
+  "session_kinds": {
+   "other": 35
+  },
+  "os": {
+   "Other": 35
+  },
+  "accounts": 31,
+  "account_sets": {
+   "other": 31
+  }
+ }
+}

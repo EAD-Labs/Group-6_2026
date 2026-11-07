@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>PromptShala - Field Study and System Design Report (ET 617 Group 6)</title>
+<style>
+@font-face{font-family:"Sans";src:url(InstrumentSans-Regular.ttf);font-weight:400}
+@font-face{font-family:"Sans";src:url(InstrumentSans-Bold.ttf);font-weight:700}
+@font-face{font-family:"Serif";src:url(InstrumentSerif-Regular.ttf)}
+@page{size:A4;margin:0}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font:400 8.9pt/1.33 "Sans",Arial,sans-serif;color:#0b0b0b}
+.page{width:210mm;height:297mm;padding:12mm 14mm 13mm;position:relative;break-after:page;overflow:visible}
+.page:last-child{break-after:auto}
+.foot{position:absolute;left:14mm;right:14mm;bottom:6.5mm;display:flex;justify-content:space-between;font-size:7.2pt;color:#52514e;border-top:.5pt solid #d8d7d2;padding-top:1.4mm}
+h1{font:400 23pt/1.05 "Serif",Georgia,serif;margin:0 0 .6mm}
+.sub{color:#52514e;font-size:9.6pt;margin:0 0 3mm}
+h2{font:700 11pt/1.2 "Sans";margin:0 0 2mm;padding-bottom:1mm;border-bottom:1.1pt solid #2a78d6;color:#123f75}
+h3{font:700 9.1pt/1.25 "Sans";margin:2.6mm 0 1mm}
+p{margin:0 0 1.5mm}
+ul,ol{margin:0 0 1.6mm;padding-left:4.2mm}
+li{margin-bottom:.65mm}
+table{border-collapse:collapse;width:100%;margin:0 0 2mm;font-size:8.1pt;line-height:1.27}
+th{font-weight:700;text-align:left;background:#eef3fa;padding:.9mm 1.4mm;border-bottom:.7pt solid #9db8da;vertical-align:bottom}
+td{padding:.85mm 1.4mm;border-bottom:.4pt solid #e2e1dc;vertical-align:top}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.k{font-weight:700;white-space:nowrap}
+mark{background:#fff0a0;padding:0 .5mm;border-radius:1px;color:#0b0b0b}
+.gap{background:#fff9d6;border:.6pt solid #e4cf63;border-radius:1mm;padding:1.3mm 2mm;margin:0 0 2mm;font-size:8.2pt}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
+.fig{margin:0 0 1.6mm}
+.cap{font-size:7.4pt;color:#52514e;margin:.3mm 0 1.6mm}
+svg text{font-family:"Sans",Arial,sans-serif}
+.tag{font-weight:700;white-space:nowrap}
+a{color:#17589f;text-decoration:none}
+.small{font-size:7.7pt;color:#3c3b38}
+.meta th{vertical-align:top}
+</style></head><body>
+
+<!-- PAGE 1 -->
+<section class="page">
+<h1>PromptShala: AI Literacy for School Teachers</h1>
+<p class="sub">Field Study &amp; System Design Report &middot; ET 617, Group 6</p>
+<table class="meta">
+<tr><th style="width:19%">Team</th><td>Group 6</td><th style="width:17%">Client / organisation</th><td>Centre for Educational Technology (CET), IIT Bombay</td></tr>
+<tr><th>Members and student IDs</th><td style="white-space:nowrap">Darshan Sonawane, 23b1541<br>Vishal Patel, 23b0745<br>Ashok Kumar, 23b0628<br>Raghuram Gundi, 23b1534</td><th>Primary contact</th><td>Prof. Ramkumar Rajendran<br><span class="small">Client feedback video: Aditya Narayan Rajmane</span></td></tr>
+</table>
+
+<h2>Executive summary</h2>
+<p id="summary">School teachers need practical, safe ways to use generative AI but have little time for theory. PromptShala, built for the Centre for Educational Technology, IIT Bombay, is a self-paced web course with four modules and 29 lessons. Teachers write classroom prompts, receive CRAFT feedback, test reusable helpers and check AI drafts against sources. The client team used it in a teacher-training session on 7 October 2026; logs cover 31 teacher accounts, 24 of them new to AI. Teachers needed direction to find the practice lab, then engaged: 22 opened it, but only 3 completed a lesson and none opened Module 4. Among 9 teachers who changed their prompt under one evaluator, the median score rose from 60% to 80%, an early signal rather than proof of learning. The client valued real-time practice and plans further use, but asked for easier navigation, shorter routes and for features built specifically around teachers.</p>
+
+<h2 style="margin-top:3mm">Understanding of requirement and context</h2>
+<h3 style="margin-top:0">The client's problem</h3>
+<p>CET asked for a platform that takes school teachers from knowing about AI to actually using it in their work. In the kickoff (7 Aug) the client stressed that teachers are beginners. In the following review (14 Aug) the scope was set as <em>how to use AI</em> (prompting, reusable assistants, working with sources), not AI theory. The stated demo goal was that a teacher could interact with the platform for about 30 minutes and leave knowing how to use AI in their work.</p>
+<p>A workshop can explain these skills, but it rarely gives each teacher feedback on their own attempt. The product therefore centres on feedback: a teacher writes a prompt, the system shows which parts are missing against a visible rubric, and the teacher revises it.</p>
+<h3>Operational domain</h3>
+<p>The setting is teacher professional development, with teachers learning alongside their normal preparation work. As the client review of 28 Aug emphasised, teaching AI to teachers differs from teaching it to other professionals:</p>
+<table>
+<tr><th style="width:24%">Dimension</th><th>School teacher</th><th>Other professional (banker, architect)</th></tr>
+<tr><td class="k">Who receives the output</td><td>Children with varied age, prior knowledge and needs</td><td>Adult clients, colleagues or regulators</td></tr>
+<tr><td class="k">Typical output</td><td>Lesson plan, explanation, quiz, worksheet, parent message</td><td>Financial analysis, specification, report</td></tr>
+<tr><td class="k">How quality is judged</td><td>Age fit, pedagogy, curriculum fit, misconceptions, teacher check</td><td>Commercial, regulatory or technical accuracy</td></tr>
+<tr><td class="k">Safety boundary</td><td>No identifiable student data; the teacher stays responsible</td><td>Domain confidentiality and professional controls</td></tr>
+</table>
+<h3>Core system objectives</h3>
+<table>
+<tr><th style="width:42%">Learning module</th><th class="n" style="width:9%">Lessons</th><th>What the teacher should be able to do</th></tr>
+<tr><td>1. AI foundations and responsible use</td><td class="n">6</td><td>Judge when AI is suitable, verify output, protect privacy</td></tr>
+<tr><td>2. Classroom prompt writing</td><td class="n">7</td><td>Write and revise prompts using CRAFT (Context, Role, Action, Format, Target)</td></tr>
+<tr><td>3. Reusable teacher assistants (AI Staffroom)</td><td class="n">8</td><td>Set up, test, repair and hand over a reusable helper</td></tr>
+<tr><td>4. Working with teacher-owned sources</td><td class="n">8</td><td>Turn permitted material into a draft and check its claims against the source</td></tr>
+</table>
+<p>The system must also grade quizzes on the server, save progress across devices, issue verifiable certificates, give staff cohort reports without exposing private prompts, and keep learning usable when the AI service fails.</p>
+<div class="foot"><span>PromptShala &middot; ET 617 Group 6 &middot; CET, IIT Bombay</span><span>Page 1 of 5</span></div>
+</section>
+
+<!-- PAGE 2 -->
+<section class="page">
+<h2>Field study approach</h2>
+<div class="gap"><b>Setting and limits.</b> The client team introduced PromptShala in a teacher-training session on 7 Oct. The team's evidence is the platform logs and the client's own account, not its own observation, and covers one main session rather than the two-week engagement the brief expects. Recruitment and consent records are not held by the team.</div>
+<table>
+<tr><th style="width:27%">Method</th><th>What was done</th><th style="width:17%">Status</th></tr>
+<tr><td class="k">System log analysis</td><td>Read-only export of page views, clicks, active time and quiz events, with a cut-off of 7 Oct, 19:18 IST</td><td>Completed</td></tr>
+<tr><td class="k">Self-reported profiles</td><td>Onboarding answers on AI experience, classes taught, subject and goals</td><td>Completed</td></tr>
+<tr><td class="k">Prompt score analysis</td><td>Five CRAFT dimension scores (0-3 each) for every checked prompt</td><td>Completed</td></tr>
+<tr><td class="k">Client discussions</td><td>Reviews on 7, 14, 21 and 28 Aug and a feedback meeting on 9 Oct</td><td>Completed</td></tr>
+<tr><td class="k">Client interviews</td><td>Review meeting with the client (Nov 2026) and a recorded feedback video, both transcribed</td><td>Completed</td></tr>
+</table>
+<p><b>Who is counted.</b> The export holds 51 accounts. The 17 with <code>example</code> or <code>promptshala</code> email domains were test accounts, not pilot participants, and were removed, leaving 34. A further 3 were first active before the session, including the administrator. The remaining <b>31 accounts</b> were all first active between 16:50 and 17:13 IST on 7 Oct, which fits the reported pilot of more than 30 teachers. Results are reported in aggregate, with no names or emails.</p>
+
+<h2 style="margin-top:2.6mm">Data collected</h2>
+<div class="two">
+<div>
+<h3 style="margin-top:0">Quantitative (n = 31 accounts)</h3>
+<table>
+<tr><th>Measure</th><th class="n">Result</th></tr>
+<tr><td>Active time per teacher, median (IQR)</td><td class="n">12.4 min (8.1-15.8)</td></tr>
+<tr><td>Longest active time</td><td class="n">22.2 min</td></tr>
+<tr><td>Logged interaction events</td><td class="n">3,505</td></tr>
+<tr><td>Completed onboarding</td><td class="n">27 of 31</td></tr>
+<tr><td>Checked at least one prompt</td><td class="n">20 of 31</td></tr>
+<tr><td>Prompt checks</td><td class="n">79</td></tr>
+<tr><td>Quiz attempts (passed)</td><td class="n">3 (1), by 2 teachers</td></tr>
+<tr><td>Saved assistants / certificates</td><td class="n">0 / 0</td></tr>
+</table>
+</div>
+<div>
+<h3 style="margin-top:0">Teachers reaching each stage</h3>
+<svg class="fig" viewBox="0 0 330 156" width="100%" role="img" aria-label="Teachers reaching each stage out of 31: dashboard 28, prompt practice 22, Module 1 lesson 21, Module 2 lesson 10, Module 1 quiz 4, completed a lesson 3, Module 3 2, Module 4 0">
+<g font-size="9" fill="#52514e">
+<text x="0" y="12">Opened safe-use notice</text><text x="0" y="29">Reached dashboard</text><text x="0" y="46">Opened prompt practice</text><text x="0" y="63">Opened a Module 1 lesson</text><text x="0" y="80">Opened a Module 2 lesson</text><text x="0" y="97">Opened Module 1 quiz</text><text x="0" y="114">Completed a lesson</text><text x="0" y="131">Opened Module 3</text><text x="0" y="148">Opened Module 4</text>
+</g>
+<line x1="112" y1="1" x2="112" y2="154" stroke="#c9c8c2" stroke-width=".7"/>
+<g fill="#2a78d6">
+<path d="M112 3h188a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-188z"/><path d="M112 20h170a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-170z"/><path d="M112 37h133a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-133z"/><path d="M112 54h127a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-127z"/><path d="M112 71h58a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-58z"/><path d="M112 88h20a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-20z"/><path d="M112 105h14a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-14z"/><path d="M112 122h8a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-8z"/>
+</g>
+<g font-size="9" font-weight="700" fill="#0b0b0b">
+<text x="308" y="12">31</text><text x="290" y="29">28</text><text x="253" y="46">22</text><text x="247" y="63">21</text><text x="178" y="80">10</text><text x="140" y="97">4</text><text x="134" y="114">3</text><text x="128" y="131">2</text><text x="116" y="148">0</text>
+</g>
+</svg>
+<p class="cap">Accounts with at least one page view of each stage, except "Completed a lesson", which is a recorded completion.</p>
+</div>
+</div>
+<div class="two">
+<div>
+<h3 style="margin-top:0">Prompt scores by CRAFT dimension</h3>
+<table>
+<tr><th>Dimension (max 3)</th><th class="n">Mean, 79 prompts</th></tr>
+<tr><td>Action: what to produce</td><td class="n">2.65</td></tr>
+<tr><td>Context: class and situation</td><td class="n">2.29</td></tr>
+<tr><td>Role: who the AI acts as</td><td class="n">1.62</td></tr>
+<tr><td>Format: shape of the output</td><td class="n">1.38</td></tr>
+<tr><td>Target: the intended learners</td><td class="n">1.08</td></tr>
+</table>
+<p class="small">Teachers' first prompts scored 0 on Format in 12 of 20 cases, and on Target in 11 of 20.</p>
+</div>
+<div>
+<h3 style="margin-top:0">Revision of prompts</h3>
+<p>16 teachers checked more than one prompt (median 5 checks; first to last in about 5 minutes). The evaluator varied: 66 of 79 checks used the rule-based checker and 13 used Gemini, and Gemini scored lower on average (44% against 63%). We therefore report only the 9 teachers who changed their prompt and had the same evaluator on first and last attempts: <b>median 60% to 80%; 5 improved, 3 unchanged, 1 lower</b>.</p>
+<h3>Qualitative</h3>
+<p>The client reported that teachers took longer to understand the system, but all began work once told to go to the CRAFT lab, and at least 15 used it to complete the problem. Teachers enjoyed seeing responses in real time.</p>
+</div>
+</div>
+
+<h2 style="margin-top:1mm">Key insights and takeaways</h2>
+<ol>
+<li><b>Teachers name the task but not the output or the learner.</b> Action and Context scored high; Format and Target scored lowest. This supports the design of feedback by dimension.</li>
+<li><b>Teachers needed direction to find practice.</b> They started once told to go to the CRAFT lab, so the 22 who opened it reflect that instruction as well as interest. The lab should be easier to reach.</li>
+<li><b>Session length and course length do not match.</b> A 12-minute median cannot cover an 18-hour course, and only 3 of 31 completed a lesson; the client raised the same concern. Modules 3 and 4 were effectively not field-tested.</li>
+<li><b>AI availability is a real constraint.</b> Most checks used the rule-based fallback, so practice continued, but scores varied by evaluator. The export does not record why, and device type was not captured. The client also asked for better logging.</li>
+</ol>
+<div class="foot"><span>PromptShala &middot; ET 617 Group 6 &middot; CET, IIT Bombay</span><span>Page 2 of 5</span></div>
+</section>
+
+<!-- PAGE 3 -->
+<section class="page">
+<h2>Primary user persona: Meera, beginner school teacher</h2>
+<p class="small">Meera is a composite built from client discussions (Aug 2026) and refined with the pilot profile data. She is not a real participant.</p>
+<table>
+<tr><th style="width:19%">Attribute</th><th style="width:47%">Persona</th><th>Pilot evidence (n = 31)</th></tr>
+<tr><td class="k">Role</td><td>Teaches middle and secondary classes; experienced in the classroom but new to AI; limited preparation time</td><td>Classes 8-10: 16; Classes 5-7: 11; both: 3. Median 15 years teaching (range 2-34, n = 21). Subject "General": 20; Social Science: 5</td></tr>
+<tr><td class="k">Goals</td><td>Explain hard concepts, plan lessons, create quizzes and worksheets, and reach parents, with output she can trust</td><td>Goals selected: explain concepts 12; plan lessons 12; quizzes 9; worksheets and slides 9; parents 4</td></tr>
+<tr><td class="k">Pain points</td><td>Generic AI output ignores grade and prior knowledge; rewrites similar instructions; fears giving learners wrong information or exposing student data</td><td>First prompts often omit Format (12 of 20) and Target (11 of 20). Client: teachers took time to understand the system</td></tr>
+<tr><td class="k">Technical literacy</td><td>Comfortable with messaging, documents and web forms. May have tried a chatbot once; does not structure requests</td><td>"New to AI": 24; "Tried it a few times": 2; "Use it sometimes": 4; no answer: 1</td></tr>
+<tr><td class="k">Environmental constraints</td><td>Short sessions of 20-30 minutes; shared or personal devices; connectivity may vary; may have no paid AI account</td><td>Median active time 12.4 minutes. Device and network not captured</td></tr>
+</table>
+<p><b>Changes from the original persona.</b> Our design document (HLD) assumed mainly Mathematics or Science teachers of Classes 5-10. The pilot group was more varied in subject, and most taught Classes 8-10, so examples should not rely on one subject.</p>
+<p><b>Client critique of the persona work.</b> In the review meeting, Prof. Rajendran asked what exists specifically for teachers and not for other users, such as buttons to select a class or subject directly. He said that keeping the teacher in mind "was not coming out clearly". The course is written for teachers, but its controls are not yet teacher-specific, and this page should be read with that gap in mind.</p>
+<p><b>Secondary persona: Anil, teacher educator.</b> Anil runs teacher-development programmes. He needs cohort progress and common difficulties, without routine access to teachers' private prompts or materials.</p>
+
+<h2 style="margin-top:3mm">User journey: preparing a fractions quiz for class</h2>
+<p class="small">Illustrative scenario. The final column shows how far the pilot's logs actually support each step.</p>
+<table>
+<tr><th style="width:4%">#</th><th style="width:33%">What Meera does</th><th style="width:43%">What the system does</th><th>Seen in pilot?</th></tr>
+<tr><td>1</td><td>Signs up on her laptop after a colleague shares the link</td><td>Creates the account and logs her in immediately; shows the safe-use notice before any AI feature</td><td>Yes: 30 of 31 accepted the notice</td></tr>
+<tr><td>2</td><td>Answers which AI tools she has tried, her confidence and her goals</td><td>Gives "None yet" a beginner route; saves answers, which she can edit later</td><td>Yes: 27 of 31 finished onboarding</td></tr>
+<tr><td>3</td><td>Opens Prompt Practice. States her task, then types "Make a quiz on fractions"</td><td>Scores the prompt on five CRAFT dimensions and shows that Format and Target are missing</td><td>Yes: 20 teachers, 79 checks</td></tr>
+<tr><td>4</td><td>Adds class level, a common misconception, question count and an answer key; checks again</td><td>Shows the new score beside the old attempt; saves both privately so she can reuse them</td><td>Yes: 15 teachers changed a prompt</td></tr>
+<tr><td>5</td><td>Reads a short lesson on verifying AI output, then takes the module quiz</td><td>Grades on the server, explains the answers and allows retries; a pass needs 70%</td><td>Partly: 3 attempts, 1 pass</td></tr>
+<tr><td>6</td><td>Turns her best prompt into a reusable "quiz helper" in AI Staffroom and tests it on example cases</td><td>Compares expected and actual results, records her repair as a new version, and exports the helper for colleagues</td><td>Not seen: no teacher saved a helper</td></tr>
+<tr><td>7</td><td>Pastes her own notes into the source workspace and requests a study guide</td><td>Produces an editable draft with an optional Gemini call, asks her to check claims against the source, and deletes it after 30 days</td><td>Not seen: Module 4 not opened</td></tr>
+<tr><td>8</td><td>Finishes the lessons, quizzes and practice across later sessions</td><td>Lists what is missing, restores progress on any device, and issues a certificate with public verification</td><td>Not seen: no certificates</td></tr>
+</table>
+<p><b>What the journey shows.</b> Steps 1-4 fit a short first session and were reached by most teachers, although step 3 needed a facilitator's direction. Steps 5-8 need later visits, which this pilot did not capture. They are where the next study should focus, and they rest on automated testing rather than on teacher use.</p>
+<div class="foot"><span>PromptShala &middot; ET 617 Group 6 &middot; CET, IIT Bombay</span><span>Page 3 of 5</span></div>
+</section>
+
+<!-- PAGE 4 -->
+<section class="page">
+<h2>Design rationale for the persona</h2>
+<table>
+<tr><th style="width:30%">Persona need or constraint</th><th style="width:37%">Design decision</th><th>Why it fits</th></tr>
+<tr><td>New to AI; put off by technical terms</td><td>Plain-language task names, classroom examples and short steps (simplified after client feedback on 9 Oct)</td><td>Teachers can act without learning vocabulary first. The client later found the redesign harder to navigate (see gap below)</td></tr>
+<tr><td>Accepts first output; omits format and learner</td><td>CRAFT feedback by dimension, with attempts side by side</td><td>Shows exactly what to fix; the pilot confirms these gaps</td></tr>
+<tr><td>Fears wrong information</td><td>Claim-to-source checks, teacher review steps, and labels showing live or rule-based feedback</td><td>Keeps judgement with the teacher and makes AI limits visible</td></tr>
+<tr><td>Must protect student data</td><td>Safe-use notice before AI; private owner-only records; staff reports exclude prompt text</td><td>Limits exposure and builds trust</td></tr>
+<tr><td>Short, interrupted sessions</td><td>All modules open (client-approved change from locked order); saved drafts; resume on any device</td><td>Teachers start where the need is, and can stop safely</td></tr>
+<tr><td>No paid AI account</td><td>Course Gemini key held on the server, optional personal key kept only in the open tab, rule-based fallback</td><td>Practice works without setup, and no key reaches the browser bundle or database</td></tr>
+</table>
+<p><b>Technology choices.</b> Next.js 16 and React 19 give one responsive codebase (checked at 360, 768 and 1440 px). Server routes keep AI keys and grading away from the browser. Supabase Auth and PostgreSQL row-level security enforce privacy in the database itself, not only in the interface.</p>
+<p><b>Known design gaps.</b> Client review found that adding many modules made the CRAFT lab harder to find, that the experience feels like a structured course, and that there are no teacher-specific shortcuts such as class and subject selection. These are in the roadmap on page 5.</p>
+
+<h2 style="margin-top:2.6mm">System architecture and data flow</h2>
+<svg class="fig" viewBox="0 0 720 222" width="100%" role="img" aria-label="Teachers and staff use a browser that calls Next.js server routes on Vercel. The routes use Supabase for authentication and data, and Gemini for AI, with a rule-based fallback.">
+<defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L8 4L0 8z" fill="#52514e"/></marker></defs>
+<g fill="#eef3fa" stroke="#9db8da"><rect x="1" y="30" width="136" height="136" rx="5"/></g>
+<rect x="196" y="4" width="288" height="214" rx="5" fill="#f7f7f4" stroke="#b9b8b1" stroke-dasharray="4 3"/>
+<g fill="#fff" stroke="#9db8da"><rect x="208" y="26" width="264" height="88" rx="4"/><rect x="208" y="124" width="126" height="84" rx="4"/><rect x="346" y="124" width="126" height="84" rx="4"/></g>
+<g fill="#eef3fa" stroke="#9db8da"><rect x="560" y="14" width="158" height="92" rx="5"/><rect x="560" y="124" width="158" height="84" rx="5"/></g>
+<g font-size="9.6" font-weight="700" fill="#0b0b0b">
+<text x="12" y="48">Browser</text><text x="208" y="18">Vercel: Next.js server (trust boundary)</text>
+<text x="218" y="42">Server routes</text><text x="218" y="140">Service checks</text><text x="356" y="140">Evaluators</text>
+<text x="570" y="31">Supabase</text><text x="570" y="141">Google Gemini API</text>
+</g>
+<g font-size="8.6" fill="#3c3b38">
+<text x="12" y="64">Teacher: lessons, quizzes,</text><text x="12" y="76">practice, helpers, sources</text><text x="12" y="96">Facilitator / admin:</text><text x="12" y="108">cohorts, reports, authoring</text><text x="12" y="128">Holds no secrets; personal</text><text x="12" y="140">key stays in tab memory</text>
+<text x="218" y="56">/craft, /assistant, /transform: AI practice</text><text x="218" y="69">/assessments, /participant-state: quiz, progress</text><text x="218" y="82">/certificate, /content, /admin: staff and PDF</text><text x="218" y="95">/activity: learning events</text><text x="218" y="107">/maintenance: daily expiry and cleanup</text>
+<text x="218" y="154">Sign-in and role</text><text x="218" y="166">Safe-use consent</text><text x="218" y="178">Rate limit (12 per min)</text><text x="218" y="190">Input size limits</text>
+<text x="356" y="154">Gemini caller with</text><text x="356" y="166">output validation</text><text x="356" y="184">Rule-based CRAFT</text><text x="356" y="196">checker (fallback)</text>
+<text x="570" y="46">Auth; PostgreSQL with</text><text x="570" y="58">row-level security</text><text x="570" y="72">Profiles, progress, quiz</text><text x="570" y="84">receipts, prompts, events,</text><text x="570" y="96">certificates, audit</text>
+<text x="570" y="156">gemini-3.5-flash</text><text x="570" y="168">Receives task and prompt</text><text x="570" y="180">only; structured JSON;</text><text x="570" y="192">25-second timeout</text>
+</g>
+<g stroke="#52514e" stroke-width="1" fill="none" marker-end="url(#a)"><path d="M137 72H207" marker-start="url(#a)"/><path d="M484 60H559" marker-start="url(#a)"/><path d="M472 166H559" marker-start="url(#a)"/></g>
+<g font-size="8" fill="#52514e"><text x="147" y="66">HTTPS</text><text x="147" y="84">JSON</text><text x="492" y="54">save, read</text><text x="490" y="160">task, prompt</text><text x="490" y="178">scores</text></g>
+</svg>
+<p class="cap"><b>Flow of a prompt check:</b> (1) the teacher submits task and prompt; (2) the server checks sign-in, consent, rate limit and size; (3) Gemini evaluates it, or the rule-based checker does if Gemini fails; (4) the server validates scores and computes the total; (5) the attempt is saved under owner-only access and returned, labelled with its source.</p>
+
+<h2 style="margin-top:1.6mm">Core features and edge case handling</h2>
+<p><b>Core modules:</b> course and lessons; CRAFT practice with history; AI Staffroom; Source Studio and own-source workspace; server-graded quizzes; certificates with public verification; staff tools for cohorts, content and reports; account export and deletion; public <code>/try</code> and <code>/review-lab</code> tools.</p>
+<table>
+<tr><th style="width:36%">Failure or edge case</th><th>Handling</th></tr>
+<tr><td>Gemini fails, times out or returns malformed output</td><td>CRAFT returns rule-based feedback and source drafts fall back to extraction, both clearly labelled; the helper shows an unavailable message; the draft is kept</td></tr>
+<tr><td>Too many AI requests, or the quota service fails</td><td>HTTP 429 with a retry time; if quota checks fail, no paid call is made and the fallback is used</td></tr>
+<tr><td>Poor connection or two devices editing</td><td>Local drafts, sync status with retry, and revision conflict handling</td></tr>
+<tr><td>Duplicate or stale quiz submission</td><td>Graded on the server; duplicates are idempotent and stale submissions are rejected</td></tr>
+<tr><td>No consent, or wrong role</td><td>AI blocked until the safe-use notice is accepted (403); learners cannot reach staff APIs</td></tr>
+<tr><td>Private material kept too long</td><td>Saved sources expire after 30 days; audit and activity records are cleaned after 90; users can delete at any time</td></tr>
+</table>
+<div class="foot"><span>PromptShala &middot; ET 617 Group 6 &middot; CET, IIT Bombay</span><span>Page 4 of 5</span></div>
+</section>
+
+<!-- PAGE 5 -->
+<section class="page">
+<h2>Client validation and feedback summary</h2>
+<p>Reviews on 7, 14, 21 and 28 Aug set the persona, the focus on practical use and the CRAFT feedback. After the 9 Oct meeting the team simplified the interface, added questions on AI use, allowed a personal Gemini key and began saving CRAFT requests. The client approved open modules and public signup.</p>
+<p><b>Field test.</b> The client team used the platform in a teacher-training session. Teachers took time to understand the system, then at least 15 worked in the CRAFT lab once directed to it.</p>
+<div class="two"><div><p><b>What worked</b> (A. N. Rajmane, video)</p><ul><li>"It's a really helpful app"; "We are happy to use this app"</li><li>Teachers "really enjoyed because they could see their responses in real time"</li><li>"For us it is really helpful because we get to train a lot of teachers"</li></ul></div>
+<div><p><b>What needs work</b> (Prof. Rajendran, meeting; Rajmane, video)</p><ul><li>"The UI can be better", and better logging is expected</li><li>The redesign was "even more complicated" and the lab took time to find</li><li>The UX "feels too much like a very structured course"; teachers may lack time for all of it</li></ul></div></div>
+<p><b>Acceptance status.</b> The client is positive and reports continuing use, expecting "minor fixes" through iteration, and asked for no product changes before submission. There is no formal sign-off: the 19-case acceptance sheet is unfilled.</p>
+<p><b>Technical verification (team, test accounts).</b> 435 automated tests and 27 browser journeys passed on 15 Oct. A live production check on 23 Oct passed core flows and all three Gemini features. This shows that the system works, not that it helps teachers.</p>
+
+<h2 style="margin-top:2.6mm">Impact metrics and value proposition</h2>
+<table>
+<tr><th style="width:30%">Area</th><th>Evidence</th><th style="width:13%">Status</th></tr>
+<tr><td class="k">Reach among beginners</td><td>31 accounts in one session; 24 new to AI; 27 finished onboarding</td><td class="tag">Observed</td></tr>
+<tr><td class="k">Engagement with practice</td><td>20 teachers ran 79 prompt checks; 15 changed a prompt and rechecked</td><td class="tag">Observed</td></tr>
+<tr><td class="k">Prompt quality</td><td>Same-evaluator group (n = 9): median 60% to 80% within one sitting. No control group; repeat attempts may reflect learning the checklist</td><td class="tag">Observed, early</td></tr>
+<tr><td class="k">Efficiency and manual effort</td><td>Teachers may spend less time rewriting instructions by reusing prompts and helpers. No preparation-time data was collected</td><td class="tag">Anticipated</td></tr>
+<tr><td class="k">Client adoption</td><td>"We for sure are using it" (client). Anticipated: regular workshops, large-scale teacher training and a project proposal</td><td class="tag">Reported</td></tr>
+<tr><td class="k">Fewer errors in class</td><td>Source checks should catch unsupported claims before classroom use. Not yet used by pilot teachers</td><td class="tag">Anticipated</td></tr>
+<tr><td class="k">Learning and classroom outcomes</td><td>Not measured. Course completion is not proof of teaching effectiveness</td><td class="tag">Not measured</td></tr>
+</table>
+<p><b>Value proposition.</b> PromptShala gives CET a repeatable way to give each teacher individual feedback on their own prompts, which a single workshop facilitator cannot do at the same scale, while keeping teacher judgement and student privacy central. The pilot supports only the first step of this claim.</p>
+
+<h2 style="margin-top:2.6mm">Implementation roadmap</h2>
+<table>
+<tr><th style="width:19%">Horizon</th><th>Actions</th></tr>
+<tr><td class="k">Immediate</td><td>Complete client acceptance on the 19 cases (KAN-28). Obtain educator approval of content (KAN-24). Finish full recovery rehearsal (KAN-31). Publish the non-technical HTML page the client requested, linked from the README. Agree the receiving owner at CET.</td></tr>
+<tr><td class="k">Next cohort</td><td>Link the CRAFT lab directly from the home page. Add class and subject shortcuts. Add a 30-minute route ending in one improved prompt. Strengthen Format and Target guidance. Log device type and fallback reason. Align Gemini and rule-based scoring. Set up email recovery.</td></tr>
+<tr><td class="k">Follow-up study</td><td>Run a multi-session study covering Modules 3 and 4 with matched before-and-after tasks, phone use, observation and interviews. The study kit in the repository is ready.</td></tr>
+<tr><td class="k">Long term</td><td>Agree the AI budget, retention rules and certificate wording. Maintain through CI, daily cleanup, health sampling and versioned content releases. Support the client's planned workshops and large-scale training.</td></tr>
+</table>
+
+<h2 style="margin-top:2.6mm">Links to artifacts</h2>
+<table>
+<tr><td class="k" style="width:27%">Deployed application</td><td><a href="https://promptshala.vercel.app">promptshala.vercel.app</a> &middot; sign-in-free demo: <a href="https://promptshala.vercel.app/try">/try</a> &middot; <a href="https://promptshala.vercel.app/review-lab">/review-lab</a></td></tr>
+<tr><td class="k">GitHub repository</td><td><a href="https://github.com/EAD-Labs/Group-6_2026">github.com/EAD-Labs/Group-6_2026</a></td></tr>
+<tr><td class="k">Jira tracking board</td><td><a href="https://darshansonawane1110.atlassian.net/jira/software/projects/KAN/list">darshansonawane1110.atlassian.net/jira/software/projects/KAN/list</a></td></tr>
+<tr><td class="k">Client feedback video</td><td><a href="https://drive.google.com/file/d/18-QnYvxFq6fH3QVGFg3xKBa_yhF6OgCx/view?usp=sharing">drive.google.com/file/d/18-QnYvxFq6fH3QVGFg3xKBa_yhF6OgCx/view</a></td></tr>
+<tr><td class="k">Android APK</td><td>Not applicable: PromptShala is a web application</td></tr>
+</table>
+<div class="foot"><span>PromptShala &middot; ET 617 Group 6 &middot; CET, IIT Bombay</span><span>Page 5 of 5</span></div>
+</section>
+</body></html>

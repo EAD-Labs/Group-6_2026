@@ -1,0 +1,95 @@
+PromptShala client feedback: auto-generated transcripts (Whisper medium, run locally on 5 Nov 2026). May contain errors; check against the recording before quoting.
+
+== Client feedback video (2:11), WhatsApp Video 2026-11-05 at 14.43.45.mp4 ==
+[00:00] So this is my review of the app Promshalla.
+[00:03] So Promshalla is a really interesting app where they have created like a platform for teachers
+[00:12] to learn about prompting.
+[00:14] That's why it's called Promshalla but it can expand to other use cases also.
+[00:19] So one good thing about Promshalla that I really like is the space where they can
+[00:24] practice prompts.
+[00:26] kinds of things really help teachers into understanding what a prompt is. The
+[00:31] craft response that they get is also really good. One improvement can happen
+[00:37] is the UX. Right now the UX feels too much like a very structured course and
+[00:47] yeah it is good for if this is given as like a course for teachers to do
+[00:52] which I think was one of the aims but what is happening is prompt literacy is
+[01:00] a very nuanced topic and it might need a little bit more structuring to do more
+[01:07] ideas to build where we can work a little bit more on how actual teachers
+[01:12] might interpret the application. They might not have that much amount of
+[01:17] time to complete like this entire course in prompt literacy so those use
+[01:21] cases have to be thought of for future. For us it is really helpful because we get to train a lot
+[01:28] of teachers into AI and AI literacy and this kind of an application we inculcated with a few
+[01:34] teachers in their teacher training and they really enjoyed because they could see their responses
+[01:38] in real time and how they could change and work when they are prompting. So to the team
+[01:44] I think it's a really good app that you have created. It's a really helpful app. We for sure
+[01:48] are using it also and if you can see in terms of the clickstream and other use cases, I feel like
+[01:55] the app is really good. So yeah, minor fixes of UI, UX and all those kinds of things in future
+[02:03] will happen with the iterations and so far so good. We are happy to use this app. Thank you.
+
+== Review meeting recording (7:17), IMG_1705.mp4 ==
+[00:03] Aditya, who came that day? You didn't come, right? Abhishek and Siddharth came.
+[00:13] So I think I don't know the feedback. I think I have already shared the
+[00:20] feedback. The feedback is the teacher was taking more time to understand the
+[00:25] system usage but at least once we said go check the craft lab or
+[00:32] all of them started working on it. At least 15 of them worked it and most of
+[00:37] them tried to utilize it to do well in the system and they were able to
+[00:46] complete the problem directly. That's what they did. The comments I
+[00:54] told you, the UI can be better, more of the better logging data of the
+[00:59] system would be better. That is what the expectation is.
+[01:05] So you changed the UI? I don't want you to change anything now. What I want to say
+[01:12] is... We changed after your feedback. Yeah, I saw that. I saw the new one. New one is
+[01:18] even more complicated for me to understand. I think we were using it the
+[01:21] other day, the new one. We were just going around because going on
+[01:28] and figuring out where is the content, where is the lab. It was a bit of time.
+[01:35] I think I don't know who did it. Aditya, you only. No, I was not there but I was
+[01:40] still testing. No, the new one. I could not find the lab. No, I found it
+[01:48] finally. It took time. It is not UI. See, Darshan, the point is we asked you to
+[01:57] think about persona. Remember? As a teacher, teacher will use it. How the
+[02:03] teacher will use it? You have to think about what is the some feature which you
+[02:07] considered for teacher. Keeping teacher in the mind. That was not
+[02:12] coming out clearly. So I am fine. Don't worry. Because it was like an AI
+[02:19] literacy platform, so we thought like we could make an entire course out of it.
+[02:23] That's why we added multiple courses, multiple modules in it and because of that it's
+[02:29] getting harder to find the lab. Okay. I'm not getting again. What is exactly the
+[02:36] thing? The original problem statement, it was mentioned we have to make
+[02:42] the AI literacy platform. Yes. That's why we included multiple courses and
+[02:48] modules in it and because of all these modules, it's getting harder.
+[02:52] Yeah, yeah, yeah. No, no. I totally get it. I totally get it what you're saying. What I
+[02:59] meant is when you create a system, did you consider anything specifically for
+[03:08] teachers in the mind? Suppose you consider this particular page I created
+[03:12] because teachers wanted it. In this page I wanted something. Is there
+[03:16] anything like that? Yeah, basically it was entirely created for teachers only. Yeah, but you have to
+[03:22] say why you use this particular features there. How the teacher in the classroom
+[03:27] they quickly select this button. How the teachers do you have any button
+[03:32] where they select the class directly with any button they select the
+[03:35] subject. You know something like that. What is that you added a feature which
+[03:40] is specifically for teachers which is not for the other people. When you say
+[03:45] persona, that is what persona means. Who's going to use it and for them we
+[03:49] create anything special. Okay, I think I don't have anything. Don't
+[03:54] change anything now. That's what my suggestion now. Yeah. And also for the
+[04:00] client feedback video. Oh, for our video. Okay. Aditya, you give the video. Yeah, I'll give the video.
+[04:12] Okay, you give the video. Yeah, I looked at the app. I was working with it. Nice. Okay, I'll give the video.
+[04:23] Okay. So, that was it. We want to just know the feedback. Sure, okay.
+[04:32] Okay, take care. We will send the email about the things to be done
+[04:43] because this final submission also we have seen that. I just checked it.
+[04:53] This is from Shahla, right? This is group number 6. Let me check. If you look at the GitHub.
+[05:01] I think three weeks back is updated. That's okay. Okay. So, what we want is
+[05:12] suppose after Readme file, we may need a HTML file to explain what is
+[05:17] without much of a technical detail. Then link in the file.
+[05:23] If somebody wants to test it, click the link and they select and create it.
+[05:26] Okay. Yeah, that's so that if somebody wants it, I will tell them
+[05:32] go and use this particular page. I'll share the HTML page. They can go
+[05:39] and read about Pramshala, not technical details. How Pramshala helps them in their day-to-day work.
+[05:44] Then we could, you know, they can test it and everything. Yeah, that's all we
+[05:52] need. I think Arit will send a detail even on that. You can talk to Arit for the
+[05:56] video feedback. I think it's basically for the people who are using it to
+[06:04] change in their company. Suppose this NGO, some other people, they create it
+[06:11] and they'll be using in the company asking them how it impacted in the
+[06:15] thing, how it will work in that. So, Arit, you can say that it will help us in
+[06:20] our project proposal. We're going to do the large-scale training.
+[06:25] It will help in the training and the teachers. We already tested it one
+[06:30] group. We're going to do it regularly in our workshops and something like that.
+[06:35] Really? Yeah. Okay, thanks then. Okay, thank you, sir. Thank you, thank you, guys. Bye-bye.
+[06:42] Are those in class, yeah? No, I guess some of them are in class. Okay, thank you.
+[06:50] Bye-bye. You all want me to record right now? I can just record this
+[07:00] Google Meet and get the video done? Okay, sir. It's okay, I'll send the video.
+[07:04] I'll send it in the group, okay? Bye, guys. Good luck.
